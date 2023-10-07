@@ -16,9 +16,11 @@ const theme = extendTheme({ colors });
 
 const App: React.FC = () => {
   return (
-    <ChakraProvider theme={theme}>
-      <Map />
-    </ChakraProvider>
+    <div style={{ width: '100vw', height: '100vh' }}>
+      <ChakraProvider theme={theme}>
+        <Map />
+      </ChakraProvider>
+    </div>
   );
 };
 
