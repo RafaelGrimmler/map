@@ -1,5 +1,4 @@
 import React from 'react';
-import './App.css';
 import { extendTheme, ChakraProvider } from '@chakra-ui/react';
 import Map from './Map';
 
