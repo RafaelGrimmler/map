@@ -16,6 +16,13 @@
         "react"
     ],
     "rules": {
-        "react/react-in-jsx-scope": "off"
-    }
+        "react/react-in-jsx-scope": "off",
+        "react/prop-types": "off",
+        "@typescript-eslint/consistent-type-definitions": ["error", "type"],
+        "@typescript-eslint/no-confusing-void-expression": "off",
+        "@typescript-eslint/explicit-function-return-type": "off",
+        "@typescript-eslint/consistent-type-imports": "off",
+        "@typescript-eslint/strict-boolean-expressions": "off",
+        "@typescript-eslint/prefer-nullish-coalescing": "off"
+    }   
 }
