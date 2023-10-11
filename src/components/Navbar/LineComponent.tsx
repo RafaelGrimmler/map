@@ -64,7 +64,7 @@ const LineComponent: React.FC<LineComponentProps> = ({ lineProps }) => {
           pl="2"
           cursor={e?.disabled ? 'default' : 'pointer'}
           fontWeight={e.fontWeight || undefined}
-          color={e?.disabled ? 'brand.3' : e?.color || 'white'}
+          color={e?.disabled ? 'gray.500' : e?.color || 'gray.800'}
           _hover={{ bg: !e?.disabled ? 'rgba(0,0,0,0.05)' : undefined }}
           onClick={!e?.disabled ? e?.onClick : undefined}
           bg={e?.disabled ? 'rgba(0,0,0,0.2)' : undefined}

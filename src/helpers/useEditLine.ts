@@ -2,6 +2,7 @@ import { LatLng } from 'leaflet';
 import { Line, NavbarOptions } from '../types';
 import { useState } from 'react';
 import { getTimestamp } from './getTimestamp';
+import { NavbarEnum } from '../Enums';
 
 export type UseEditLineReturn = {
   editLine: Line, 
@@ -19,6 +20,16 @@ export const useEditLine = (
 ) => {
   const [editLine, setEditLine] = useState<Line>();
 
+  const handleEditExists = (line: Line) => {
+    setSelected(NavbarEnum.LINE);
+    setEditLine(line)
+  }
+
+  const handleClose = () => {
+    setEditLine(undefined);
+    setSelected(undefined);
+  }
+
   const handleAddCoordinate = (latlng: LatLng) => {
     const { lat, lng } = latlng || {};
     const previousLines = editLine?.lines || []
@@ -29,7 +40,7 @@ export const useEditLine = (
   const handleAddLine = () => {
     const newLine: Line = { id: getTimestamp(), lines: [] };
     setEditLine(newLine);
-    setLines((lines) => [...lines, newLine])
+    setLines((lines) => [...lines, newLine]);
   };
 
   const handleSaveLine = () => {
@@ -38,30 +49,25 @@ export const useEditLine = (
         if (e?.id === editLine?.id) return editLine as Line;
         return e;
       })
-    }
-    );
-    setEditLine(undefined);
-    setSelected(undefined);
+    });
+    handleClose();
   };
 
   const handleUndoLine = () => {
-    const { id, lines } = editLine || {}
+    const { id, lines } = editLine || {};
 
     setEditLine({
       id, 
       lines: lines?.filter((e, i) => i !== lines?.length - 1) as any
-    })
+    });
   }
 
-  const handleCancelLine = () => {
-    setEditLine(undefined);
-    setSelected(undefined);
-  }
+  const handleCancelLine = () => handleClose();
+  
 
   const handleDeleteLine = () => {
     setLines((lines) => lines?.filter(e => e?.id !== editLine?.id));
-    setEditLine(undefined);
-    setSelected(undefined);
+    handleClose();
   }
 
   return {
@@ -72,5 +78,6 @@ export const useEditLine = (
     handleCancelLine,
     handleUndoLine,
     handleDeleteLine,
+    handleEditExists,
   }
 };

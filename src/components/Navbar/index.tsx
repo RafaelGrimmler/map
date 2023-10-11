@@ -5,6 +5,7 @@ import { HiLocationMarker } from 'react-icons/hi';
 import { NavbarEnum } from '../../Enums';
 import LineComponent from './LineComponent';
 import { UseEditLineReturn } from '../../helpers/useEditLine';
+import { Fragment } from 'react';
 
 type NavbarProps = {
   lineProps: Partial<UseEditLineReturn>;
@@ -53,40 +54,48 @@ const Navbar: React.FC<NavbarProps> = ({
   return (
     <Box w="140px" position="absolute" left="40px" top="40px" zIndex="99999">
       <Box display="grid" gridTemplateColumns="1fr" position="relative">
-        {buttons?.map((e, i) => (
-          <>
-            <Box
-              key={e?.label}
-              alignItems="center"
-              display="flex"
-              gap="4"
-              pl="2"
-              h="40px"
-              w="100%"
-              bg={selected === e.action ? 'brand.4' : 'brand.3'}
-              cursor={selected ? 'default' : 'pointer'}
-              color="white"
-              borderTopLeftRadius={i === 0 ? '4px' : '0px'}
-              borderBottomLeftRadius={i === buttons?.length - 1 ? '4px' : '0px'}
-              _hover={{ bg: !selected ? 'brand.4' : undefined }}
-              onClick={!selected ? e?.onClick : undefined}
-            >
-              <Box fontSize="19px">{e.icon}</Box>
-              <Text>{e.label}</Text>
-            </Box>
-            {selected === e.action && (
+        {buttons?.map((e, i) => {
+          const isSelected = selected === e.action;
+
+          return (
+            <Fragment key={e?.label}>
               <Box
-                w="auto"
-                h="auto"
-                bg="brand.4"
-                position="absolute"
-                left="140px"
+                alignItems="center"
+                display="flex"
+                gap="4"
+                pl="2"
+                h="40px"
+                w="100%"
+                bg={isSelected ? 'whiteAlpha.800' : 'blackAlpha.700'}
+                cursor={selected ? 'default' : 'pointer'}
+                color={isSelected ? 'gray.800' : 'gray.200'}
+                borderTopLeftRadius={i === 0 ? '4px' : '0px'}
+                borderBottomLeftRadius={
+                  i === buttons?.length - 1 ? '4px' : '0px'
+                }
+                _hover={{
+                  bg: !selected ? 'whiteAlpha.800' : undefined,
+                  color: !selected ? 'gray.800' : undefined,
+                }}
+                onClick={!selected ? e?.onClick : undefined}
               >
-                {e.component}
+                <Box fontSize="19px">{e.icon}</Box>
+                <Text>{e.label}</Text>
               </Box>
-            )}
-          </>
-        ))}
+              {isSelected && (
+                <Box
+                  w="auto"
+                  h="auto"
+                  bg="whiteAlpha.800"
+                  position="absolute"
+                  left="140px"
+                >
+                  {e.component}
+                </Box>
+              )}
+            </Fragment>
+          );
+        })}
       </Box>
     </Box>
   );
