@@ -6,7 +6,7 @@ import { NavbarEnum } from '../Enums';
 
 export type UseEditLineReturn = {
   editLine: Line, 
-  handleAddCoordinate: () => void,
+  handleAddCoordinate: (latlng: LatLng) => void,
   handleAddLine: () => void,
   handleSaveLine: () => void,
   handleCancelLine: () => void,

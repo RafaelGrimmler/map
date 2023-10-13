@@ -6,15 +6,19 @@ import { NavbarEnum } from '../../Enums';
 import LineComponent from './LineComponent';
 import { UseEditLineReturn } from '../../helpers/useEditLine';
 import { Fragment } from 'react';
+import MarkerComponent from './MarkerComponent';
+import { UseMarkerReturn } from '../../helpers/useMarker';
 
 type NavbarProps = {
   lineProps: Partial<UseEditLineReturn>;
+  markerProps: Partial<UseMarkerReturn>;
   selected?: NavbarEnum;
   handleSelection: (e: NavbarEnum) => void;
 };
 
 const Navbar: React.FC<NavbarProps> = ({
   lineProps,
+  markerProps,
   selected,
   handleSelection,
 }) => {
@@ -33,8 +37,10 @@ const Navbar: React.FC<NavbarProps> = ({
       icon: <HiLocationMarker />,
       label: 'Marcador',
       action: NavbarEnum.MARKER,
+      component: <MarkerComponent markerProps={markerProps} />,
       onClick: () => {
         handleSelection(NavbarEnum.MARKER);
+        markerProps?.handleAddMarker?.();
       },
     },
     {

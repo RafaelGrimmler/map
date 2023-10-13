@@ -1,7 +1,7 @@
 import {
   Circle,
   MapContainer,
-  Marker,
+  Marker as MarkerComponent,
   Polyline,
   Popup,
   TileLayer,
@@ -12,7 +12,7 @@ import { Box, useTheme } from '@chakra-ui/react';
 import './Map.css';
 import Navbar from './components/Navbar';
 import { useState, useEffect } from 'react';
-import { Line, NavbarOptions } from './types';
+import { Line, Marker, NavbarOptions } from './types';
 import { useEditLine } from './helpers/useEditLine';
 import { LatLngExpression } from 'leaflet';
 import { useZoom } from './helpers/useZoom';
@@ -23,20 +23,29 @@ const Map: React.FC = () => {
 
   const [hoverLine, setHoverLine] = useState<Line>();
   const [lines, setLines] = useState<Line[]>([]);
+  const [markers, setMarkers] = useState<Marker[]>([]);
   const [selected, setSelected] = useState<NavbarOptions>(undefined);
 
-  const { editLine, handleAddCoordinate, handleEditExists, ...lineProps } =
-    useEditLine(setLines, setSelected);
+  const { editLine, handleEditExists, ...lineProps } = useEditLine(
+    setLines,
+    setSelected,
+  );
   const { lineWeight, upperLineWeight, zoom, markerSize, handleChangeZoom } =
     useZoom();
-  const { markerIcon } = useMarker({ markerSize });
+  const { markerIcon, editMarker, ...markerProps } = useMarker({
+    markerSize,
+    setMarkers,
+    setSelected,
+  });
 
   useEffect(() => setHoverLine(undefined), [selected]);
 
   const LocationFinderDummy = () => {
     useMapEvents({
       click: (e) => {
-        if (editLine) handleAddCoordinate(e?.latlng);
+        if (editLine) lineProps?.handleAddCoordinate(e?.latlng);
+        if (editMarker && editMarker?.position?.length === 0)
+          markerProps?.handleAddCoordinate(e?.latlng);
       },
       zoom: (e) => handleChangeZoom(e.target._zoom),
     });
@@ -94,15 +103,29 @@ const Map: React.FC = () => {
               />
             );
           })}
-        <Marker
-          position={[-31.721742613401577, -52.35671997070313]}
-          icon={markerIcon}
-        >
-          <Popup>dasd</Popup>
-        </Marker>
+        {editMarker && editMarker?.position?.length > 0 && (
+          <MarkerComponent
+            position={editMarker?.position as LatLngExpression}
+            icon={markerIcon}
+          >
+            <Popup>dasd</Popup>
+          </MarkerComponent>
+        )}
+        {markers
+          ?.filter((e) => e?.id !== editMarker?.id)
+          ?.map((e) => (
+            <MarkerComponent
+              key={e?.id}
+              position={e?.position as LatLngExpression}
+              icon={markerIcon}
+            >
+              <Popup>dasd</Popup>
+            </MarkerComponent>
+          ))}
       </MapContainer>
       <Navbar
         lineProps={{ editLine, ...lineProps }}
+        markerProps={{ editMarker, ...markerProps }}
         selected={selected}
         handleSelection={setSelected}
       />

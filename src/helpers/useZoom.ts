@@ -7,31 +7,20 @@ export const useZoom = () => {
     const handleChangeZoom = (e: number) => setZoom(e)
 
     const getLineWeight = (constant = 1) => {
-        switch (zoom) {
-            case 7: return 0.7 * constant;
-            case 8: 
-            case 9: 
-            case 10: 
-            case 11: return 1 * constant;
-            case 12: 
-            case 13: return 2 * constant;
-            case 14: return 1.2 * constant;
-            case 15:
-            case 16: return 0.8 * constant;
-            default: return 1 * constant;
-        }
+        if(zoom <= 7) return 0.7 * constant;
+        else if(zoom <= 11) return 1 * constant;
+        else if(zoom <= 13) return 2 * constant;
+        else if(zoom <= 14) return 1.2 * constant;
+        else if(zoom <= 16) return 0.8 * constant;
+        return 1 * constant;
     }
 
     const getMarkerSize = (): PointExpression => {
         const getTuple = (n: number): PointExpression => ([n, n * 1.4])
-
-        const interval1 = [0,1,2,3,4,5,6,7,8];
-        const interval2 = [9,10];
-        const interval3 = [11, 12];
         
-        if(interval1.includes(zoom)) return getTuple(8)
-        else if (interval2.includes(zoom)) return getTuple(10)
-        else if (interval3.includes(zoom)) return getTuple(13)
+        if(zoom <= 8) return getTuple(8)
+        else if (zoom <= 10) return getTuple(10)
+        else if (zoom <= 12) return getTuple(13)
         return getTuple(20)
     }
 
