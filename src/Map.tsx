@@ -1,49 +1,48 @@
 import {
-  Circle,
   MapContainer,
   Marker as MarkerComponent,
-  Polyline,
   Popup,
   TileLayer,
   useMapEvents,
 } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-import { Box, useTheme } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import './Map.css';
 import Navbar from './components/Navbar';
-import { useState, useEffect } from 'react';
-import { Line, Marker, NavbarOptions } from './types';
-import { useEditLine } from './helpers/useEditLine';
+import { useState } from 'react';
+import { Line, Marker, NavbarOptions, User } from './types';
+import { useLine } from './helpers/useLine';
 import { LatLngExpression } from 'leaflet';
 import { useZoom } from './helpers/useZoom';
 import { useMarker } from './helpers/useMarker';
+import DeleteAlert, { DeleteAlertProps } from './components/DeleteAlert';
+import Polylines from './components/Polylines';
+import { useFile } from './helpers/useFile';
 
 const Map: React.FC = () => {
-  const { colors } = useTheme();
-
-  const [hoverLine, setHoverLine] = useState<Line>();
+  const [user, setUser] = useState<User>();
   const [lines, setLines] = useState<Line[]>([]);
+  const [alert, setAlert] = useState<Partial<DeleteAlertProps>>({});
   const [markers, setMarkers] = useState<Marker[]>([]);
   const [selected, setSelected] = useState<NavbarOptions>(undefined);
 
-  const { editLine, handleEditExists, ...lineProps } = useEditLine(
-    setLines,
-    setSelected,
-  );
+  const lineProps = useLine({ lines, setLines, setSelected, setAlert });
+
   const { lineWeight, upperLineWeight, zoom, markerSize, handleChangeZoom } =
     useZoom();
+
   const { markerIcon, editMarker, ...markerProps } = useMarker({
     markerSize,
     setMarkers,
     setSelected,
   });
 
-  useEffect(() => setHoverLine(undefined), [selected]);
+  const fileProps = useFile({ user, lines, setLines, setUser, setSelected });
 
   const LocationFinderDummy = () => {
     useMapEvents({
       click: (e) => {
-        if (editLine) lineProps?.handleAddCoordinate(e?.latlng);
+        if (lineProps?.editLine) lineProps?.handleAddCoordinate(e?.latlng);
         if (editMarker && editMarker?.position?.length === 0)
           markerProps?.handleAddCoordinate(e?.latlng);
       },
@@ -65,44 +64,13 @@ const Map: React.FC = () => {
           url={`https://{s}.tile.jawg.io/jawg-dark/{z}/{x}/{y}{r}.png?access-token=${process.env.REACT_APP_MAP_KEY}`}
         />
         <LocationFinderDummy />
-        {editLine && (
-          <>
-            <Polyline
-              positions={editLine?.lines as any}
-              pathOptions={{ color: colors.teal[300], weight: upperLineWeight }}
-            />
-            {editLine?.lines?.map((e, i) => (
-              <Circle
-                key={e?.[0] + i}
-                center={e as LatLngExpression}
-                radius={1}
-                color={colors.teal[600]}
-                weight={3}
-              />
-            ))}
-          </>
-        )}
-        {lines
-          ?.filter((e) => e?.id !== editLine?.id)
-          ?.map((e) => {
-            const hovering = hoverLine?.id === e?.id;
-
-            return (
-              <Polyline
-                key={e?.id}
-                positions={e?.lines as any}
-                pathOptions={{
-                  color: hovering ? colors.teal[300] : colors.teal[400],
-                  weight: hovering ? upperLineWeight : lineWeight,
-                }}
-                eventHandlers={{
-                  mouseover: () => setHoverLine(e),
-                  mouseout: () => setHoverLine(undefined),
-                  click: () => handleEditExists(e),
-                }}
-              />
-            );
-          })}
+        <Polylines
+          lines={lines}
+          lineProps={lineProps}
+          lineWeight={lineWeight}
+          upperLineWeight={upperLineWeight}
+          selected={selected}
+        />
         {editMarker && editMarker?.position?.length > 0 && (
           <MarkerComponent
             position={editMarker?.position as LatLngExpression}
@@ -124,10 +92,18 @@ const Map: React.FC = () => {
           ))}
       </MapContainer>
       <Navbar
-        lineProps={{ editLine, ...lineProps }}
+        lineProps={lineProps}
         markerProps={{ editMarker, ...markerProps }}
         selected={selected}
+        fileProps={fileProps}
+        user={user}
         handleSelection={setSelected}
+      />
+      <DeleteAlert
+        open={alert?.open || false}
+        onClose={() => setAlert({})}
+        onCancel={alert?.onCancel}
+        onConfirm={() => alert?.onConfirm?.()}
       />
     </Box>
   );

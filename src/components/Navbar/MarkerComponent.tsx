@@ -5,13 +5,14 @@ import { BiSave } from 'react-icons/bi';
 import { MdDeleteForever } from 'react-icons/md';
 import { TiCancel } from 'react-icons/ti';
 import { UseMarkerReturn } from '../../helpers/useMarker';
+import { MarkerTypeEnum } from '../../Enums';
 
 type MarkerComponentProps = {
   markerProps: Partial<UseMarkerReturn>;
 };
 
 const MarkerComponent: React.FC<MarkerComponentProps> = ({ markerProps }) => {
-  const [value, setValue] = useState('padrao');
+  const [value, setValue] = useState(MarkerTypeEnum.DEFAULT);
 
   const { editMarker, handleSaveLine } = markerProps;
 
@@ -40,14 +41,14 @@ const MarkerComponent: React.FC<MarkerComponentProps> = ({ markerProps }) => {
     <Box w="240px" minH="120px" pt="2" display="flex" flexDir="column" gap="3">
       <Center flexDir="column" gap="2">
         <Text fontWeight="bold">Tipo de marcador</Text>
-        <RadioGroup onChange={setValue} value={value}>
+        <RadioGroup onChange={setValue as any} value={value}>
           <Stack direction="row" gap="5">
-            <Radio value="padrao">Padrão</Radio>
-            <Radio value="imagem">Imagem</Radio>
+            <Radio value={MarkerTypeEnum.DEFAULT}>Padrão</Radio>
+            <Radio value={MarkerTypeEnum.IMAGE}>Imagem</Radio>
           </Stack>
         </RadioGroup>
       </Center>
-      {value === 'padrao' && (
+      {value === MarkerTypeEnum.DEFAULT && (
         <Center p="2">
           <Textarea
             placeholder="Escreva algo para descrever o marcador"

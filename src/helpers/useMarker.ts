@@ -1,7 +1,7 @@
 import { Icon, LatLng, PointExpression } from "leaflet";
 import { useState } from "react";
 import { Marker, NavbarOptions } from "../types";
-import { getTimestamp } from "./getTimestamp";
+import { getTimestamp } from "./useDates";
 
 export type UseMarkerReturn = {
     markerIcon: any;
@@ -20,7 +20,7 @@ export const useMarker = ({ markerSize, setMarkers, setSelected }: UseMarker) =>
     const [editMarker, setEditMarker] = useState<Marker>()
 
     const markerIcon = new Icon({
-        iconUrl: require('../images/marker.png'),
+        iconUrl: require('../files/images/marker.png'),
         iconSize: markerSize,
       });
 
