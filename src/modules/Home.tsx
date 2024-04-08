@@ -1,31 +1,23 @@
 import { Box } from '@chakra-ui/react';
 import Map from '../components/Map';
-import ProfileCard from '../components/ProfileCard';
 import { useUser } from '../helpers/useUser';
+import { Navigate, useParams } from 'react-router-dom';
+import UserSelect from '../components/UserSelect';
 
 const Home: React.FC = () => {
+  const { id } = useParams();
   const { userProfiles } = useUser();
+
+  const user = userProfiles?.find((e) => e?.userMap === id);
+
+  if (id && !user) {
+    return <Navigate to="/map" />;
+  }
 
   return (
     <Box>
-      <Map />
-      <Box
-        width="100%"
-        height="100%"
-        position="absolute"
-        bg="rgba(0,0,0,0.7)"
-        left="0"
-        top="0"
-        zIndex="999"
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-        gap="80px"
-      >
-        {userProfiles?.map((userProfile) => (
-          <ProfileCard key={userProfile?.userMap} userProfile={userProfile} />
-        ))}
-      </Box>
+      <Map userProfile={user} />
+      {!user && <UserSelect userProfiles={userProfiles} />}
     </Box>
   );
 };
