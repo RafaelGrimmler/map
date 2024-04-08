@@ -19,9 +19,16 @@ const App: React.FC = () => {
   return (
     <div style={{ width: '100vw', height: '100vh' }}>
       <ChakraProvider theme={theme}>
-        <Box width="100vw" height="100vh" overflow="hidden" position="relative">
-          <Main />
-        </Box>
+        <React.StrictMode>
+          <Box
+            width="100vw"
+            height="100vh"
+            overflow="hidden"
+            position="relative"
+          >
+            <Main />
+          </Box>
+        </React.StrictMode>
       </ChakraProvider>
     </div>
   );
