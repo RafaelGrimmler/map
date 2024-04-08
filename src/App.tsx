@@ -1,6 +1,6 @@
 import React from 'react';
-import { extendTheme, ChakraProvider } from '@chakra-ui/react';
-import Map from './Map';
+import { extendTheme, ChakraProvider, Box } from '@chakra-ui/react';
+import Main from './modules/Main';
 
 const colors = {
   brand: {
@@ -19,7 +19,9 @@ const App: React.FC = () => {
   return (
     <div style={{ width: '100vw', height: '100vh' }}>
       <ChakraProvider theme={theme}>
-        <Map />
+        <Box width="100vw" height="100vh" overflow="hidden" position="relative">
+          <Main />
+        </Box>
       </ChakraProvider>
     </div>
   );
