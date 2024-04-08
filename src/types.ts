@@ -14,3 +14,11 @@ export type User = {
 }
 
 export type MapFile = { userMap: string; lines: Line[] }
+
+export type UserProfile = {
+    name: string;
+    image: string;
+    vehicle: string;
+    userMap: string; 
+    lines: Line[]
+}
