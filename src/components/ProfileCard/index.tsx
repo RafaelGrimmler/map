@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { UserProfile } from '../../types';
 import Map from '../Map';
 import {
@@ -16,15 +17,17 @@ type ProfileCardProps = {
 };
 
 const ProfileCard: React.FC<ProfileCardProps> = ({ userProfile }) => {
-  console.log(userProfile);
+  const navigator = useNavigate();
+  const handleClick = () =>
+    navigator({ pathname: `/map/user/${userProfile?.userMap}` });
 
   return (
     <StyledProfileContainer>
       <Map zoom={9} userProfile={userProfile} />
       <StyledProfileOverlay>
-        <StyledOverlayWrapper>
+        <StyledOverlayWrapper onClick={handleClick}>
           <StyledProfileContent>
-            <StyledAvatar />
+            <StyledAvatar src={userProfile?.image} />
             <StyledProfileInformations>
               <StyledName>{userProfile?.name}</StyledName>
               <StyledVehicle>{userProfile?.vehicle}</StyledVehicle>

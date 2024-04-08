@@ -10,7 +10,7 @@ type MapProps = {
   userProfile?: UserProfile;
 };
 
-const Map: React.FC<MapProps> = ({ zoom = 12, userProfile }) => {
+const Map: React.FC<MapProps> = ({ zoom = 11, userProfile }) => {
   const { colors } = useTheme();
 
   return (
