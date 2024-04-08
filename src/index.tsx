@@ -9,7 +9,7 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <HashRouter basename="/map">
+    <HashRouter>
       <App />
     </HashRouter>
   </React.StrictMode>,
