@@ -15,6 +15,14 @@ export const StyledProfileContainer = styled(Box)`
     & .leaflet-bottom {
         display: none;
     }
+
+    &:hover .profile-content {
+        filter: saturate(1.5) opacity(0.9);
+    }
+
+    &:hover .profile-informations {
+        background-color: #b8f2d1;
+    }
 `
 
 export const StyledProfileOverlay = styled(Box)`
@@ -40,6 +48,7 @@ export const StyledProfileContent = styled(Box)`
     height: 100px;
     display: flex;
     align-items: flex-end;
+    transition: 150ms;
 `
 
 export const StyledAvatar = styled(Avatar)`
@@ -56,9 +65,11 @@ export const StyledProfileInformations = styled(Box)`
     margin-left: -72px;
     background-color: #2ecc9d;
     display: flex;
+    transition: 150ms;
     flex-direction: column;
     padding-bottom: 4px;
     gap: 2px;
+    overflow: hidden;
     justify-content: center;
 `
 

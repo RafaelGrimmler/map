@@ -27,9 +27,9 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ userProfile }) => {
       <Map zoom={9} userProfile={userProfile} />
       <StyledProfileOverlay>
         <StyledOverlayWrapper onClick={handleClick}>
-          <StyledProfileContent>
+          <StyledProfileContent className="profile-content">
             <StyledAvatar src={userProfile?.image} />
-            <StyledProfileInformations>
+            <StyledProfileInformations className="profile-informations">
               <StyledName>{userProfile?.name}</StyledName>
               <StyledVehicle>{userProfile?.vehicle}</StyledVehicle>
             </StyledProfileInformations>
