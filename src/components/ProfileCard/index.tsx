@@ -20,7 +20,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ userProfile }) => {
   const navigator = useNavigate();
 
   const handleClick = () =>
-    navigator({ pathname: `/map/user/${userProfile?.userMap}` });
+    navigator({ pathname: `/user/${userProfile?.userMap}` });
 
   return (
     <StyledProfileContainer>
