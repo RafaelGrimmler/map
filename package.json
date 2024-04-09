@@ -1,7 +1,7 @@
 {
   "name": "map",
   "version": "0.1.0",
-  "homepage": ".",
+  "homepage": "https://same-batman-orange-hungary.bohr.io/",
   "private": false,
   "dependencies": {
     "@chakra-ui/react": "^2.8.1",
