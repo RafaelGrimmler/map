@@ -3,6 +3,7 @@ import Map from '../components/Map';
 import { useUser } from '../helpers/useUser';
 import { Navigate, useParams } from 'react-router-dom';
 import UserSelect from '../components/UserSelect';
+import Navbar from '../components/Navbar';
 
 const Home: React.FC = () => {
   const { id } = useParams();
@@ -17,6 +18,7 @@ const Home: React.FC = () => {
   return (
     <Box>
       <Map userProfile={user} />
+      {user && <Navbar userProfile={user} />}
       {!user && <UserSelect userProfiles={userProfiles} />}
     </Box>
   );
