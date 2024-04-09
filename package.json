@@ -1,7 +1,7 @@
 {
   "name": "map",
   "version": "0.1.0",
-  "homepage": "https://same-batman-orange-hungary.bohr.io/",
+  "homepage": "https://grimmler.bohr.io/",
   "private": false,
   "dependencies": {
     "@chakra-ui/react": "^2.8.1",
@@ -34,7 +34,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "map": "git add . && git commit -m \"update user map\" && git push origin master && npm run deploy"
+    "map": "git add . && git commit -m \"update user map\" && git push origin master && npm run deploy",
+    "autocommit": "git add . && git commit -m \"update user map\" && git push origin master"
   },
   "eslintConfig": {
     "extends": [

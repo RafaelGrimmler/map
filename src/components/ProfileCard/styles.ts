@@ -23,6 +23,25 @@ export const StyledProfileContainer = styled(Box)`
     &:hover .profile-informations {
         background-color: #b8f2d1;
     }
+
+    @media (max-width: 1500px) {
+        width: 300px;
+        height: 300px;
+
+        & .leaflet-container {
+            width: 300px;
+            height: 300px;
+        }
+    }
+
+    @media (max-width: 1150px) {
+        width: 300px;
+        height: 100px;
+
+        & .leaflet-container {
+            display: none;
+        }
+    }
 `
 
 export const StyledProfileOverlay = styled(Box)`

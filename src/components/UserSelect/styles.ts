@@ -13,4 +13,13 @@ export const StyledContainer = styled(Box)`
     align-items: center;
     justify-content: center;
     gap: 80px;
+
+    @media (max-width: 1150px) {
+        gap: 30px;
+        padding-left: 80px;
+        padding-top: 40px;
+        align-items: start;
+        justify-content: start;
+        flex-direction: column;
+    }
 `
