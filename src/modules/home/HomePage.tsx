@@ -1,11 +1,11 @@
 import { Box } from '@chakra-ui/react';
-import Map from '../components/Map';
-import { useUser } from '../helpers/useUser';
+import Map from '../../components/Map';
+import { useUser } from '../../helpers/useUser';
 import { Navigate, useParams } from 'react-router-dom';
-import UserSelect from '../components/UserSelect';
-import Navbar from '../components/Navbar';
+import UserSelect from '../../components/UserSelect';
+import Navbar from '../../components/Navbar';
 
-const Home: React.FC = () => {
+const HomePage: React.FC = () => {
   const { id } = useParams();
   const { userProfiles } = useUser();
 
@@ -24,4 +24,4 @@ const Home: React.FC = () => {
   );
 };
 
-export default Home;
+export default HomePage;

@@ -1,6 +1,7 @@
 import React from 'react';
 import { extendTheme, ChakraProvider, Box } from '@chakra-ui/react';
 import Main from './modules/Main';
+import LoginProvider from './context/Login';
 
 const colors = {
   brand: {
@@ -19,9 +20,16 @@ const App: React.FC = () => {
   return (
     <div style={{ width: '100vw', height: '100vh' }}>
       <ChakraProvider theme={theme}>
-        <Box width="100vw" height="100vh" overflow="hidden" position="relative">
-          <Main />
-        </Box>
+        <LoginProvider>
+          <Box
+            width="100vw"
+            height="100vh"
+            overflow="hidden"
+            position="relative"
+          >
+            <Main />
+          </Box>
+        </LoginProvider>
       </ChakraProvider>
     </div>
   );
