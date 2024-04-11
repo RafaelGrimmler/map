@@ -24,7 +24,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ userProfile }) => {
 
   return (
     <StyledProfileContainer>
-      <Map zoom={9} userProfile={userProfile} />
+      <Map defaultZoom={9} userProfile={userProfile} />
       <StyledProfileOverlay>
         <StyledOverlayWrapper onClick={handleClick}>
           <StyledProfileContent className="profile-content">

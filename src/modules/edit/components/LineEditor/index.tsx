@@ -1,27 +1,30 @@
-import {
-  Accordion,
-  AccordionPanel,
-  Box,
-  Button,
-  Icon,
-  Text,
-} from '@chakra-ui/react';
-import { StyledAccordionButton, StyledAccordionItem } from './styles';
 import { GiPathDistance } from 'react-icons/gi';
 import { getTimestamp } from '../../../../helpers/useDates';
 import { Line } from '../../../../types';
+import DeleteAlert from '../../../../components/DeleteAlert';
+import { useState } from 'react';
+import EditAccordion from '../EditAccordion';
+import { Box, Button, Text } from '@chakra-ui/react';
 
 type LineEditorProps = {
   lineId: number;
+  hasPoints?: boolean;
   setLineId: React.Dispatch<React.SetStateAction<number>>;
+  handleUndoLine: () => void;
+  handleDeleteLine: () => void;
   handleInsertLine: (line: Line) => void;
 };
 
 const LineEditor: React.FC<LineEditorProps> = ({
   lineId,
+  hasPoints,
   setLineId,
+  handleUndoLine,
+  handleDeleteLine,
   handleInsertLine,
 }) => {
+  const [open, setOpen] = useState(false);
+
   const handleCreateLine = (): Line => ({ id: getTimestamp(), lines: [] });
 
   const handleClick = () => {
@@ -34,30 +37,36 @@ const LineEditor: React.FC<LineEditorProps> = ({
   };
 
   return (
-    <Accordion index={lineId ? 0 : 1}>
-      <StyledAccordionItem>
-        <StyledAccordionButton
-          bg={lineId ? '#2ecc9d' : undefined}
-          onClick={handleClick}
-        >
-          <Box display="flex" alignItems="center" gap={2}>
-            <Text fontSize="18px" lineHeight="24px">
-              Linha
-            </Text>
-            <Icon fontSize="20px" as={GiPathDistance} />
-          </Box>
-        </StyledAccordionButton>
-        <AccordionPanel pb={2}>
+    <Box>
+      <EditAccordion
+        label="Linha"
+        handleClick={handleClick}
+        icon={GiPathDistance}
+        isSelected={!!lineId}
+        panelComponent={
           <Box display="flex" flexDir="column" gap={2}>
             <Text fontWeight="bold" fontSize="12px">
               O conteúdo é salvo automaticamente!
             </Text>
-            <Button>Remover</Button>
-            <Button colorScheme="red">Deletar</Button>
+            <Button isDisabled={!hasPoints} onClick={handleUndoLine}>
+              Desfazer
+            </Button>
+            <Button
+              isDisabled={!hasPoints}
+              colorScheme="red"
+              onClick={() => setOpen(true)}
+            >
+              Deletar
+            </Button>
           </Box>
-        </AccordionPanel>
-      </StyledAccordionItem>
-    </Accordion>
+        }
+      />
+      <DeleteAlert
+        onClose={() => setOpen(false)}
+        open={open}
+        onConfirm={handleDeleteLine}
+      />
+    </Box>
   );
 };
 

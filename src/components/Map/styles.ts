@@ -4,6 +4,6 @@ import styled from "@emotion/styled";
 export const StyledContainer = styled(Box)`
     & .leaflet-container {
         height: 100vh;
-        cursor: default;
+        cursor: default !important;
     }
 `

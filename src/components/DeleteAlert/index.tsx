@@ -13,13 +13,11 @@ export type DeleteAlertProps = {
   open: boolean;
   onClose: () => void;
   onConfirm: () => void;
-  onCancel?: () => void;
 };
 
 const DeleteAlert: React.FC<DeleteAlertProps> = ({
   open,
   onClose,
-  onCancel,
   onConfirm,
 }) => {
   const cancelRef = useRef();
@@ -42,13 +40,7 @@ const DeleteAlert: React.FC<DeleteAlertProps> = ({
           </AlertDialogBody>
 
           <AlertDialogFooter>
-            <Button
-              ref={cancelRef as any}
-              onClick={() => {
-                onCancel?.();
-                onClose();
-              }}
-            >
+            <Button ref={cancelRef as any} onClick={() => onClose()}>
               Cancelar
             </Button>
             <Button

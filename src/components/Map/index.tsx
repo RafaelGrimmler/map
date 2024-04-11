@@ -1,31 +1,34 @@
-import { MapContainer, Polyline, TileLayer, useMapEvents } from 'react-leaflet';
+import { MapContainer, TileLayer, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { UserProfile } from '../../types';
-// import Polylines from '../Polylines';
-import { useTheme } from '@chakra-ui/react';
 import { StyledContainer } from './styles';
 import { LatLng } from 'leaflet';
+import Polylines from '../Polylines';
+import { useState } from 'react';
 
 type MapProps = {
-  zoom?: number;
+  defaultZoom?: number;
   userProfile?: UserProfile;
   editLineId?: number;
   handleAppendLine?: (coord: LatLng) => void;
+  setLineId?: React.Dispatch<React.SetStateAction<number>>;
 };
 
 const Map: React.FC<MapProps> = ({
-  zoom = 11,
+  defaultZoom = 11,
   userProfile,
   editLineId,
   handleAppendLine,
+  setLineId,
 }) => {
-  const { colors } = useTheme();
+  const [zoom, setZoom] = useState(defaultZoom);
 
   const LocationFinderDummy = () => {
     useMapEvents({
       click: (e) => {
         if (editLineId) handleAppendLine?.(e?.latlng);
       },
+      zoom: (e) => setZoom(e.target._zoom),
     });
     return null;
   };
@@ -43,14 +46,14 @@ const Map: React.FC<MapProps> = ({
           url={`https://{s}.tile.jawg.io/jawg-dark/{z}/{x}/{y}{r}.png?access-token=${process.env.REACT_APP_MAP_KEY}`}
         />
         <LocationFinderDummy />
-        {/* {userMapFile?.lines && <Polylines lines={userMapFile?.lines} />} */}
-        {userProfile?.lines?.map((e) => (
-          <Polyline
-            key={e?.id}
-            positions={e?.lines as any}
-            pathOptions={{ color: colors.teal[400], weight: 1 }}
+        {userProfile?.lines && (
+          <Polylines
+            lines={userProfile?.lines}
+            editLineId={editLineId}
+            setLineId={setLineId}
+            zoom={zoom}
           />
-        ))}
+        )}
       </MapContainer>
     </StyledContainer>
   );

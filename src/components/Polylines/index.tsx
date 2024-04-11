@@ -1,72 +1,82 @@
 import { Circle, Polyline } from 'react-leaflet';
-import { Line, NavbarOptions } from '../../types';
+import { Line } from '../../types';
+import { useState } from 'react';
 import { useTheme } from '@chakra-ui/react';
 import { LatLngExpression } from 'leaflet';
-import { UseLineReturn } from '../../helpers/useLine';
-import { useState, useEffect } from 'react';
 
 type PolylinesProps = {
   lines: Line[];
-  upperLineWeight?: number;
-  lineProps?: Partial<UseLineReturn>;
-  lineWeight?: number;
-  selected?: NavbarOptions;
+  editLineId?: number;
+  zoom: number;
+  setLineId?: React.Dispatch<React.SetStateAction<number>>;
 };
 
 const Polylines: React.FC<PolylinesProps> = ({
   lines,
-  lineProps,
-  upperLineWeight,
-  lineWeight,
-  selected,
+  zoom,
+  editLineId,
+  setLineId,
 }) => {
   const { colors } = useTheme();
-  const [hoverLine, setHoverLine] = useState<Line>();
+  const [hoverId, setHoverId] = useState(0);
 
-  const { editLine } = lineProps || {};
+  const handleSelect = (lineId: number) => {
+    if (!editLineId) setLineId?.(lineId);
+  };
 
-  useEffect(() => setHoverLine(undefined), [selected]);
+  const getLineWeight = (constant = 1) => {
+    if (zoom <= 7) return 0.7 * constant;
+    if (zoom <= 11) return 1 * constant;
+    if (zoom <= 13) return 2 * constant;
+    if (zoom <= 14) return 1.2 * constant;
+    if (zoom <= 16) return 0.8 * constant;
+    return 1 * constant;
+  };
+
+  const upperWeight = getLineWeight(2);
+  const defaultWeight = getLineWeight();
 
   return (
     <>
-      {editLine && (
-        <>
-          <Polyline
-            positions={editLine?.lines}
-            pathOptions={{ color: colors.teal[300], weight: upperLineWeight }}
-          />
-          {editLine?.lines?.map((e: any, i: any) => (
-            <Circle
-              key={e?.[0] + i}
-              center={e as LatLngExpression}
-              radius={1}
-              color={colors.teal[600]}
-              weight={3}
-            />
-          ))}
-        </>
-      )}
-      {lines
-        ?.filter((e) => e?.id !== editLine?.id)
-        ?.map((e) => {
-          const hovering = hoverLine?.id === e?.id;
+      {lines?.map((line) => {
+        const isHovering = hoverId === line?.id && !editLineId;
 
+        if (line?.id === editLineId) {
           return (
-            <Polyline
-              key={e?.id}
-              positions={e?.lines as any}
-              pathOptions={{
-                color: hovering ? colors.teal[300] : colors.teal[400],
-                weight: hovering ? upperLineWeight : lineWeight,
-              }}
-              eventHandlers={{
-                mouseover: () => setHoverLine(e),
-                mouseout: () => setHoverLine(undefined),
-                click: () => lineProps?.handleEditExists?.(e),
-              }}
-            />
+            <>
+              <Polyline
+                positions={line?.lines as any}
+                pathOptions={{ color: '#2ECC71', weight: upperWeight }}
+              />
+              {line?.lines?.map((e: any, i: any) => (
+                <Circle
+                  key={e?.[0] + i}
+                  center={e as LatLngExpression}
+                  radius={1}
+                  color="#2ecc9d"
+                  weight={3}
+                />
+              ))}
+            </>
           );
-        })}
+        }
+
+        return (
+          <Polyline
+            key={line?.id}
+            positions={line?.lines as any}
+            pathOptions={{
+              color: isHovering ? colors.teal[300] : colors.teal[400],
+              weight: isHovering ? upperWeight : defaultWeight,
+            }}
+            eventHandlers={{
+              mouseover: () => setHoverId(line?.id),
+              mouseout: () => setHoverId(0),
+              click: () => handleSelect(line?.id),
+            }}
+          />
+        );
+      })}
     </>
   );
 };
