@@ -2,7 +2,7 @@ import { Box } from '@chakra-ui/react';
 import Map from '../../components/Map';
 import { useUser } from '../../helpers/useUser';
 import { Navigate, useParams } from 'react-router-dom';
-import UserSelect from '../../components/UserSelect';
+import UserSelect from './components/UserSelect';
 import Navbar from '../../components/Navbar';
 
 const HomePage: React.FC = () => {

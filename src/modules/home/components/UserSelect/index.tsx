@@ -1,4 +1,4 @@
-import { UserProfile } from '../../types';
+import { UserProfile } from '../../../../types';
 import ProfileCard from '../ProfileCard';
 import { StyledContainer } from './styles';
 

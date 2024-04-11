@@ -11,7 +11,7 @@ import {
   ModalOverlay,
 } from '@chakra-ui/react';
 import { useState } from 'react';
-import Input from '../../design/Input';
+import Input from '../../../../design/Input';
 import { useNavigate } from 'react-router-dom';
 
 type LoginModalProps = {

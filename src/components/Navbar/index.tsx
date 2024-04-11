@@ -11,12 +11,12 @@ import {
 } from './styles';
 import { useNavigate } from 'react-router-dom';
 import { useContext, useState } from 'react';
-import LoginModal from '../LoginModal';
+import LoginModal from '../../modules/home/components/LoginModal';
 import { LoginContext, LoginContextReturn } from '../../context/Login';
 
-type NavbarProps = { userProfile: UserProfile };
+type NavbarProps = { userProfile: UserProfile; showButtons?: boolean };
 
-const Navbar: React.FC<NavbarProps> = ({ userProfile }) => {
+const Navbar: React.FC<NavbarProps> = ({ userProfile, showButtons = true }) => {
   const navigator = useNavigate();
   const loginContext = useContext(LoginContext);
 
@@ -35,19 +35,21 @@ const Navbar: React.FC<NavbarProps> = ({ userProfile }) => {
           </StyledNameContainer>
           <StyledAvatar src={userProfile?.image} />
         </StyledHeader>
-        <StyledActionContainer>
-          <StyledButton
-            onClick={() => {
-              if (isLogged)
-                navigator({ pathname: `/user/${userProfile?.userMap}/edit` });
-              else setOpen(true);
-            }}
-            disabled
-          >
-            Entrar
-          </StyledButton>
-          <StyledButton onClick={handleBack}>Voltar</StyledButton>
-        </StyledActionContainer>
+        {showButtons && (
+          <StyledActionContainer>
+            <StyledButton
+              onClick={() => {
+                if (isLogged)
+                  navigator({ pathname: `/user/${userProfile?.userMap}/edit` });
+                else setOpen(true);
+              }}
+              disabled
+            >
+              Entrar
+            </StyledButton>
+            <StyledButton onClick={handleBack}>Voltar</StyledButton>
+          </StyledActionContainer>
+        )}
       </StyledWrapper>
       <LoginModal
         id={userProfile?.userMap}

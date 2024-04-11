@@ -1,6 +1,6 @@
 import { MarkerTypeEnum, NavbarEnum, UserRoleEnum } from "./Enums";
 
-export type Line = { id?: number; lines: number[][] };
+export type Line = { id: number; lines: number[][] };
 
 export type Marker = {id: any; position: number[]; type?: MarkerTypeEnum}
 

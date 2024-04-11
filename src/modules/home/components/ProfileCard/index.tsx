@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
-import { UserProfile } from '../../types';
-import Map from '../Map';
+import { UserProfile } from '../../../../types';
+import Map from '../../../../components/Map';
 import {
   StyledAvatar,
   StyledName,

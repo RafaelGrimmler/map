@@ -32,10 +32,10 @@ const Polylines: React.FC<PolylinesProps> = ({
       {editLine && (
         <>
           <Polyline
-            positions={editLine?.lines as any}
+            positions={editLine?.lines}
             pathOptions={{ color: colors.teal[300], weight: upperLineWeight }}
           />
-          {editLine?.lines?.map((e, i) => (
+          {editLine?.lines?.map((e: any, i: any) => (
             <Circle
               key={e?.[0] + i}
               center={e as LatLngExpression}
