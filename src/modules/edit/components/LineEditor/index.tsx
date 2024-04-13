@@ -46,7 +46,9 @@ const LineEditor: React.FC<LineEditorProps> = ({
         panelComponent={
           <Box display="flex" flexDir="column" gap={2}>
             <Text fontWeight="bold" fontSize="12px">
-              O conteúdo é salvo automaticamente!
+              {hasPoints
+                ? 'O conteúdo é salvo automaticamente!'
+                : 'Clique no mapa para registrar a coordenada!'}
             </Text>
             <Button isDisabled={!hasPoints} onClick={handleUndoLine}>
               Desfazer
