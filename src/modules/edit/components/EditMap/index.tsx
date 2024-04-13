@@ -1,7 +1,7 @@
 import EditSidebar from '../EditSidebar';
 import { StyledContainer } from './styles';
 import Map from '../../../../components/Map';
-import { Marker, UserProfile } from '../../../../types';
+import { Image, Marker, UserProfile } from '../../../../types';
 import Navbar from '../../../../components/Navbar';
 import { useState } from 'react';
 import useEditLine from '../../helpers/useEditLine';
@@ -12,6 +12,8 @@ type EditMapProps = { userProfile: UserProfile };
 const EditMap: React.FC<EditMapProps> = ({ userProfile }) => {
   const [showMarker, setShowMarker] = useState(true);
   const [user, setUser] = useState<UserProfile>(userProfile);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [images, setImages] = useState<Image[]>([]);
   const [markers, setMarkers] = useState<Marker[]>([]);
   const [lineId, setLineId] = useState(0);
   const [markerId, setMarkerId] = useState(0);
@@ -37,12 +39,14 @@ const EditMap: React.FC<EditMapProps> = ({ userProfile }) => {
         handleToggleMarker={handleToggleMarker}
         handleAppendLine={lineFunctions?.handleAppendLine}
         handleAddPoint={markerFunctions?.handleAddPoint}
+        handleMarkerPosition={markerFunctions?.handleMarkerPosition}
       />
       <EditSidebar
         userProfile={user}
         markerId={markerId}
         lineId={lineId}
         markers={markers}
+        images={images}
         setMarkerId={setMarkerId}
         setLineId={setLineId}
         handleDeleteLine={lineFunctions?.handleDeleteLine}

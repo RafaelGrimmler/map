@@ -1,36 +1,50 @@
 import { Box } from "@chakra-ui/react";
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
+import { getMarkerWeight, getPopupAdjust } from "../../helpers/getMarkerWeight";
 
 
 const getLineWeight = (zoom: number, constant = 1) => {
     if (zoom <= 7) return 0.7 * constant;
     if (zoom <= 11) return 1 * constant;
-    if (zoom <= 13) return 2 * constant;
-    if (zoom <= 14) return 1.2 * constant;
-    if (zoom <= 16) return 0.8 * constant;
+    if (zoom <= 13) return 1.2 * constant;
+    if (zoom <= 14) return 1 * constant;
+    if (zoom <= 16) return 1.4 * constant;
     return 1 * constant;
-  };
-
-//   const upperWeight = getLineWeight(2);
-//   const defaultWeight = getLineWeight();
+};
 
 export const StyledContainer = styled(Box)<{
     zoom: number
-    editingLine?: boolean;
+    editingline?: boolean;
 }>`
     & .leaflet-container {
         height: 100vh;
         cursor: default !important;
     }
 
-    & .marker-hovered {
-        transition: filter 150ms;
-        filter: saturate(1.9) drop-shadow(0 0 2px #c8faf7);
+    & .marker {
+        ${({ zoom }) => css`
+            margin-top: ${getMarkerWeight(zoom)?.mt} !important;
+            margin-left: ${getMarkerWeight(zoom)?.ml} !important;
+            width: ${getMarkerWeight(zoom)?.width} !important;
+            height: ${getMarkerWeight(zoom)?.height} !important;
+        `}
+
+        &.hovered {
+            transition: filter 150ms;
+            filter: saturate(1.9) drop-shadow(0 0 2px #c8faf7);
+        }
+    }
+
+    & .leaflet-popup {
+        ${({ zoom }) => css`
+            bottom: ${getPopupAdjust(zoom)?.bottom} !important;
+            left: ${getPopupAdjust(zoom)?.left} !important;
+        `}
     }
 
     & .polyline {
-        ${({ zoom, editingLine }) => css`
+        ${({ zoom, editingline }) => css`
             stroke-width: ${getLineWeight(zoom)};
             stroke: #38B2AC;
 
@@ -39,7 +53,7 @@ export const StyledContainer = styled(Box)<{
                 stroke: #2ECC71;
             }
 
-            ${!editingLine && css`
+            ${!editingline && css`
                 &:hover {
                     stroke-width: ${getLineWeight(zoom, 2)};
                     stroke: #4FD1C5;

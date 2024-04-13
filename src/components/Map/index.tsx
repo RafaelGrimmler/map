@@ -23,6 +23,7 @@ type MapProps = {
   handleToggleMarker?: (show?: boolean) => void;
   handleAppendLine?: (coord: LatLng) => void;
   handleAddPoint?: (coord: LatLng) => void;
+  handleMarkerPosition?: (lat: number, lng: number) => void;
   setLineId?: React.Dispatch<React.SetStateAction<number>>;
   setMarkerId?: React.Dispatch<React.SetStateAction<number>>;
 };
@@ -36,6 +37,7 @@ const Map: React.FC<MapProps> = ({
   markers,
   handleToggleMarker,
   handleAppendLine,
+  handleMarkerPosition,
   setLineId,
   handleAddPoint,
   setMarkerId,
@@ -53,8 +55,10 @@ const Map: React.FC<MapProps> = ({
     return null;
   };
 
+  const selectedMarker = markers?.find((e) => e?.id === editMarkerId) as any;
+
   return (
-    <StyledContainer zoom={zoom} editingLine={!!editLineId}>
+    <StyledContainer zoom={zoom} editingline={!!editLineId}>
       <MapContainer
         center={[-31.721742613401577, -52.35671997070313]}
         zoom={zoom}
@@ -71,17 +75,17 @@ const Map: React.FC<MapProps> = ({
           <Polylines
             lines={userProfile?.lines}
             editLineId={editLineId}
+            marker={selectedMarker}
             setLineId={setLineId}
             setMarkerId={setMarkerId}
-            zoom={zoom}
           />
         )}
         {showMarker && !editLineId && (
           <Markers
             editMarkerId={editMarkerId}
-            zoom={zoom}
             markers={markers}
             setMarkerId={setMarkerId}
+            handleMarkerPosition={handleMarkerPosition}
           />
         )}
       </MapContainer>

@@ -1,25 +1,26 @@
 import { Circle, Polyline } from 'react-leaflet';
-import { Line } from '../../types';
+import { Line, Marker } from '../../types';
 import { LatLngExpression } from 'leaflet';
 
 type PolylinesProps = {
   lines: Line[];
+  marker: Marker;
   editLineId?: number;
-  zoom: number;
   setLineId?: React.Dispatch<React.SetStateAction<number>>;
   setMarkerId?: React.Dispatch<React.SetStateAction<number>>;
 };
 
 const Polylines: React.FC<PolylinesProps> = ({
   lines,
-  zoom,
+  marker,
   editLineId,
   setLineId,
   setMarkerId,
 }) => {
   const handleSelect = (lineId: number) => {
-    setMarkerId?.(0);
-    if (!editLineId) setLineId?.(lineId);
+    const hasPoints = marker?.points?.length > 0;
+    if (hasPoints) setMarkerId?.(0);
+    if (!editLineId && hasPoints) setLineId?.(lineId);
   };
 
   return (

@@ -24,7 +24,18 @@ const useEditMarker = ({ markers, markerId, setMarkers }: UseEditMarkerArgs) => 
         }
     }
 
-    return {  handleInsertMarker, handleAddPoint }
+    const handleMarkerPosition = (lat: number, lng: number) => {
+        setMarkers(markers?.map(e => ({
+            ...e, 
+            points: e?.id === markerId ? [lat,lng] : e?.points
+        })))
+    }
+
+    return {  
+        handleInsertMarker, 
+        handleAddPoint, 
+        handleMarkerPosition
+    }
 }
 
 export default useEditMarker;

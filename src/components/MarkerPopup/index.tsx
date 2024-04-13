@@ -21,10 +21,7 @@ const MarkerPopup: React.FC<MarkerPopupProps> = ({ handleEdit }) => {
           <StyledIconButton
             aria-label="aria-edit"
             isDisabled={!handleEdit}
-            onClick={() => {
-              handleEdit?.();
-              handleClose();
-            }}
+            onClick={() => handleEdit?.()}
             icon={<MdOutlineEdit fontSize="24px" />}
           />
           <StyledIconButton

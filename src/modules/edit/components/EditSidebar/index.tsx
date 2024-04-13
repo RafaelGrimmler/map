@@ -1,14 +1,18 @@
 import { StyledContainer } from './styles';
 import LineEditor from '../LineEditor';
-import { Line, Marker, UserProfile } from '../../../../types';
+import { Image, Line, Marker, UserProfile } from '../../../../types';
 import EditAccordion from '../EditAccordion';
 import { useNavigate } from 'react-router-dom';
 import MarkerEditor from '../MarkerEditor';
+import { useState } from 'react';
+import Gallery from '../../../../components/Gallery';
+import { TbBrandGooglePhotos } from 'react-icons/tb';
 
 type EditSidebarProps = {
   lineId: number;
   markerId: number;
   markers: Marker[];
+  images: Image[];
   userProfile: UserProfile;
   setLineId: React.Dispatch<React.SetStateAction<number>>;
   setMarkerId: React.Dispatch<React.SetStateAction<number>>;
@@ -22,6 +26,7 @@ const EditSidebar: React.FC<EditSidebarProps> = ({
   lineId,
   markers,
   markerId,
+  images,
   userProfile,
   setLineId,
   setMarkerId,
@@ -32,8 +37,16 @@ const EditSidebar: React.FC<EditSidebarProps> = ({
 }) => {
   const navigator = useNavigate();
 
+  const [openGallery, setOpenGallery] = useState(false);
+
   const handleBack = () =>
     navigator({ pathname: `/user/${userProfile?.userMap}` });
+
+  const handleImages = () => {
+    setMarkerId(0);
+    setLineId(0);
+    setOpenGallery(true);
+  };
 
   const selectedLine = userProfile?.lines?.find((e) => e?.id === lineId) as any;
   const selectedMarker = markers?.find((e) => e?.id === markerId) as any;
@@ -44,6 +57,7 @@ const EditSidebar: React.FC<EditSidebarProps> = ({
         hasPoints={selectedLine?.lines?.length > 0}
         lineId={lineId}
         setLineId={setLineId}
+        setMarkerId={setMarkerId}
         handleDeleteLine={handleDeleteLine}
         handleInsertLine={handleInsertLine}
         handleUndoLine={handleUndoLine}
@@ -51,10 +65,22 @@ const EditSidebar: React.FC<EditSidebarProps> = ({
       <MarkerEditor
         markerId={markerId}
         hasPoints={selectedMarker?.points?.length > 0}
+        setLineId={setLineId}
         setMarkerId={setMarkerId}
         handleInsertMarker={handleInsertMarker}
       />
+      <EditAccordion
+        label="Galeria"
+        isSelected={openGallery}
+        icon={TbBrandGooglePhotos}
+        handleClick={handleImages}
+      />
       <EditAccordion label="Sair" handleClick={handleBack} />
+      <Gallery
+        images={images}
+        isOpen={openGallery}
+        onClose={() => setOpenGallery(false)}
+      />
     </StyledContainer>
   );
 };

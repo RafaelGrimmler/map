@@ -25,13 +25,15 @@ const EditAccordion: React.FC<EditAccordionProps> = ({
           onClick={handleClick}
         >
           <Box display="flex" alignItems="center" gap={2}>
-            <Text fontSize="18px" lineHeight="24px">
+            <Text fontSize="15px" lineHeight="24px" fontWeight="bold">
               {label}
             </Text>
             {icon && <Icon fontSize="20px" as={icon} />}
           </Box>
         </StyledAccordionButton>
-        <AccordionPanel pb={2}>{panelComponent}</AccordionPanel>
+        {panelComponent && (
+          <AccordionPanel pb={2}>{panelComponent}</AccordionPanel>
+        )}
       </StyledAccordionItem>
     </Accordion>
   );

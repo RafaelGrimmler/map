@@ -1,8 +1,8 @@
 import { NavbarEnum, UserRoleEnum } from "./Enums";
 
+export type Image = { id: number; src: string }
 export type Line = { id: number; lines: number[][] };
-
-export type Marker = {id: any; points: number[] }
+export type Marker = {id: number; points: number[] }
 
 export type NavbarOptions = NavbarEnum | undefined
 

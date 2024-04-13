@@ -10,6 +10,7 @@ type LineEditorProps = {
   lineId: number;
   hasPoints?: boolean;
   setLineId: React.Dispatch<React.SetStateAction<number>>;
+  setMarkerId: React.Dispatch<React.SetStateAction<number>>;
   handleUndoLine: () => void;
   handleDeleteLine: () => void;
   handleInsertLine: (line: Line) => void;
@@ -19,6 +20,7 @@ const LineEditor: React.FC<LineEditorProps> = ({
   lineId,
   hasPoints,
   setLineId,
+  setMarkerId,
   handleUndoLine,
   handleDeleteLine,
   handleInsertLine,
@@ -28,6 +30,7 @@ const LineEditor: React.FC<LineEditorProps> = ({
   const handleCreateLine = (): Line => ({ id: getTimestamp(), lines: [] });
 
   const handleClick = () => {
+    setMarkerId(0);
     if (lineId) setLineId(0);
     else {
       const line = handleCreateLine();
