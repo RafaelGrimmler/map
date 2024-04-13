@@ -1,14 +1,22 @@
 import { Icon, PointExpression } from 'leaflet';
 import { useState } from 'react';
-import { Marker as MarkerComponent, Popup } from 'react-leaflet';
+import { Marker as MarkerComponent } from 'react-leaflet';
 import { Marker } from '../../types';
+import MarkerPopup from '../MarkerPopup';
 
 type MarkersProps = {
   zoom: number;
+  editMarkerId?: number;
   markers?: Marker[];
+  setMarkerId?: React.Dispatch<React.SetStateAction<number>>;
 };
 
-const Markers: React.FC<MarkersProps> = ({ zoom, markers }) => {
+const Markers: React.FC<MarkersProps> = ({
+  zoom,
+  markers,
+  editMarkerId,
+  setMarkerId,
+}) => {
   const [hoverId, setHoverId] = useState(0);
 
   const getMarkerSize = (num = 1): PointExpression => {
@@ -51,21 +59,35 @@ const Markers: React.FC<MarkersProps> = ({ zoom, markers }) => {
     <>
       {markers
         ?.filter?.((marker) => marker?.points?.length > 0)
-        ?.map((marker) => (
-          <MarkerComponent
-            key={marker?.id}
-            position={[getYPos(marker?.points?.[0]), marker?.points?.[1]]}
-            icon={hoverId ? hoveredMarkerIcon : markerIcon}
-            eventHandlers={{
-              mouseover: () => setHoverId(1),
-              mouseout: () => setHoverId(0),
-            }}
-          >
-            <Popup>
-              <span>dasd</span>
-            </Popup>
-          </MarkerComponent>
-        ))}
+        ?.map((marker) => {
+          const isHovering = marker?.id === hoverId;
+
+          if (marker?.id === editMarkerId)
+            return (
+              <MarkerComponent
+                key={marker?.id}
+                position={[getYPos(marker?.points?.[0]), marker?.points?.[1]]}
+                icon={hoveredMarkerIcon}
+              >
+                <MarkerPopup />
+              </MarkerComponent>
+            );
+
+          return (
+            <MarkerComponent
+              key={marker?.id}
+              position={[getYPos(marker?.points?.[0]), marker?.points?.[1]]}
+              icon={isHovering ? hoveredMarkerIcon : markerIcon}
+              eventHandlers={{
+                mouseover: () => setHoverId(marker?.id),
+                mouseout: () => setHoverId(0),
+                click: () => setMarkerId?.(0),
+              }}
+            >
+              <MarkerPopup handleEdit={() => setMarkerId?.(marker?.id)} />
+            </MarkerComponent>
+          );
+        })}
     </>
   );
 };

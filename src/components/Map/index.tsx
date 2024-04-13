@@ -54,7 +54,7 @@ const Map: React.FC<MapProps> = ({
   };
 
   return (
-    <StyledContainer>
+    <StyledContainer zoom={zoom} editingLine={!!editLineId}>
       <MapContainer
         center={[-31.721742613401577, -52.35671997070313]}
         zoom={zoom}
@@ -72,10 +72,18 @@ const Map: React.FC<MapProps> = ({
             lines={userProfile?.lines}
             editLineId={editLineId}
             setLineId={setLineId}
+            setMarkerId={setMarkerId}
             zoom={zoom}
           />
         )}
-        {showMarker && <Markers zoom={zoom} markers={markers} />}
+        {showMarker && !editLineId && (
+          <Markers
+            editMarkerId={editMarkerId}
+            zoom={zoom}
+            markers={markers}
+            setMarkerId={setMarkerId}
+          />
+        )}
       </MapContainer>
       {handleToggleMarker && (
         <StyledMarkerContainer onClick={() => handleToggleMarker(!showMarker)}>

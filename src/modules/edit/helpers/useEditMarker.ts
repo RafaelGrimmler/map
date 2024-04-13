@@ -17,7 +17,10 @@ const useEditMarker = ({ markers, markerId, setMarkers }: UseEditMarkerArgs) => 
         const marker = markers?.find(e => e?.id === markerId);
         
         if (marker?.points?.length === 0) {
-            setMarkers(markers?.map(e => ({...e, points: [lat, lng]})))
+            setMarkers(markers?.map(e => {
+                if(e?.id === markerId) return { ...marker, points: [lat, lng] }
+                return e
+            }))
         }
     }
 

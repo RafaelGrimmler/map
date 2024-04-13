@@ -20,8 +20,8 @@ const HomePage: React.FC = () => {
     <Box>
       <Map
         userProfile={user}
-        showMarker={showMarker}
-        handleToggleMarker={() => setShowMarker(!showMarker)}
+        showMarker={id ? showMarker : false}
+        handleToggleMarker={id ? () => setShowMarker(!showMarker) : undefined}
       />
       {user && <Navbar userProfile={user} />}
       {!user && <UserSelect userProfiles={userProfiles} />}
