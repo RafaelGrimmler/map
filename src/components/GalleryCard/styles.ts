@@ -4,7 +4,14 @@ import styled from "@emotion/styled";
 export const StyledContainer = styled(Box)`
     height: 220px;
     border-radius: 2px;
+    overflow: hidden;
     background-color: rgba(0,0,0,0.16);
+
+    & img {
+        height: 220px;
+        width: 100%;
+        background-size: contain !important;
+    }
 `
 
 export const StyledCreateContainer = styled(IconButton)`

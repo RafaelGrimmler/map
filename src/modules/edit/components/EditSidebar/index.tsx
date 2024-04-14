@@ -20,6 +20,7 @@ type EditSidebarProps = {
   handleDeleteLine: () => void;
   handleInsertLine: (line: Line) => void;
   handleInsertMarker: (marker: Marker) => void;
+  handleInsertImage: (src: string) => void;
 };
 
 const EditSidebar: React.FC<EditSidebarProps> = ({
@@ -34,6 +35,7 @@ const EditSidebar: React.FC<EditSidebarProps> = ({
   handleDeleteLine,
   handleUndoLine,
   handleInsertMarker,
+  handleInsertImage,
 }) => {
   const navigator = useNavigate();
 
@@ -80,6 +82,7 @@ const EditSidebar: React.FC<EditSidebarProps> = ({
         images={images}
         isOpen={openGallery}
         onClose={() => setOpenGallery(false)}
+        handleInsertImage={handleInsertImage}
       />
     </StyledContainer>
   );

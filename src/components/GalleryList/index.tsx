@@ -9,8 +9,7 @@ type GalleryListProps = {
 const GalleryList: React.FC<GalleryListProps> = ({ images }) => {
   return (
     <StyledContainer>
-      <GalleryCard isCreate />
-      {images?.map((image) => <GalleryCard key={image?.id} />)}
+      {images?.map((image) => <GalleryCard key={image?.id} image={image} />)}
     </StyledContainer>
   );
 };
