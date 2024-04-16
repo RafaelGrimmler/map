@@ -64,6 +64,7 @@ const GalleryPopover: React.FC<GalleryPopoverProps> = ({
             </Text>
             <Input
               value={text}
+              autoFocus
               onChange={(e) => setText(e?.target?.value)}
               placeholder="https://i.imgur.com/"
             />

@@ -4,14 +4,10 @@ import styled from "@emotion/styled";
 export const StyledContainer = styled(Box)`
     width: 100%;
     height: 100%;
-    border-radius: 4px;
-    background-color: rgba(0,0,0,0.08);
-    padding: 16px;
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    gap: 72px;
+    display: flex;
     overflow: auto;
-    align-content: flex-start;
-    gap: 16px;
+    flex-direction: column;
 
     ::-webkit-scrollbar {
         width: 8px;
@@ -30,4 +26,20 @@ export const StyledContainer = styled(Box)`
     ::-webkit-scrollbar-thumb:hover {
         background: #555;
     }
+`
+
+export const StyledGroupContainer = styled(Box)`
+    width: 100%;
+    height: min-content;
+    gap: 12px;
+    padding-right: 16px;
+    display: flex;
+    flex-direction: column;
+`
+
+export const StyledImagesContainer = styled(Box)`
+    column-count: 5;
+    width: 100%;
+    gap: 16px;
+    height: min-content;
 `

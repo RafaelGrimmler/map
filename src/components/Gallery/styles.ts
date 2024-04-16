@@ -3,8 +3,11 @@ import styled from "@emotion/styled";
 
 export const StyledModalContent = styled(ModalContent)`
     max-width: none;
-    height: 720px;
-    width: 1200px;
+    margin: auto;
+    height: 94vh;
+    width: 82vw;
+    max-width: 1574px;
+    min-height: 862px;
 ` 
 
 export const StyledModalHeader = styled(ModalHeader)`

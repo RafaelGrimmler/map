@@ -13,7 +13,63 @@ type EditMapProps = { userProfile: UserProfile };
 const EditMap: React.FC<EditMapProps> = ({ userProfile }) => {
   const [showMarker, setShowMarker] = useState(true);
   const [user, setUser] = useState<UserProfile>(userProfile);
-  const [images, setImages] = useState<Image[]>([]);
+  const [images, setImages] = useState<Image[]>([
+    {
+      createdAt: new Date('01-02-2024'),
+      id: 1,
+      src: 'https://i.imgur.com/c9aDSmJ.jpg',
+    },
+    {
+      createdAt: new Date('01-03-2024'),
+      id: 11,
+      src: 'https://i.imgur.com/YZMXXJF.jpg',
+    },
+    {
+      createdAt: new Date('04-04-2024'),
+      id: 2,
+      src: 'https://i.imgur.com/2dmkHUG.jpg',
+    },
+    {
+      createdAt: new Date('04-04-2024'),
+      id: 3,
+      src: 'https://i.imgur.com/tqznuRN.jpg',
+    },
+    {
+      createdAt: new Date('01-05-2024'),
+      id: 4,
+      src: 'https://i.imgur.com/W4uErLC.jpg',
+    },
+    {
+      createdAt: new Date('04-06-2024'),
+      id: 5,
+      src: 'https://i.imgur.com/ILFsq9C.jpg',
+    },
+    {
+      createdAt: new Date('04-02-2024'),
+      id: 6,
+      src: 'https://i.imgur.com/F6i6wVj.jpg',
+    },
+    {
+      createdAt: new Date('04-04-2024'),
+      id: 7,
+      src: 'https://i.imgur.com/SNA3FlM.jpg',
+    },
+    {
+      createdAt: new Date('04-04-2024'),
+      id: 8,
+      src: 'https://i.imgur.com/RbrKUaJ.jpg',
+    },
+    {
+      createdAt: new Date('04-04-2024'),
+      id: 9,
+      src: 'https://i.imgur.com/jU7ZMz5.jpg',
+    },
+    {
+      createdAt: new Date('04-04-2024'),
+      id: 10,
+      src: 'https://i.imgur.com/pteC283.jpg',
+    },
+  ]);
   const [markers, setMarkers] = useState<Marker[]>([]);
   const [lineId, setLineId] = useState(0);
   const [markerId, setMarkerId] = useState(0);

@@ -79,7 +79,7 @@ export const StyledContainer = styled(Box)<{
 
 export const StyledMarkerContainer = styled(Box)`
     position: absolute;
-    z-index: 99999;
+    z-index: 999;
     bottom: 60px;
     left: 80px;
     padding: 4px;
