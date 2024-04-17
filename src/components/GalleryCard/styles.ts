@@ -3,11 +3,6 @@ import styled from "@emotion/styled";
 
 export const StyledContainer = styled(Box)`
     max-height: 300px;
-
-    /* height: 260px;
-    min-width: 140px;
-    max-width: 350px; */
-
     border-radius: 4px;
     overflow: hidden;
     position: relative;
@@ -16,13 +11,10 @@ export const StyledContainer = styled(Box)`
     align-items: center;
 
     img {
-        /* max-width: 100%; */
-        /* max-height: 100%; */
-        /* object-fit: cover; */
-        /* object-position: bottom; */
         width: 100%;
         max-height: 100%;
         overflow: hidden;
+        user-select: none;
     }
 
     &:hover .gallery-card-action-container {
@@ -38,7 +30,7 @@ export const StyledCreateContainer = styled(IconButton)`
     min-width: 100%;
 `
 
-export const StyledActionContainer = styled(Box)`
+export const StyledActionContainer = styled(Box)<{ $isView?: boolean }>`
     position: absolute;
     top: 0;
     left: 0;
@@ -46,6 +38,10 @@ export const StyledActionContainer = styled(Box)`
     height: 100%;
     border-radius: 2px;
     background-color: rgba(0,0,0,0.24);
+    padding: 8px;
     cursor: pointer;
-    display: none;
+
+    display: ${({ $isView }) => $isView ? 'block' : 'none'};
 `
+
+export const StyledViewIconWrapper

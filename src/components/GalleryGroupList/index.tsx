@@ -2,30 +2,32 @@ import { Image } from '../../types';
 import GalleryCard from '../GalleryCard';
 import {
   StyledContainer,
+  StyledDateTitle,
   StyledGroupContainer,
   StyledImagesContainer,
 } from './styles';
-import { Text } from '@chakra-ui/react';
 import { getGroupedImages } from '../../helpers/getGroupedImages';
 import { formatDate } from '../../helpers/useDates';
 import { useEffect } from 'react';
 
 type GalleryGroupListProps = {
   images: Image[];
-  scrollId: number;
+  viewMode: boolean;
+  previousId: number;
   handleToggleExpand: (img?: Image) => void;
 };
 
 const GalleryGroupList: React.FC<GalleryGroupListProps> = ({
   images,
-  scrollId,
+  viewMode,
+  previousId,
   handleToggleExpand,
 }) => {
   const groups = getGroupedImages(images);
 
   useEffect(() => {
-    if (scrollId)
-      document?.querySelector(`.gallery-card-${scrollId}`)?.scrollIntoView();
+    if (previousId)
+      document?.querySelector(`.gallery-card-${previousId}`)?.scrollIntoView();
   }, []);
 
   return (
@@ -35,12 +37,13 @@ const GalleryGroupList: React.FC<GalleryGroupListProps> = ({
 
         return (
           <StyledGroupContainer key={group?.date?.getTime()}>
-            <Text fontSize="22px">{formatedDate}</Text>
+            <StyledDateTitle>{formatedDate}</StyledDateTitle>
             <StyledImagesContainer>
               {group?.images?.map((image) => (
                 <GalleryCard
                   key={image?.id}
                   mb={4}
+                  viewMode={viewMode}
                   handleClick={() => handleToggleExpand(image)}
                   image={image}
                 />

@@ -65,8 +65,8 @@ const EditSidebar: React.FC<EditSidebarProps> = ({
         handleUndoLine={handleUndoLine}
       />
       <MarkerEditor
-        markerId={markerId}
-        hasPoints={selectedMarker?.points?.length > 0}
+        marker={selectedMarker}
+        images={images}
         setLineId={setLineId}
         setMarkerId={setMarkerId}
         handleInsertMarker={handleInsertMarker}
@@ -78,12 +78,15 @@ const EditSidebar: React.FC<EditSidebarProps> = ({
         handleClick={handleImages}
       />
       <EditAccordion label="Sair" handleClick={handleBack} />
-      <Gallery
-        images={images}
-        isOpen={openGallery}
-        onClose={() => setOpenGallery(false)}
-        handleInsertImage={handleInsertImage}
-      />
+      {openGallery && (
+        <Gallery
+          images={images}
+          mode="EDIT"
+          isOpen={openGallery}
+          onClose={() => setOpenGallery(false)}
+          handleInsertImage={handleInsertImage}
+        />
+      )}
     </StyledContainer>
   );
 };

@@ -8,14 +8,23 @@ export const getGroupedImages = (images: Image[]): Group[] => {
     images?.forEach((image) => {
       const date = new Date(image?.createdAt);
       const hasGroup = groups?.some?.(
-        (group) => group?.date?.getTime() === date?.getTime(),
+        (group) => {
+          const sameMonth = group?.date?.getMonth() === date?.getMonth();
+          const sameYear = group?.date?.getFullYear() === date?.getFullYear();
+
+          return sameMonth && sameYear
+        }
       );
       if (!hasGroup) groups?.push({ date, images: [] });
     });
 
     return groups?.map(group => {
-        const imgs = images?.filter((e) => 
-            group?.date?.getTime() === e?.createdAt?.getTime())
+        const imgs = images?.filter((e) => {
+          const sameMonth = group?.date?.getMonth() === e?.createdAt?.getMonth();
+          const sameYear = group?.date?.getFullYear() === e?.createdAt?.getFullYear();
+          
+          return sameMonth && sameYear
+        })
 
         return { date: group?.date, images: imgs }
     })?.sort((a, b) => b?.date?.getTime() - a?.date?.getTime())

@@ -1,42 +1,52 @@
-import { Box, Text } from '@chakra-ui/react';
+import { Box, Button, Text } from '@chakra-ui/react';
 import EditAccordion from '../EditAccordion';
 import { getTimestamp } from '../../../../helpers/useDates';
-import { Marker } from '../../../../types';
+import { Image, Marker } from '../../../../types';
 import { LuMapPin } from 'react-icons/lu';
+import { useState } from 'react';
+import Gallery from '../../../../components/Gallery';
 
 type MarkerEditorProps = {
-  markerId: number;
-  hasPoints?: boolean;
+  marker: Marker;
+  images: Image[];
   setLineId: React.Dispatch<React.SetStateAction<number>>;
   setMarkerId: React.Dispatch<React.SetStateAction<number>>;
   handleInsertMarker: (e: any) => void;
 };
 
 const MarkerEditor: React.FC<MarkerEditorProps> = ({
-  markerId,
-  hasPoints,
+  marker,
+  images,
   setLineId,
   setMarkerId,
   handleInsertMarker,
 }) => {
-  const handleCreateMarker = (): Marker => ({ id: getTimestamp(), points: [] });
+  const [open, setOpen] = useState(false);
+
+  const handleCreateMarker = (): Marker => ({
+    id: getTimestamp(),
+    points: [],
+    imageIds: [],
+  });
 
   const handleClick = () => {
     setLineId(0);
-    if (markerId) setMarkerId(0);
+    if (marker?.id) setMarkerId(0);
     else {
-      const marker = handleCreateMarker();
-      setMarkerId(marker.id);
-      handleInsertMarker(marker);
+      const e = handleCreateMarker();
+      setMarkerId(e.id);
+      handleInsertMarker(e);
     }
   };
+
+  const hasPoints = marker?.points?.length > 0;
 
   return (
     <Box>
       <EditAccordion
         label="Marcador"
         icon={LuMapPin}
-        isSelected={!!markerId}
+        isSelected={!!marker?.id}
         handleClick={handleClick}
         panelComponent={
           <Box display="flex" flexDir="column" gap={2}>
@@ -46,13 +56,26 @@ const MarkerEditor: React.FC<MarkerEditorProps> = ({
                 : 'Clique no mapa para registrar a coordenada!'}
             </Text>
             {hasPoints && (
-              <Text fontWeight="bold" fontSize="12px">
-                Arraste para mudar a posição.
-              </Text>
+              <Box display="flex" flexDir="column" gap={2}>
+                <Text fontWeight="bold" fontSize="12px">
+                  Arraste para mudar a posição.
+                </Text>
+                <Button onClick={() => setOpen(true)}>Gerenciar imagens</Button>
+              </Box>
             )}
           </Box>
         }
       />
+
+      {open && (
+        <Gallery
+          mode="SELECT"
+          defaultSelect={marker?.imageIds}
+          images={images}
+          isOpen={open}
+          onClose={() => setOpen(false)}
+        />
+      )}
     </Box>
   );
 };

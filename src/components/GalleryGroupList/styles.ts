@@ -1,10 +1,9 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 
 export const StyledContainer = styled(Box)`
     width: 100%;
     height: 100%;
-    gap: 72px;
     display: flex;
     overflow: auto;
     flex-direction: column;
@@ -33,6 +32,7 @@ export const StyledGroupContainer = styled(Box)`
     height: min-content;
     gap: 12px;
     padding-right: 16px;
+    padding-bottom: 72px;
     display: flex;
     flex-direction: column;
 `
@@ -42,4 +42,12 @@ export const StyledImagesContainer = styled(Box)`
     width: 100%;
     gap: 16px;
     height: min-content;
+`
+
+export const StyledDateTitle = styled(Text)`
+    background-color: white;
+    font-size: 22px;
+    position: sticky;
+    top: 0px;
+    z-index: 99;
 `

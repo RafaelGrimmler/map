@@ -28,8 +28,7 @@ export const formatDate = (date: Date) => {
     ];
 
     const month = months?.[date?.getMonth()];
-    const day = date?.getDay();
     const year = date?.getFullYear();
     
-    return `${day} de ${month} de ${year}`;
+    return `${month} de ${year}`;
 }
