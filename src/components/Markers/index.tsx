@@ -1,11 +1,12 @@
 import { Icon } from 'leaflet';
 import { useState } from 'react';
 import { Marker as MarkerComponent } from 'react-leaflet';
-import { Marker } from '../../types';
+import { Image, Marker } from '../../types';
 import MarkerPopup from '../MarkerPopup';
 import MarkerPositionAlert from '../../modules/edit/components/MarkerPositionAlert';
 
 type MarkersProps = {
+  images?: Image[];
   editMarkerId?: number;
   markers?: Marker[];
   setMarkerId?: React.Dispatch<React.SetStateAction<number>>;
@@ -14,6 +15,7 @@ type MarkersProps = {
 
 const Markers: React.FC<MarkersProps> = ({
   markers,
+  images,
   editMarkerId,
   setMarkerId,
   handleMarkerPosition,
@@ -37,8 +39,9 @@ const Markers: React.FC<MarkersProps> = ({
         ?.filter?.((marker) => marker?.points?.length > 0)
         ?.map((marker) => {
           const isHovering = marker?.id === hoverId;
-
-          console.log(marker?.points);
+          const markerImages = images?.filter((e) =>
+            marker?.imageIds?.includes(e?.id),
+          );
 
           if (marker?.id === editMarkerId)
             return (
@@ -55,7 +58,7 @@ const Markers: React.FC<MarkersProps> = ({
                 }}
                 icon={hoveredMarkerIcon}
               >
-                {!reposition && <MarkerPopup />}
+                {!reposition && <MarkerPopup images={markerImages} />}
               </MarkerComponent>
             );
 
@@ -70,7 +73,10 @@ const Markers: React.FC<MarkersProps> = ({
                 click: () => setMarkerId?.(0),
               }}
             >
-              <MarkerPopup handleEdit={() => setMarkerId?.(marker?.id)} />
+              <MarkerPopup
+                handleEdit={() => setMarkerId?.(marker?.id)}
+                images={markerImages}
+              />
             </MarkerComponent>
           );
         })}

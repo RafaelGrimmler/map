@@ -21,6 +21,7 @@ type EditSidebarProps = {
   handleInsertLine: (line: Line) => void;
   handleInsertMarker: (marker: Marker) => void;
   handleInsertImage: (src: string) => void;
+  handleMarkerImage: (ids: number[]) => void;
 };
 
 const EditSidebar: React.FC<EditSidebarProps> = ({
@@ -36,6 +37,7 @@ const EditSidebar: React.FC<EditSidebarProps> = ({
   handleUndoLine,
   handleInsertMarker,
   handleInsertImage,
+  handleMarkerImage,
 }) => {
   const navigator = useNavigate();
 
@@ -70,6 +72,7 @@ const EditSidebar: React.FC<EditSidebarProps> = ({
         setLineId={setLineId}
         setMarkerId={setMarkerId}
         handleInsertMarker={handleInsertMarker}
+        handleMarkerImage={handleMarkerImage}
       />
       <EditAccordion
         label="Galeria"

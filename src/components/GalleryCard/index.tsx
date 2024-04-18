@@ -1,7 +1,15 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { StyledActionContainer, StyledContainer } from './styles';
+import {
+  StyledActionBar,
+  StyledActionContainer,
+  StyledContainer,
+  StyledSelectBox,
+  StyledSelectContainer,
+  StyledSelectedBox,
+  StyledViewIconWrapper,
+} from './styles';
 import { useEffect, useState } from 'react';
-import { clickElements } from '../../helpers/utils';
+import { clickElements, stopPropagation } from '../../helpers/utils';
 import GalleryPopover from '../GalleryPopover';
 import { Image } from '../../types';
 import { Box } from '@chakra-ui/react';
@@ -9,43 +17,52 @@ import { FaEye } from 'react-icons/fa';
 
 type GalleryCardProps = {
   image: Image;
+  isSelected?: boolean;
   mb?: number;
   viewMode?: boolean;
   isView?: boolean;
   handleClick?: () => void;
+  handleSelect?: (imageId: number) => void;
 };
 
 const GalleryCard: React.FC<GalleryCardProps> = ({
   image,
+  isSelected,
   mb,
   viewMode,
   isView,
   handleClick,
+  handleSelect,
 }) => {
-  const [open, setOpen] = useState(false);
-
-  const handleOpen = () => {
-    clickElements('.gallery-form-close');
-    setOpen(true);
-  };
-
   return (
-    <GalleryPopover handleSave={() => {}} open={open} setOpen={setOpen}>
-      <StyledContainer className={`gallery-card-${image?.id}`} mb={mb}>
-        <img src={image?.src} loading="lazy" />
-        <StyledActionContainer
-          $isView={isView}
-          className="gallery-card-action-container"
-          onClick={handleClick}
-        >
-          <Box display="flex" sx={{ filter: 'drop-shadow(0px 0px 2px black)' }}>
-            <Box p={1}>
-              {isView && <FaEye fontSize="24px" color="#2ecc9d" />}
-            </Box>
-          </Box>
-        </StyledActionContainer>
-      </StyledContainer>
-    </GalleryPopover>
+    <StyledContainer className={`gallery-card-${image?.id}`} mb={mb}>
+      <img src={image?.src} loading="lazy" />
+      {isSelected && <StyledSelectedBox />}
+      <StyledActionContainer
+        $isView={isView}
+        className="gallery-card-action-container"
+        onClick={handleClick}
+      >
+        <StyledActionBar>
+          <StyledViewIconWrapper>
+            {isView && <FaEye fontSize="24px" color="#2ecc9d" />}
+          </StyledViewIconWrapper>
+          {!viewMode && (
+            <StyledSelectContainer
+              onClick={(e) => {
+                stopPropagation(e);
+                handleSelect?.(image?.id);
+              }}
+            >
+              <StyledSelectBox
+                $isSelected={isSelected}
+                className="select-box"
+              />
+            </StyledSelectContainer>
+          )}
+        </StyledActionBar>
+      </StyledActionContainer>
+    </StyledContainer>
   );
 };
 

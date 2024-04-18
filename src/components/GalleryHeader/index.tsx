@@ -12,19 +12,23 @@ import { clickElements } from '../../helpers/utils';
 type GalleryHeaderProps = {
   image: Image | undefined;
   mode?: 'VIEW' | 'EDIT' | 'SELECT';
+  selectedLength?: number;
   setImage: React.Dispatch<React.SetStateAction<Image | undefined>>;
   setPreviousId: React.Dispatch<React.SetStateAction<number>>;
   handleClose: () => void;
   handleInsertImage?: (src: string) => void;
+  handleSave?: () => void;
 };
 
 const GalleryHeader: React.FC<GalleryHeaderProps> = ({
   image,
   mode,
+  selectedLength = 0,
   setImage,
   setPreviousId,
   handleClose,
   handleInsertImage,
+  handleSave,
 }) => {
   const [open, setOpen] = useState(false);
 
@@ -50,7 +54,10 @@ const GalleryHeader: React.FC<GalleryHeaderProps> = ({
       </Box>
 
       <Box display="flex" gap={2}>
-        {mode === 'SELECT' && <StyledButton>Salvar</StyledButton>}
+        <Text>{selectedLength} imagens selecionadas</Text>
+        {mode === 'SELECT' && (
+          <StyledButton onClick={() => handleSave?.()}>Salvar</StyledButton>
+        )}
         {mode === 'EDIT' && (
           <GalleryPopover
             open={open}

@@ -12,16 +12,20 @@ import { useEffect } from 'react';
 
 type GalleryGroupListProps = {
   images: Image[];
+  selected: number[];
   viewMode: boolean;
   previousId: number;
   handleToggleExpand: (img?: Image) => void;
+  handleSelect: (imageId: number) => void;
 };
 
 const GalleryGroupList: React.FC<GalleryGroupListProps> = ({
   images,
+  selected,
   viewMode,
   previousId,
   handleToggleExpand,
+  handleSelect,
 }) => {
   const groups = getGroupedImages(images);
 
@@ -42,10 +46,12 @@ const GalleryGroupList: React.FC<GalleryGroupListProps> = ({
               {group?.images?.map((image) => (
                 <GalleryCard
                   key={image?.id}
-                  mb={4}
-                  viewMode={viewMode}
-                  handleClick={() => handleToggleExpand(image)}
                   image={image}
+                  isSelected={selected?.some((id) => id === image?.id)}
+                  viewMode={viewMode}
+                  mb={4}
+                  handleSelect={handleSelect}
+                  handleClick={() => handleToggleExpand(image)}
                 />
               ))}
             </StyledImagesContainer>

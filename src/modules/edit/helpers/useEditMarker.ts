@@ -31,10 +31,18 @@ const useEditMarker = ({ markers, markerId, setMarkers }: UseEditMarkerArgs) => 
         })))
     }
 
+    const handleMarkerImage = (ids: number[]) => {
+        setMarkers(markers?.map(e => ({
+            ...e, 
+            imageIds: e?.id === markerId ? ids : e?.imageIds,
+        })))
+    } 
+
     return {  
         handleInsertMarker, 
         handleAddPoint, 
-        handleMarkerPosition
+        handleMarkerPosition,
+        handleMarkerImage,
     }
 }
 

@@ -10,10 +10,11 @@ import GalleryHeader from '../GalleryHeader';
 type GalleryProps = {
   isOpen: boolean;
   images: Image[];
-  defaultSelect?: string[];
+  defaultSelect?: number[];
   mode?: 'VIEW' | 'EDIT' | 'SELECT';
   onClose: () => void;
   handleInsertImage?: (src: string) => void;
+  handleSave?: (ids: number[]) => void;
 };
 
 const Gallery: React.FC<GalleryProps> = ({
@@ -23,8 +24,9 @@ const Gallery: React.FC<GalleryProps> = ({
   defaultSelect = [],
   onClose,
   handleInsertImage,
+  handleSave,
 }) => {
-  const [selected, setSelected] = useState<string[]>(defaultSelect);
+  const [selected, setSelected] = useState<number[]>(defaultSelect);
   const [image, setImage] = useState<Image>();
   const [previousId, setPreviousId] = useState(0);
 
@@ -34,6 +36,17 @@ const Gallery: React.FC<GalleryProps> = ({
     setPreviousId(0);
   };
 
+  const handleSelect = (imageId: number) => {
+    const alreadyExists = selected?.some((id) => id === imageId);
+    if (alreadyExists) setSelected(selected?.filter((id) => id !== imageId));
+    else setSelected([...selected, imageId]);
+  };
+
+  const onSave = () => {
+    handleSave?.(selected);
+    handleClose();
+  };
+
   return (
     <Modal isOpen={isOpen} onClose={handleClose}>
       <ModalOverlay />
@@ -41,11 +54,13 @@ const Gallery: React.FC<GalleryProps> = ({
         <ModalHeader>
           <GalleryHeader
             mode={mode}
+            selectedLength={selected?.length}
             image={image}
+            setPreviousId={setPreviousId}
+            setImage={setImage}
             handleClose={handleClose}
             handleInsertImage={handleInsertImage}
-            setImage={setImage}
-            setPreviousId={setPreviousId}
+            handleSave={onSave}
           />
         </ModalHeader>
         <ModalBody pb={6} overflow="hidden">
@@ -59,7 +74,9 @@ const Gallery: React.FC<GalleryProps> = ({
             <GalleryGroupList
               viewMode={mode === 'VIEW'}
               images={images}
+              selected={selected}
               previousId={previousId}
+              handleSelect={handleSelect}
               handleToggleExpand={(i) => setImage(i)}
             />
           )}

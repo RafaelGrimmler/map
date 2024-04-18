@@ -1,14 +1,25 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Popup } from 'react-leaflet';
-import { StyledContainer, StyledIconButton } from './styles';
+import {
+  StyleImageContainer,
+  StyledContainer,
+  StyledIconButton,
+  StyledImage,
+} from './styles';
 import { Box } from '@chakra-ui/react';
 import { IoClose } from 'react-icons/io5';
 import { MdOutlineEdit } from 'react-icons/md';
+import { Image } from '../../types';
+import { useState } from 'react';
 
 type MarkerPopupProps = {
+  images?: Image[];
   handleEdit?: () => void;
 };
 
-const MarkerPopup: React.FC<MarkerPopupProps> = ({ handleEdit }) => {
+const MarkerPopup: React.FC<MarkerPopupProps> = ({ images, handleEdit }) => {
+  const [selected, setSelected] = useState<Image | undefined>(images?.[0]);
+
   const handleClose = () => {
     const closeElement = document.querySelector('.leaflet-popup-close-button');
     (closeElement as any)?.click();
@@ -30,6 +41,9 @@ const MarkerPopup: React.FC<MarkerPopupProps> = ({ handleEdit }) => {
             icon={<IoClose fontSize="24px" />}
           />
         </Box>
+        <StyleImageContainer>
+          <StyledImage src={selected?.src} />
+        </StyleImageContainer>
       </StyledContainer>
     </Popup>
   );

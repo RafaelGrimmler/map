@@ -1,7 +1,7 @@
 import { MapContainer, TileLayer, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { FaCheck } from 'react-icons/fa';
-import { Marker, UserProfile } from '../../types';
+import { Image, Marker, UserProfile } from '../../types';
 import {
   StyledCheckBox,
   StyledContainer,
@@ -16,6 +16,7 @@ import { Text } from '@chakra-ui/react';
 type MapProps = {
   defaultZoom?: number;
   userProfile?: UserProfile;
+  images?: Image[];
   editLineId?: number;
   markers?: Marker[];
   editMarkerId?: number;
@@ -35,6 +36,7 @@ const Map: React.FC<MapProps> = ({
   showMarker,
   editMarkerId,
   markers,
+  images,
   handleToggleMarker,
   handleAppendLine,
   handleMarkerPosition,
@@ -83,6 +85,7 @@ const Map: React.FC<MapProps> = ({
         {showMarker && !editLineId && (
           <Markers
             editMarkerId={editMarkerId}
+            images={images}
             markers={markers}
             setMarkerId={setMarkerId}
             handleMarkerPosition={handleMarkerPosition}

@@ -88,6 +88,7 @@ const EditMap: React.FC<EditMapProps> = ({ userProfile }) => {
       <Map
         userProfile={user}
         markers={markers}
+        images={images}
         editLineId={lineId}
         editMarkerId={markerId}
         showMarker={showMarker}
@@ -110,6 +111,7 @@ const EditMap: React.FC<EditMapProps> = ({ userProfile }) => {
         handleInsertLine={lineFunctions?.handleInsertLine}
         handleUndoLine={lineFunctions?.handleUndoLine}
         handleInsertMarker={markerFunctions?.handleInsertMarker}
+        handleMarkerImage={markerFunctions?.handleMarkerImage}
         handleInsertImage={imageFunctions?.handleInsertImage}
       />
       <Navbar userProfile={userProfile} showButtons={false} />

@@ -12,6 +12,7 @@ type MarkerEditorProps = {
   setLineId: React.Dispatch<React.SetStateAction<number>>;
   setMarkerId: React.Dispatch<React.SetStateAction<number>>;
   handleInsertMarker: (e: any) => void;
+  handleMarkerImage: (ids: number[]) => void;
 };
 
 const MarkerEditor: React.FC<MarkerEditorProps> = ({
@@ -20,6 +21,7 @@ const MarkerEditor: React.FC<MarkerEditorProps> = ({
   setLineId,
   setMarkerId,
   handleInsertMarker,
+  handleMarkerImage,
 }) => {
   const [open, setOpen] = useState(false);
 
@@ -28,6 +30,8 @@ const MarkerEditor: React.FC<MarkerEditorProps> = ({
     points: [],
     imageIds: [],
   });
+
+  console.log(marker);
 
   const handleClick = () => {
     setLineId(0);
@@ -73,6 +77,7 @@ const MarkerEditor: React.FC<MarkerEditorProps> = ({
           defaultSelect={marker?.imageIds}
           images={images}
           isOpen={open}
+          handleSave={handleMarkerImage}
           onClose={() => setOpen(false)}
         />
       )}
