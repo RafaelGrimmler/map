@@ -1,4 +1,12 @@
-import { Box, Button, Text } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Slider,
+  SliderFilledTrack,
+  SliderThumb,
+  SliderTrack,
+  Text,
+} from '@chakra-ui/react';
 import EditAccordion from '../EditAccordion';
 import { getTimestamp } from '../../../../helpers/useDates';
 import { Image, Marker } from '../../../../types';
@@ -13,6 +21,7 @@ type MarkerEditorProps = {
   setMarkerId: React.Dispatch<React.SetStateAction<number>>;
   handleInsertMarker: (e: any) => void;
   handleMarkerImage: (ids: number[]) => void;
+  handleMarkerRadius: (radius: number) => void;
 };
 
 const MarkerEditor: React.FC<MarkerEditorProps> = ({
@@ -22,6 +31,7 @@ const MarkerEditor: React.FC<MarkerEditorProps> = ({
   setMarkerId,
   handleInsertMarker,
   handleMarkerImage,
+  handleMarkerRadius,
 }) => {
   const [open, setOpen] = useState(false);
 
@@ -29,9 +39,8 @@ const MarkerEditor: React.FC<MarkerEditorProps> = ({
     id: getTimestamp(),
     points: [],
     imageIds: [],
+    radius: 1000,
   });
-
-  console.log(marker);
 
   const handleClick = () => {
     setLineId(0);
@@ -64,6 +73,19 @@ const MarkerEditor: React.FC<MarkerEditorProps> = ({
                 <Text fontWeight="bold" fontSize="12px">
                   Arraste para mudar a posição.
                 </Text>
+                <Text fontWeight="bold" fontSize="12px">
+                  Área do marcador:
+                </Text>
+                <Slider
+                  aria-label="slider-ex-6"
+                  defaultValue={(marker?.radius - 1000) / 30}
+                  onChange={(val) => handleMarkerRadius(1000 + val * 30)}
+                >
+                  <SliderTrack>
+                    <SliderFilledTrack />
+                  </SliderTrack>
+                  <SliderThumb />
+                </Slider>
                 <Button onClick={() => setOpen(true)}>Gerenciar imagens</Button>
               </Box>
             )}

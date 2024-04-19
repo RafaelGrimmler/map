@@ -43,15 +43,22 @@ export const StyledContainer = styled(Box)<{
         `}
     }
 
+    & .marker-circle {
+        /* ${({ zoom }) => zoom === 11 && "stroke-width: 40px;"}
+        ${({ zoom }) => zoom === 12 && "stroke-width: 80px;"}
+        ${({ zoom }) => zoom === 13 && "stroke-width: 160px;"} */
+        /* stroke-width: 80px; 12 */
+        /* stroke-width: 160px; 13 */
+        /* stroke-width: 320px; 14 */
+        stroke-width: 1px;
+        stroke: rgba(0,0,0,0.6);
+        fill: black;
+    }
+
     & .polyline {
         ${({ zoom, editingline }) => css`
             stroke-width: ${getLineWeight(zoom)};
             stroke: #38B2AC;
-
-            &.selected {
-                stroke-width: ${getLineWeight(zoom, 2)};
-                stroke: #2ECC71;
-            }
 
             ${!editingline && css`
                 &:hover {
@@ -59,6 +66,11 @@ export const StyledContainer = styled(Box)<{
                     stroke: #4FD1C5;
                 }
             `}
+
+            &.selected {
+                stroke-width: ${getLineWeight(zoom, 2)};
+                stroke: #2ECC71 !important;
+            }
         `}
     }
 

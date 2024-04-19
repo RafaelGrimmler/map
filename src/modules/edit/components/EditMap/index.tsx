@@ -11,7 +11,6 @@ import useEditImage from '../../helpers/useEditImage';
 type EditMapProps = { userProfile: UserProfile };
 
 const EditMap: React.FC<EditMapProps> = ({ userProfile }) => {
-  const [showMarker, setShowMarker] = useState(true);
   const [user, setUser] = useState<UserProfile>(userProfile);
   const [images, setImages] = useState<Image[]>([
     {
@@ -71,17 +70,13 @@ const EditMap: React.FC<EditMapProps> = ({ userProfile }) => {
     },
   ]);
   const [markers, setMarkers] = useState<Marker[]>([]);
+
   const [lineId, setLineId] = useState(0);
   const [markerId, setMarkerId] = useState(0);
 
   const lineFunctions = useEditLine({ user, lineId, setUser, setLineId });
   const markerFunctions = useEditMarker({ markerId, markers, setMarkers });
   const imageFunctions = useEditImage({ images, setImages });
-
-  const handleToggleMarker = () => {
-    setMarkerId(0);
-    setShowMarker(!showMarker);
-  };
 
   return (
     <StyledContainer>
@@ -91,10 +86,8 @@ const EditMap: React.FC<EditMapProps> = ({ userProfile }) => {
         images={images}
         editLineId={lineId}
         editMarkerId={markerId}
-        showMarker={showMarker}
         setMarkerId={setMarkerId}
         setLineId={setLineId}
-        handleToggleMarker={handleToggleMarker}
         handleAppendLine={lineFunctions?.handleAppendLine}
         handleAddPoint={markerFunctions?.handleAddPoint}
         handleMarkerPosition={markerFunctions?.handleMarkerPosition}
@@ -112,6 +105,7 @@ const EditMap: React.FC<EditMapProps> = ({ userProfile }) => {
         handleUndoLine={lineFunctions?.handleUndoLine}
         handleInsertMarker={markerFunctions?.handleInsertMarker}
         handleMarkerImage={markerFunctions?.handleMarkerImage}
+        handleMarkerRadius={markerFunctions?.handleMarkerRadius}
         handleInsertImage={imageFunctions?.handleInsertImage}
       />
       <Navbar userProfile={userProfile} showButtons={false} />

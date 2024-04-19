@@ -10,8 +10,9 @@ import GalleryHeader from '../GalleryHeader';
 type GalleryProps = {
   isOpen: boolean;
   images: Image[];
-  defaultSelect?: number[];
   mode?: 'VIEW' | 'EDIT' | 'SELECT';
+  defaultSelect?: number[];
+  defaultImage?: Image;
   onClose: () => void;
   handleInsertImage?: (src: string) => void;
   handleSave?: (ids: number[]) => void;
@@ -20,14 +21,15 @@ type GalleryProps = {
 const Gallery: React.FC<GalleryProps> = ({
   isOpen,
   images,
-  mode,
+  mode = 'VIEW',
   defaultSelect = [],
+  defaultImage,
   onClose,
   handleInsertImage,
   handleSave,
 }) => {
   const [selected, setSelected] = useState<number[]>(defaultSelect);
-  const [image, setImage] = useState<Image>();
+  const [image, setImage] = useState<Image | undefined>(defaultImage);
   const [previousId, setPreviousId] = useState(0);
 
   const handleClose = () => {

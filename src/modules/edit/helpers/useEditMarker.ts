@@ -38,11 +38,19 @@ const useEditMarker = ({ markers, markerId, setMarkers }: UseEditMarkerArgs) => 
         })))
     } 
 
+    const handleMarkerRadius = (radius: number) => {
+        setMarkers(markers?.map(e => ({
+            ...e, 
+            radius: e?.id === markerId ? radius : e?.radius,
+        })))
+    }
+ 
     return {  
         handleInsertMarker, 
         handleAddPoint, 
         handleMarkerPosition,
         handleMarkerImage,
+        handleMarkerRadius,
     }
 }
 

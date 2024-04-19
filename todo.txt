@@ -1,0 +1,3 @@
+# - arrumar organização de pastas
+# - arrumar responsividade (marker popup)
+# - rever nome de variaveis

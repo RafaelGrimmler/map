@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { MapContainer, TileLayer, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { FaCheck } from 'react-icons/fa';
@@ -8,20 +9,19 @@ import {
   StyledMarkerContainer,
 } from './styles';
 import { LatLng } from 'leaflet';
-import Polylines from '../Polylines';
 import { useState } from 'react';
-import Markers from '../Markers';
 import { Text } from '@chakra-ui/react';
+import MarkerComponent from '../Marker';
+import Polyline from '../Polyline';
 
 type MapProps = {
   defaultZoom?: number;
   userProfile?: UserProfile;
   images?: Image[];
   editLineId?: number;
-  markers?: Marker[];
   editMarkerId?: number;
-  showMarker?: boolean;
-  handleToggleMarker?: (show?: boolean) => void;
+  markers?: Marker[];
+  hiddenToggleMarker?: boolean;
   handleAppendLine?: (coord: LatLng) => void;
   handleAddPoint?: (coord: LatLng) => void;
   handleMarkerPosition?: (lat: number, lng: number) => void;
@@ -33,18 +33,23 @@ const Map: React.FC<MapProps> = ({
   defaultZoom = 11,
   userProfile,
   editLineId,
-  showMarker,
+  hiddenToggleMarker,
   editMarkerId,
   markers,
   images,
-  handleToggleMarker,
   handleAppendLine,
   handleMarkerPosition,
   setLineId,
   handleAddPoint,
   setMarkerId,
 }) => {
+  const [showMarker, setShowMarker] = useState(true);
   const [zoom, setZoom] = useState(defaultZoom);
+
+  const handleToggleMarker = () => {
+    setMarkerId?.(0);
+    setShowMarker(!showMarker);
+  };
 
   const LocationFinderDummy = () => {
     useMapEvents({
@@ -58,6 +63,7 @@ const Map: React.FC<MapProps> = ({
   };
 
   const selectedMarker = markers?.find((e) => e?.id === editMarkerId) as any;
+  const showMarkers = showMarker && !editLineId;
 
   return (
     <StyledContainer zoom={zoom} editingline={!!editLineId}>
@@ -73,27 +79,34 @@ const Map: React.FC<MapProps> = ({
           url={`https://{s}.tile.jawg.io/jawg-dark/{z}/{x}/{y}{r}.png?access-token=${process.env.REACT_APP_MAP_KEY}`}
         />
         <LocationFinderDummy />
-        {userProfile?.lines && (
-          <Polylines
-            lines={userProfile?.lines}
-            editLineId={editLineId}
-            marker={selectedMarker}
-            setLineId={setLineId}
-            setMarkerId={setMarkerId}
+        {userProfile?.lines?.map((line) => (
+          <Polyline
+            key={line?.id}
+            line={line}
+            isEditing={editLineId === line?.id}
+            handleSelect={() => {
+              const hasPoints = selectedMarker?.points?.length > 0;
+              if (hasPoints) setMarkerId?.(0);
+              if (!editLineId && !hasPoints) setLineId?.(line?.id);
+            }}
           />
-        )}
-        {showMarker && !editLineId && (
-          <Markers
-            editMarkerId={editMarkerId}
-            images={images}
-            markers={markers}
-            setMarkerId={setMarkerId}
-            handleMarkerPosition={handleMarkerPosition}
-          />
-        )}
+        ))}
+        {showMarkers &&
+          markers
+            ?.filter((marker) => marker?.points?.length > 0)
+            ?.map((marker) => (
+              <MarkerComponent
+                key={marker?.id}
+                images={images}
+                marker={marker}
+                isEditing={editMarkerId === marker?.id}
+                setMarkerId={setMarkerId}
+                handleMarkerPosition={handleMarkerPosition}
+              />
+            ))}
       </MapContainer>
-      {handleToggleMarker && (
-        <StyledMarkerContainer onClick={() => handleToggleMarker(!showMarker)}>
+      {!hiddenToggleMarker && (
+        <StyledMarkerContainer onClick={() => handleToggleMarker()}>
           <StyledCheckBox>
             {showMarker && <FaCheck className="checked" />}
           </StyledCheckBox>

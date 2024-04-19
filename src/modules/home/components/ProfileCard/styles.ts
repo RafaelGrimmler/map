@@ -8,8 +8,8 @@ export const StyledProfileContainer = styled(Box)`
     border-radius: 4px;
 
     & .leaflet-container {
-        width: 400px;
-        height: 400px;
+        width: 400px !important;
+        height: 400px !important;
     }
 
     & .leaflet-bottom {
@@ -29,8 +29,8 @@ export const StyledProfileContainer = styled(Box)`
         height: 300px;
 
         & .leaflet-container {
-            width: 300px;
-            height: 300px;
+            width: 300px !important;
+            height: 300px !important;
         }
     }
 

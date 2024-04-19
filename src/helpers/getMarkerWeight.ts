@@ -28,8 +28,8 @@ export const getMarkerWeight = (zoom: number, num = 1) => {
 }
 
 export const getPopupAdjust = (zoom: number) => {
-    if (zoom <= 8) return { bottom: '17px', left: '-160px' };
-    if (zoom <= 11) return { bottom: '25px', left: '-160px' };
-    if (zoom <= 13) return { bottom: '43px', left: '-159px' };
-    return { bottom: '57px', left: '-159px' }
+    if (zoom <= 8) return { bottom: '17px', left: '-250px' };
+    if (zoom <= 11) return { bottom: '25px', left: '-250px' };
+    if (zoom <= 13) return { bottom: '43px', left: '-250px' };
+    return { bottom: '57px', left: '-250px' }
 }

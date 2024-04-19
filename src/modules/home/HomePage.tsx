@@ -4,13 +4,10 @@ import { useUser } from '../../helpers/useUser';
 import { Navigate, useParams } from 'react-router-dom';
 import UserSelect from './components/UserSelect';
 import Navbar from '../../components/Navbar';
-import { useState } from 'react';
 
 const HomePage: React.FC = () => {
   const { id } = useParams();
   const { userProfiles } = useUser();
-
-  const [showMarker, setShowMarker] = useState(true);
 
   const user = userProfiles?.find((e) => e?.userMap === id);
 
@@ -18,11 +15,7 @@ const HomePage: React.FC = () => {
 
   return (
     <Box>
-      <Map
-        userProfile={user}
-        showMarker={id ? showMarker : false}
-        handleToggleMarker={id ? () => setShowMarker(!showMarker) : undefined}
-      />
+      <Map userProfile={user} />
       {user && <Navbar userProfile={user} />}
       {!user && <UserSelect userProfiles={userProfiles} />}
     </Box>
