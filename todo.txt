@@ -1,3 +1,4 @@
 # - arrumar organização de pastas
 # - arrumar responsividade (marker popup)
 # - rever nome de variaveis
+# - rever modo de salvar localstorage
