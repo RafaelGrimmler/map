@@ -5,7 +5,6 @@ import {
   StyledContainer,
   StyledSelectBox,
   StyledSelectContainer,
-  StyledSelectedBox,
   StyledViewIconWrapper,
 } from './styles';
 import { useEffect, useState } from 'react';
@@ -37,15 +36,15 @@ const GalleryCard: React.FC<GalleryCardProps> = ({
   return (
     <StyledContainer className={`gallery-card-${image?.id}`} mb={mb}>
       <img src={image?.src} loading="lazy" />
-      {isSelected && <StyledSelectedBox />}
       <StyledActionContainer
         $isView={isView}
+        $isSelected={isSelected}
         className="gallery-card-action-container"
         onClick={handleClick}
       >
         <StyledActionBar>
           <StyledViewIconWrapper>
-            {isView && <FaEye fontSize="24px" color="#2ecc9d" />}
+            {isView && <FaEye fontSize="24px" color="#2ECC71" />}
           </StyledViewIconWrapper>
           {!viewMode && (
             <StyledSelectContainer

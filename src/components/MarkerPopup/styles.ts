@@ -73,3 +73,14 @@ export const StyledInfoBar = styled(Box)`
     color: white;
     font-weight: bold;
 `
+
+export const StyledEmptyContainer = styled(Box)`
+    color: white;
+    font-size: 30px;
+    width: 60%;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    text-align: center;
+`

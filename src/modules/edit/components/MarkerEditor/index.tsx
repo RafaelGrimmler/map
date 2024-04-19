@@ -82,9 +82,9 @@ const MarkerEditor: React.FC<MarkerEditorProps> = ({
                   onChange={(val) => handleMarkerRadius(1000 + val * 30)}
                 >
                   <SliderTrack>
-                    <SliderFilledTrack />
+                    <SliderFilledTrack bg="#2ecc9d" />
                   </SliderTrack>
-                  <SliderThumb />
+                  <SliderThumb bg="#b8f2d1" />
                 </Slider>
                 <Button onClick={() => setOpen(true)}>Gerenciar imagens</Button>
               </Box>
