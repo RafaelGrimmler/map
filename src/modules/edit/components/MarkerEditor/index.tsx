@@ -103,16 +103,14 @@ const MarkerEditor: React.FC<MarkerEditorProps> = ({
         }
       />
 
-      {open && (
-        <Gallery
-          mode="SELECT"
-          defaultSelect={marker?.imageIds}
-          images={images}
-          isOpen={open}
-          handleSave={handleMarkerImage}
-          onClose={() => setOpen(false)}
-        />
-      )}
+      <Gallery
+        mode="SELECT"
+        defaultSelect={marker?.imageIds}
+        images={images}
+        isOpen={open}
+        handleSave={handleMarkerImage}
+        onClose={() => setOpen(false)}
+      />
 
       {openDeleteAlert && (
         <DeleteAlert

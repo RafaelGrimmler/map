@@ -58,13 +58,11 @@ const Navbar: React.FC<NavbarProps> = ({ userProfile, showButtons = true }) => {
         )}
       </StyledWrapper>
 
-      {openGallery && (
-        <Gallery
-          images={getImages()}
-          isOpen
-          onClose={() => setOpenGallery(false)}
-        />
-      )}
+      <Gallery
+        images={getImages()}
+        isOpen={openGallery}
+        onClose={() => setOpenGallery(false)}
+      />
 
       {open && (
         <LoginModal

@@ -90,15 +90,14 @@ const EditSidebar: React.FC<EditSidebarProps> = ({
       />
       <EditAccordion label="Download" handleClick={handleDownload} />
       <EditAccordion label="Sair" handleClick={handleBack} />
-      {openGallery && (
-        <Gallery
-          images={images}
-          mode="EDIT"
-          isOpen={openGallery}
-          onClose={() => setOpenGallery(false)}
-          handleInsertImage={handleInsertImage}
-        />
-      )}
+
+      <Gallery
+        images={images}
+        mode="EDIT"
+        isOpen={openGallery}
+        onClose={() => setOpenGallery(false)}
+        handleInsertImage={handleInsertImage}
+      />
     </StyledContainer>
   );
 };

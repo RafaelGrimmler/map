@@ -35,7 +35,7 @@ const GalleryCard: React.FC<GalleryCardProps> = ({
 }) => {
   return (
     <StyledContainer className={`gallery-card-${image?.id}`} mb={mb}>
-      <img src={image?.src} loading="lazy" />
+      <img src={image?.src} />
       <StyledActionContainer
         $isView={isView}
         $isSelected={isSelected}

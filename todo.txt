@@ -12,3 +12,4 @@ PENDING
 # - setas da galeria com tamanho de meia tela
 # - arrumar linha sem cor de edição
 # - deletar imagens
+# - trocar de foto ao fechar popup
