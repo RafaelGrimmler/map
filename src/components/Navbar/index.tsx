@@ -13,8 +13,6 @@ import { useNavigate } from 'react-router-dom';
 import { useContext, useState } from 'react';
 import LoginModal from '../../modules/home/components/LoginModal';
 import { LoginContext, LoginContextReturn } from '../../context/Login';
-import Gallery from '../Gallery';
-import { getImages } from '../../helpers/getImages';
 
 type NavbarProps = { userProfile: UserProfile; showButtons?: boolean };
 
@@ -23,7 +21,6 @@ const Navbar: React.FC<NavbarProps> = ({ userProfile, showButtons = true }) => {
   const loginContext = useContext(LoginContext);
 
   const [open, setOpen] = useState(false);
-  const [openGallery, setOpenGallery] = useState(false);
 
   const { handleLogin, isLogged } = loginContext as LoginContextReturn;
 
@@ -50,19 +47,10 @@ const Navbar: React.FC<NavbarProps> = ({ userProfile, showButtons = true }) => {
             >
               Entrar
             </StyledButton>
-            <StyledButton onClick={() => setOpenGallery(true)}>
-              Galeria
-            </StyledButton>
             <StyledButton onClick={handleBack}>Voltar</StyledButton>
           </StyledActionContainer>
         )}
       </StyledWrapper>
-
-      <Gallery
-        images={getImages()}
-        isOpen={openGallery}
-        onClose={() => setOpenGallery(false)}
-      />
 
       {open && (
         <LoginModal
