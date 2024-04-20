@@ -11,11 +11,15 @@ export const LoginContext = createContext({});
 
 const LoginProvider: React.FC<LoginContextProps> = ({ children }) => {
   const [isLogged, setIsLogged] = useState(
-    Boolean(window.localStorage.getItem('isLogged')),
+    window.localStorage.getItem('loginToken') ===
+      process.env.REACT_APP_EDIT_KEY,
   );
 
   const handleLogin = () => {
-    window.localStorage.setItem('isLogged', 'true');
+    window.localStorage.setItem(
+      'loginToken',
+      process.env.REACT_APP_EDIT_KEY || '',
+    );
     setIsLogged(true);
   };
 

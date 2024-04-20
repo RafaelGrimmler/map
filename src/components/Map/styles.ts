@@ -103,6 +103,7 @@ export const StyledMarkerContainer = styled(Box)`
     align-items: center;
     font-weight: bold;
     cursor: pointer;
+    user-select: none;
 
     & .checked {
         color: #2ECC71;

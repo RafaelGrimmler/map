@@ -44,6 +44,10 @@ const useEditMarker = ({ markers, markerId, setMarkers }: UseEditMarkerArgs) => 
             radius: e?.id === markerId ? radius : e?.radius,
         })))
     }
+
+    const handleDeleteMarker = () => {
+        setMarkers(markers?.filter(e => e?.id !== markerId))
+    }
  
     return {  
         handleInsertMarker, 
@@ -51,6 +55,7 @@ const useEditMarker = ({ markers, markerId, setMarkers }: UseEditMarkerArgs) => 
         handleMarkerPosition,
         handleMarkerImage,
         handleMarkerRadius,
+        handleDeleteMarker,
     }
 }
 

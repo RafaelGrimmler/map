@@ -72,6 +72,8 @@ export const StyledInfoBar = styled(Box)`
     justify-content: center;
     color: white;
     font-weight: bold;
+    user-select: none;
+    filter: drop-shadow(0px 0px 4px black);
 `
 
 export const StyledEmptyContainer = styled(Box)`
@@ -83,4 +85,5 @@ export const StyledEmptyContainer = styled(Box)`
     height: 100%;
     background-color: rgba(0,0,0,0.5);
     text-align: center;
+    user-select: none;
 `

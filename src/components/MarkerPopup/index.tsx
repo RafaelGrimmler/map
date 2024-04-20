@@ -22,10 +22,15 @@ import Gallery from '../Gallery';
 
 type MarkerPopupProps = {
   images?: Image[];
+  hiddenEdit?: boolean;
   handleEdit?: () => void;
 };
 
-const MarkerPopup: React.FC<MarkerPopupProps> = ({ images, handleEdit }) => {
+const MarkerPopup: React.FC<MarkerPopupProps> = ({
+  images,
+  hiddenEdit,
+  handleEdit,
+}) => {
   const [index, setIndex] = useState(0);
   const [open, setOpen] = useState(false);
 
@@ -52,12 +57,14 @@ const MarkerPopup: React.FC<MarkerPopupProps> = ({ images, handleEdit }) => {
     <Popup>
       <StyledContainer>
         <Box display="flex" gap={2} justifyContent="flex-end">
-          <StyledIconButton
-            aria-label="aria-edit"
-            isDisabled={!handleEdit}
-            onClick={() => handleEdit?.()}
-            icon={<MdOutlineEdit fontSize="24px" />}
-          />
+          {!hiddenEdit && (
+            <StyledIconButton
+              aria-label="aria-edit"
+              isDisabled={!handleEdit}
+              onClick={() => handleEdit?.()}
+              icon={<MdOutlineEdit fontSize="24px" />}
+            />
+          )}
           <StyledIconButton
             aria-label="aria-expand"
             isDisabled={images?.length === 0}
@@ -79,28 +86,26 @@ const MarkerPopup: React.FC<MarkerPopupProps> = ({ images, handleEdit }) => {
             <StyledImage src={images?.[index]?.src} />
           )}
           <StyledActionsContainer>
-            {
-              images && images?.length > 0 && (
-                <StyledActionsWrapper className="actions-wrapper">
-                  <StyledArrowsContainer onClick={handlePrev}>
-                    {images && images?.length > 1 && (
-                      <GrPrevious fontSize="32px" color="white" />
-                    )}
-                  </StyledArrowsContainer>
-                  <StyledArrowsContainer
-                    onClick={handleNext}
-                    justifyContent="flex-end"
-                  >
-                    {images && images?.length > 1 && (
-                      <GrNext fontSize="32px" color="white" />
-                    )}
-                  </StyledArrowsContainer>
-                  <StyledInfoBar>
-                    {index + 1} / {images?.length}
-                  </StyledInfoBar>
-                </StyledActionsWrapper>
-              )
-            }
+            {images && images?.length > 0 && (
+              <StyledActionsWrapper className="actions-wrapper">
+                <StyledArrowsContainer onClick={handlePrev}>
+                  {images && images?.length > 1 && (
+                    <GrPrevious fontSize="32px" color="white" />
+                  )}
+                </StyledArrowsContainer>
+                <StyledArrowsContainer
+                  onClick={handleNext}
+                  justifyContent="flex-end"
+                >
+                  {images && images?.length > 1 && (
+                    <GrNext fontSize="32px" color="white" />
+                  )}
+                </StyledArrowsContainer>
+                <StyledInfoBar>
+                  {index + 1} / {images?.length}
+                </StyledInfoBar>
+              </StyledActionsWrapper>
+            )}
           </StyledActionsContainer>
         </StyleImageContainer>
       </StyledContainer>

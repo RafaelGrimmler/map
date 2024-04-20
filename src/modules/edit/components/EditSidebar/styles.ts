@@ -7,7 +7,7 @@ export const StyledContainer = styled(Box)`
     top: 140px;
     left: 40px;
     width: 290px;
-    height: 400px;
+    height: 440px;
     z-index: 999;
     border-radius: 4px;
     overflow: hidden;

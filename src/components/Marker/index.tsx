@@ -38,7 +38,7 @@ const Marker: React.FC<MarkerProps> = ({
       icon={icon}
       draggable={isEditing}
       eventHandlers={{
-        mouseover: () => setIsHovering(true),
+        mouseover: () => !isOpen && setIsHovering(true),
         mouseout: () => setIsHovering(false),
         click: () => !isEditing && setMarkerId?.(0),
         popupclose: () => setIsOpen(false),
@@ -52,6 +52,7 @@ const Marker: React.FC<MarkerProps> = ({
     >
       {oldPoints?.length === 0 && (
         <MarkerPopup
+          hiddenEdit={!setMarkerId}
           handleEdit={isEditing ? undefined : () => setMarkerId?.(marker?.id)}
           images={markerImages}
         />

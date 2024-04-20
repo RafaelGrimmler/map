@@ -68,8 +68,11 @@ const Gallery: React.FC<GalleryProps> = ({
         <ModalBody pb={6} overflow="hidden">
           {image?.id ? (
             <GalleryImageView
+              viewMode={mode === 'VIEW'}
               image={image}
+              selected={selected}
               images={images}
+              handleSelect={handleSelect}
               handleToggleExpand={(i) => setImage(i)}
             />
           ) : (

@@ -87,7 +87,7 @@ const Map: React.FC<MapProps> = ({
             handleSelect={() => {
               const hasPoints = selectedMarker?.points?.length > 0;
               if (hasPoints) setMarkerId?.(0);
-              if (!editLineId && !hasPoints) setLineId?.(line?.id);
+              if (!editLineId && hasPoints) setLineId?.(line?.id);
             }}
           />
         ))}
@@ -106,7 +106,7 @@ const Map: React.FC<MapProps> = ({
             ))}
       </MapContainer>
       {!hiddenToggleMarker && (
-        <StyledMarkerContainer onClick={() => handleToggleMarker()}>
+        <StyledMarkerContainer onClick={handleToggleMarker}>
           <StyledCheckBox>
             {showMarker && <FaCheck className="checked" />}
           </StyledCheckBox>

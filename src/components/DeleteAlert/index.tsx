@@ -36,7 +36,7 @@ const DeleteAlert: React.FC<DeleteAlertProps> = ({
           </AlertDialogHeader>
 
           <AlertDialogBody>
-            Você realmente deseja deletar este item?
+            Você realmente deseja deletar este(s) item(s)?
           </AlertDialogBody>
 
           <AlertDialogFooter>

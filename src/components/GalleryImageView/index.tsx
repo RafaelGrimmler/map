@@ -16,12 +16,18 @@ import { useEffect } from 'react';
 type GalleryImageViewProps = {
   image: Image;
   images: Image[];
+  selected: number[];
+  viewMode?: boolean;
+  handleSelect: (imageId: number) => void;
   handleToggleExpand: (img?: Image) => void;
 };
 
 const GalleryImageView: React.FC<GalleryImageViewProps> = ({
   image,
   images,
+  selected,
+  viewMode,
+  handleSelect,
   handleToggleExpand,
 }) => {
   const getSelectedIndex = () => images?.findIndex((e) => e?.id === image?.id);
@@ -49,18 +55,20 @@ const GalleryImageView: React.FC<GalleryImageViewProps> = ({
       <StyledImageContainer>
         <StyledImage src={image?.src} />
         <StyledImageMask className="image-mask">
-          <StyledImageMaskWrapper>
-            <StyledArrowsContainer pl={3} onClick={handlePrev}>
-              <GrPrevious fontSize="32px" color="white" />
-            </StyledArrowsContainer>
-            <StyledArrowsContainer
-              pr={3}
-              onClick={handleNext}
-              justifyContent="end"
-            >
-              <GrNext fontSize="32px" color="white" />
-            </StyledArrowsContainer>
-          </StyledImageMaskWrapper>
+          {images?.length > 1 && (
+            <StyledImageMaskWrapper>
+              <StyledArrowsContainer pl={3} onClick={handlePrev}>
+                <GrPrevious fontSize="32px" color="white" />
+              </StyledArrowsContainer>
+              <StyledArrowsContainer
+                pr={3}
+                onClick={handleNext}
+                justifyContent="end"
+              >
+                <GrNext fontSize="32px" color="white" />
+              </StyledArrowsContainer>
+            </StyledImageMaskWrapper>
+          )}
         </StyledImageMask>
       </StyledImageContainer>
       <StyledListWrapper>
@@ -69,9 +77,12 @@ const GalleryImageView: React.FC<GalleryImageViewProps> = ({
             <GalleryCard
               key={e?.id}
               image={e}
+              viewMode={viewMode}
+              isSelected={selected?.some((id) => id === e?.id)}
               isView={e?.id === image?.id}
-              handleClick={() => handleToggleExpand(e)}
               mb={i < images?.length - 1 ? 4 : 0}
+              handleClick={() => handleToggleExpand(e)}
+              handleSelect={handleSelect}
             />
           ))}
         </StyledListContainer>

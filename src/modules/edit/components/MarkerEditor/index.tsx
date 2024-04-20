@@ -13,6 +13,7 @@ import { Image, Marker } from '../../../../types';
 import { LuMapPin } from 'react-icons/lu';
 import { useState } from 'react';
 import Gallery from '../../../../components/Gallery';
+import DeleteAlert from '../../../../components/DeleteAlert';
 
 type MarkerEditorProps = {
   marker: Marker;
@@ -22,6 +23,7 @@ type MarkerEditorProps = {
   handleInsertMarker: (e: any) => void;
   handleMarkerImage: (ids: number[]) => void;
   handleMarkerRadius: (radius: number) => void;
+  handleDeleteMarker: () => void;
 };
 
 const MarkerEditor: React.FC<MarkerEditorProps> = ({
@@ -32,14 +34,16 @@ const MarkerEditor: React.FC<MarkerEditorProps> = ({
   handleInsertMarker,
   handleMarkerImage,
   handleMarkerRadius,
+  handleDeleteMarker,
 }) => {
   const [open, setOpen] = useState(false);
+  const [openDeleteAlert, setOpenDeleteAlert] = useState(false);
 
   const handleCreateMarker = (): Marker => ({
     id: getTimestamp(),
     points: [],
     imageIds: [],
-    radius: 1000,
+    radius: 2500,
   });
 
   const handleClick = () => {
@@ -87,6 +91,12 @@ const MarkerEditor: React.FC<MarkerEditorProps> = ({
                   <SliderThumb bg="#b8f2d1" />
                 </Slider>
                 <Button onClick={() => setOpen(true)}>Gerenciar imagens</Button>
+                <Button
+                  colorScheme="red"
+                  onClick={() => setOpenDeleteAlert(true)}
+                >
+                  Deletar
+                </Button>
               </Box>
             )}
           </Box>
@@ -101,6 +111,14 @@ const MarkerEditor: React.FC<MarkerEditorProps> = ({
           isOpen={open}
           handleSave={handleMarkerImage}
           onClose={() => setOpen(false)}
+        />
+      )}
+
+      {openDeleteAlert && (
+        <DeleteAlert
+          onClose={() => setOpenDeleteAlert(false)}
+          open
+          onConfirm={handleDeleteMarker}
         />
       )}
     </Box>

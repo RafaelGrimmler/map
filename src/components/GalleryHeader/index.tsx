@@ -1,13 +1,14 @@
-import { Box, Text } from '@chakra-ui/react';
+import { Box, Button, Text } from '@chakra-ui/react';
 
 import { IoClose } from 'react-icons/io5';
 import { MdAdd } from 'react-icons/md';
 import GalleryPopover from '../GalleryPopover';
 import { IoMdReturnLeft } from 'react-icons/io';
-import { StyledButton, StyledIconButton } from './styles';
+import { StyledButton, StyledContainer, StyledIconButton } from './styles';
 import { Image } from '../../types';
 import { useState } from 'react';
 import { clickElements } from '../../helpers/utils';
+import DeleteAlert from '../DeleteAlert';
 
 type GalleryHeaderProps = {
   image: Image | undefined;
@@ -31,6 +32,7 @@ const GalleryHeader: React.FC<GalleryHeaderProps> = ({
   handleSave,
 }) => {
   const [open, setOpen] = useState(false);
+  const [openDeleteAlert, setOpenDeleteAlert] = useState(false);
 
   const handleOpen = () => {
     clickElements('.gallery-form-close');
@@ -38,7 +40,7 @@ const GalleryHeader: React.FC<GalleryHeaderProps> = ({
   };
 
   return (
-    <Box display="flex" alignItems="center" justifyContent="space-between">
+    <StyledContainer>
       <Box display="flex" gap={3}>
         {image?.id && (
           <StyledIconButton
@@ -54,24 +56,34 @@ const GalleryHeader: React.FC<GalleryHeaderProps> = ({
       </Box>
 
       <Box display="flex" gap={2}>
-        <Text>{selectedLength} imagens selecionadas</Text>
+        {mode !== 'VIEW' && <Text>{selectedLength} imagens selecionadas</Text>}
         {mode === 'SELECT' && (
           <StyledButton onClick={() => handleSave?.()}>Salvar</StyledButton>
         )}
         {mode === 'EDIT' && (
-          <GalleryPopover
-            open={open}
-            setOpen={setOpen}
-            handleSave={(t: string) => handleInsertImage?.(t)}
-          >
-            <StyledButton
-              iconSpacing={1}
-              onClick={handleOpen}
-              rightIcon={<MdAdd fontSize="20px" />}
+          <>
+            <Button
+              colorScheme="red"
+              height="32px"
+              isDisabled={selectedLength === 0}
+              onClick={() => setOpenDeleteAlert(true)}
             >
-              Adicionar
-            </StyledButton>
-          </GalleryPopover>
+              Deletar
+            </Button>
+            <GalleryPopover
+              open={open}
+              setOpen={setOpen}
+              handleSave={(t: string) => handleInsertImage?.(t)}
+            >
+              <StyledButton
+                iconSpacing={1}
+                onClick={handleOpen}
+                rightIcon={<MdAdd fontSize="20px" />}
+              >
+                Adicionar
+              </StyledButton>
+            </GalleryPopover>
+          </>
         )}
         <StyledIconButton
           aria-label="aria-close"
@@ -79,7 +91,15 @@ const GalleryHeader: React.FC<GalleryHeaderProps> = ({
           icon={<IoClose fontSize="28px" />}
         />
       </Box>
-    </Box>
+
+      {openDeleteAlert && (
+        <DeleteAlert
+          onClose={() => setOpenDeleteAlert(false)}
+          open
+          onConfirm={() => console.log('delte images')}
+        />
+      )}
+    </StyledContainer>
   );
 };
 

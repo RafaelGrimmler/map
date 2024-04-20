@@ -23,6 +23,8 @@ type EditSidebarProps = {
   handleInsertImage: (src: string) => void;
   handleMarkerImage: (ids: number[]) => void;
   handleMarkerRadius: (radius: number) => void;
+  handleDeleteMarker: () => void;
+  handleDownload: () => void;
 };
 
 const EditSidebar: React.FC<EditSidebarProps> = ({
@@ -40,6 +42,8 @@ const EditSidebar: React.FC<EditSidebarProps> = ({
   handleInsertImage,
   handleMarkerImage,
   handleMarkerRadius,
+  handleDeleteMarker,
+  handleDownload,
 }) => {
   const navigator = useNavigate();
 
@@ -76,6 +80,7 @@ const EditSidebar: React.FC<EditSidebarProps> = ({
         handleInsertMarker={handleInsertMarker}
         handleMarkerImage={handleMarkerImage}
         handleMarkerRadius={handleMarkerRadius}
+        handleDeleteMarker={handleDeleteMarker}
       />
       <EditAccordion
         label="Galeria"
@@ -83,6 +88,7 @@ const EditSidebar: React.FC<EditSidebarProps> = ({
         icon={TbBrandGooglePhotos}
         handleClick={handleImages}
       />
+      <EditAccordion label="Download" handleClick={handleDownload} />
       <EditAccordion label="Sair" handleClick={handleBack} />
       {openGallery && (
         <Gallery

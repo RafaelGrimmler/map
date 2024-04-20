@@ -66,11 +66,14 @@ const LineEditor: React.FC<LineEditorProps> = ({
           </Box>
         }
       />
-      <DeleteAlert
-        onClose={() => setOpen(false)}
-        open={open}
-        onConfirm={handleDeleteLine}
-      />
+
+      {open && (
+        <DeleteAlert
+          onClose={() => setOpen(false)}
+          open={open}
+          onConfirm={handleDeleteLine}
+        />
+      )}
     </Box>
   );
 };
