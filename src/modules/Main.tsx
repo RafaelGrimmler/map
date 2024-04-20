@@ -1,11 +1,13 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
-import Home from './Home';
+import HomePage from './home/HomePage';
+import EditPage from './edit/EditPage';
 
 const Main: React.FC = () => {
   return (
     <Routes>
-      <Route path="/" Component={Home} />
-      <Route path="/user/:id" Component={Home} />
+      <Route path="/" Component={HomePage} />
+      <Route path="/user/:id" Component={HomePage} />
+      <Route path="/user/:id/edit" Component={EditPage} />
       <Route path="/*" element={<Navigate to="/" />} />
     </Routes>
   );

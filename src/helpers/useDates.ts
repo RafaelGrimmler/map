@@ -9,3 +9,26 @@ export const getTodayFormat = () => {
     const day = date.getDate();
     return `${day}_${month}_${year}`;
 }
+
+export const formatDate = (date: Date) => {
+    const months = [
+        'Janeiro',
+        'Fevereiro',
+        'Março',
+        'Abril',
+        'Maio',
+        'Junho',
+        'Julho',
+        'Maio',
+        'Agosto',
+        'Setembro',
+        'Outubro',
+        'Novembro',
+        'Dezembro'
+    ];
+
+    const month = months?.[date?.getMonth()];
+    const year = date?.getFullYear();
+    
+    return `${month} de ${year}`;
+}
