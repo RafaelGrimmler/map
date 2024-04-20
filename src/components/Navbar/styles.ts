@@ -7,7 +7,12 @@ export const StyledNavbarContainer = styled(Box)`
     position: absolute;
     top: 60px;
     left: 90px;
-    z-index: 999;
+    z-index: 999;    
+    
+    @media (max-width: 520px) {
+        top: 32px;
+        left: 32px;
+    }
 `
 
 export const StyledWrapper = styled(Box)`
@@ -20,6 +25,11 @@ export const StyledHeader = styled(Box)`
     width: 100%;
     height: 60px;
     display: flex;
+    background-color: red;
+    
+    @media (max-width: 520px) {
+        height: 30px;
+    }
 `
 
 export const StyledAvatar = styled(Avatar)`
@@ -29,6 +39,13 @@ export const StyledAvatar = styled(Avatar)`
     left: -60px;
     z-index: 9;
     position: absolute;
+
+    @media (max-width: 520px) {
+        width: 60px;
+        height: 60px;
+        top: -20px;
+        left: -20px;
+    }
 `
 
 export const StyledNameContainer = styled(Box)`
@@ -47,6 +64,10 @@ export const StyledNameContainer = styled(Box)`
     font-size: 20px;
     line-height: 20px;
     font-weight: bold;
+
+    @media (max-width: 520px) {
+        height: 30px;
+    }
 `
 
 export const StyledActionContainer = styled(Box)`
@@ -68,5 +89,9 @@ export const StyledButton = styled(Button)`
     &:disabled {
         opacity: 1;
         background-color: gray !important;
+    }
+
+    @media (max-width: 520px) {
+        height: 32px;
     }
 `

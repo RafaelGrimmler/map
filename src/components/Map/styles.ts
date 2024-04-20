@@ -38,18 +38,22 @@ export const StyledContainer = styled(Box)<{
 
     & .leaflet-popup {
         ${({ zoom }) => css`
-            bottom: ${getPopupAdjust(zoom)?.bottom} !important;
-            left: ${getPopupAdjust(zoom)?.left} !important;
+            bottom: ${getPopupAdjust(zoom, 'lg')?.bottom} !important;
+            left: ${getPopupAdjust(zoom, 'lg')?.left} !important;
+
+            @media (max-width: 520px) {
+                bottom: ${getPopupAdjust(zoom, 'sm')?.bottom} !important;
+                left: ${getPopupAdjust(zoom, 'sm')?.left} !important;
+            }
+
+            @media (max-width: 440px) {
+                bottom: ${getPopupAdjust(zoom, 'xs')?.bottom} !important;
+                left: ${getPopupAdjust(zoom, 'xs')?.left} !important;
+            }
         `}
     }
 
     & .marker-circle {
-        /* ${({ zoom }) => zoom === 11 && "stroke-width: 40px;"}
-        ${({ zoom }) => zoom === 12 && "stroke-width: 80px;"}
-        ${({ zoom }) => zoom === 13 && "stroke-width: 160px;"} */
-        /* stroke-width: 80px; 12 */
-        /* stroke-width: 160px; 13 */
-        /* stroke-width: 320px; 14 */
         stroke-width: 1px;
         stroke: rgba(0,0,0,0.6);
         fill: black;
@@ -110,6 +114,13 @@ export const StyledMarkerContainer = styled(Box)`
         font-size: 30px;
         margin-left: -4px;
         margin-top: -8px;
+    }
+
+    @media (max-width: 520px) {
+        left: 0;
+        bottom: 20px;
+        padding: 32px;
+        width: 100vw;
     }
 `
 

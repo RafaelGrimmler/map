@@ -1,10 +1,14 @@
 RESOLVED
+# - arrumar tamanho do marcador
 # - remover arquivos inutilizados
 # - rever modo de salvar localstorage
 # - arrumar setas da galeria com uma imagem
 # - arrumar marker popup edição no modo de visualização
 
 CURRENT
-# - arrumar responsividade (marker popup)
+# - arrumar responsividade
 
 PENDING
+# - setas da galeria com tamanho de meia tela
+# - arrumar linha sem cor de edição
+# - deletar imagens

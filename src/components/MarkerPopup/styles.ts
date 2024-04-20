@@ -8,6 +8,16 @@ export const StyledContainer = styled(Box)`
     display: flex;
     flex-direction: column;
     gap: 6px;
+
+    @media (max-width: 520px) {
+        width: 420px;
+        height: 330px;
+    }
+
+    @media (max-width: 440px) {
+        width: 370px;
+        height: 300px;
+    }
 `  
 
 export const StyledIconButton = styled(IconButton)`
