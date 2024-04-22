@@ -86,7 +86,7 @@ const Map: React.FC<MapProps> = ({
             isEditing={editLineId === line?.id}
             handleSelect={() => {
               const hasPoints = selectedMarker?.points?.length > 0;
-              if (selectedMarker && !hasPoints) return;
+              if (editLineId || (selectedMarker && !hasPoints)) return;
               setLineId?.(line?.id);
             }}
           />
