@@ -18,8 +18,6 @@ export type User = {
     role: UserRoleEnum;
 }
 
-export type MapFile = { userMap: string; lines: Line[] }
-
 export type UserProfile = {
     name: string;
     image: string;
@@ -27,3 +25,5 @@ export type UserProfile = {
     userMap: string; 
     lines: Line[]
 }
+
+export type MapFile = { userMap: string; lines: Line[] }
