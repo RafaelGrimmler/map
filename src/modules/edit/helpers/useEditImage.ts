@@ -1,23 +1,23 @@
-import { getTimestamp } from "../../../helpers/useDates";
-import { Image } from "../../../types";
+import { getTimestamp } from '../../../helpers/useDates';
+import { Image } from '../../../types';
 
-type UseEditImageArgs = { 
-    images: Image[];
-    setImages: React.Dispatch<React.SetStateAction<Image[]>>
-}
+type UseEditImageArgs = {
+  images: Image[];
+  setImages: React.Dispatch<React.SetStateAction<Image[]>>;
+};
 
 const useEditImage = ({ images, setImages }: UseEditImageArgs) => {
-    const handleInsertImage = (src: string) => {
-        const newImage: Image = {
-            createdAt: new Date(),
-            id: getTimestamp(),
-            src,
-        }
-
-        setImages([...images, newImage]);
+  const handleInsertImage = (src: string) => {
+    const newImage: Image = {
+      createdAt: new Date(),
+      id: getTimestamp(),
+      src,
     };
 
-    return { handleInsertImage }
-}
+    setImages([...images, newImage]);
+  };
+
+  return { handleInsertImage };
+};
 
 export default useEditImage;

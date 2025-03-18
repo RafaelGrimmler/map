@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Popup } from 'react-leaflet';
 import {
   StyleImageContainer,
