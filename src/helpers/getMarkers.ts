@@ -1,6 +1,6 @@
-import { Marker } from "../types"
+import { Marker } from '../types';
 
 export const getMarkers = (): Marker[] => {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    return require('../files/maps/markers.json')?.markers
-}
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  return require('../files/maps/markers.json')?.markers;
+};
