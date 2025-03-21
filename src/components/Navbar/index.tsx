@@ -43,7 +43,6 @@ const Navbar: React.FC<NavbarProps> = ({ userProfile, showButtons = true }) => {
                   navigator({ pathname: `/user/${userProfile?.userMap}/edit` });
                 else setOpen(true);
               }}
-              disabled
             >
               Entrar
             </StyledButton>
