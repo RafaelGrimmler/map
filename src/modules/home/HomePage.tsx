@@ -1,32 +1,16 @@
 import { Box } from '@chakra-ui/react';
-import Map from '../../components/Map';
-import { useUser } from '../../helpers/useUser';
-import { Navigate, useParams } from 'react-router-dom';
-import UserSelect from './components/UserSelect';
-import Navbar from '../../components/Navbar';
-import { getImages } from '../../helpers/getImages';
-import { getMarkers } from '../../helpers/getMarkers';
+import { useTheme } from '../../theme/useTheme';
 
 const HomePage: React.FC = () => {
-  const { id } = useParams();
-  const { userProfiles } = useUser();
+  const { palette, handleToggleDarkMode } = useTheme();
 
-  const user = userProfiles?.find((e) => e?.userMap === id);
-  const images = getImages();
-  const markers = getMarkers();
-
-  if (id && !user) return <Navigate to="/map" />;
+  console.log(palette);
 
   return (
-    <Box>
-      <Map
-        userProfile={user}
-        images={user && images}
-        markers={user && markers}
-        hiddenToggleMarker={!user}
-      />
-      {user && <Navbar userProfile={user} />}
-      {!user && <UserSelect userProfiles={userProfiles} />}
+    <Box bg="green" width="100%" height="100px">
+      <Box bg="red" onClick={() => handleToggleDarkMode()}>
+        test
+      </Box>
     </Box>
   );
 };

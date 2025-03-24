@@ -20,6 +20,7 @@ export type User = {
 
 export type UserProfile = {
   name: string;
+  youtube: string;
   image: string;
   vehicle: string;
   userMap: string;

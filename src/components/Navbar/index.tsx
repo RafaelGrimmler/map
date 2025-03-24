@@ -11,7 +11,7 @@ import {
 } from './styles';
 import { useNavigate } from 'react-router-dom';
 import { useContext, useState } from 'react';
-import LoginModal from '../../modules/home/components/LoginModal';
+import LoginModal from '../../modules/presentation/components/LoginModal';
 import { LoginContext, LoginContextReturn } from '../../context/Login';
 
 type NavbarProps = { userProfile: UserProfile; showButtons?: boolean };
