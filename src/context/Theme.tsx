@@ -11,7 +11,7 @@ const ThemeProvider: React.FC<ThemeContextProps> = ({ children }) => {
     window.localStorage.getItem('darkMode') === 'true',
   );
 
-  const handleToggleDarkMode = () => {
+  const changeMode = () => {
     if (window.localStorage.getItem('darkMode') === 'true') {
       window.localStorage.setItem('darkMode', 'false');
       setIsDarkMode(false);
@@ -23,7 +23,7 @@ const ThemeProvider: React.FC<ThemeContextProps> = ({ children }) => {
 
   return (
     <ThemeContext.Provider value={{}}>
-      <ChakraProvider theme={getTheme({ isDarkMode, handleToggleDarkMode })}>
+      <ChakraProvider theme={getTheme({ isDarkMode, changeMode })}>
         {children}
       </ChakraProvider>
     </ThemeContext.Provider>

@@ -1,16 +1,16 @@
 import EditSidebar from '../EditSidebar';
 import { StyledContainer } from './styles';
 import Map from '../../../../components/Map';
-import { UserProfile } from '../../../../types';
+import { User } from '../../../../types';
 import Navbar from '../../../../components/Navbar';
 import { useState } from 'react';
 import useEditLine from '../../helpers/useEditLine';
 import { downloadFiles } from '../../../../helpers/downloadFiles';
 
-type EditMapProps = { userProfile: UserProfile };
+type EditMapProps = { user: User };
 
-const EditMap: React.FC<EditMapProps> = ({ userProfile }) => {
-  const [user, setUser] = useState<UserProfile>(userProfile);
+const EditMap: React.FC<EditMapProps> = ({ user: defaultUser }) => {
+  const [user, setUser] = useState<User>(defaultUser);
 
   const [lineId, setLineId] = useState(0);
 
@@ -21,13 +21,13 @@ const EditMap: React.FC<EditMapProps> = ({ userProfile }) => {
   return (
     <StyledContainer>
       <Map
-        userProfile={user}
+        user={user}
         editLineId={lineId}
         setLineId={setLineId}
         handleAppendLine={lineFunctions?.handleAppendLine}
       />
       <EditSidebar
-        userProfile={user}
+        user={user}
         lineId={lineId}
         setLineId={setLineId}
         handleDeleteLine={lineFunctions?.handleDeleteLine}
@@ -35,7 +35,7 @@ const EditMap: React.FC<EditMapProps> = ({ userProfile }) => {
         handleUndoLine={lineFunctions?.handleUndoLine}
         handleDownload={handleDownload}
       />
-      <Navbar userProfile={userProfile} showButtons={false} />
+      <Navbar user={user} showButtons={false} />
     </StyledContainer>
   );
 };

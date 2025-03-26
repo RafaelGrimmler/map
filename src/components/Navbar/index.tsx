@@ -1,5 +1,5 @@
 import { Text } from '@chakra-ui/react';
-import { UserProfile } from '../../types';
+import { User } from '../../types';
 import {
   StyledActionContainer,
   StyledAvatar,
@@ -14,9 +14,9 @@ import { useContext, useState } from 'react';
 import LoginModal from '../../modules/presentation/components/LoginModal';
 import { LoginContext, LoginContextReturn } from '../../context/Login';
 
-type NavbarProps = { userProfile: UserProfile; showButtons?: boolean };
+type NavbarProps = { user: User; showButtons?: boolean };
 
-const Navbar: React.FC<NavbarProps> = ({ userProfile, showButtons = true }) => {
+const Navbar: React.FC<NavbarProps> = ({ user, showButtons = true }) => {
   const navigator = useNavigate();
   const loginContext = useContext(LoginContext);
 
@@ -31,16 +31,16 @@ const Navbar: React.FC<NavbarProps> = ({ userProfile, showButtons = true }) => {
       <StyledWrapper>
         <StyledHeader>
           <StyledNameContainer>
-            <Text>{userProfile?.name}</Text>
+            <Text>{user?.name}</Text>
           </StyledNameContainer>
-          <StyledAvatar src={userProfile?.image} />
+          <StyledAvatar src={user?.image} />
         </StyledHeader>
         {showButtons && (
           <StyledActionContainer>
             <StyledButton
               onClick={() => {
                 if (isLogged)
-                  navigator({ pathname: `/user/${userProfile?.userMap}/edit` });
+                  navigator({ pathname: `/user/${user?.userMap}/edit` });
                 else setOpen(true);
               }}
             >
@@ -53,7 +53,7 @@ const Navbar: React.FC<NavbarProps> = ({ userProfile, showButtons = true }) => {
 
       {open && (
         <LoginModal
-          id={userProfile?.userMap}
+          id={user?.userMap}
           handleSave={handleLogin}
           isOpen
           onClose={() => setOpen(false)}

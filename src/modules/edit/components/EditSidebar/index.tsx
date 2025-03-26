@@ -1,6 +1,6 @@
 import { StyledContainer } from './styles';
 import LineEditor from '../LineEditor';
-import { Line, UserProfile } from '../../../../types';
+import { Line, User } from '../../../../types';
 import EditAccordion from '../EditAccordion';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
@@ -8,7 +8,7 @@ import { TbBrandGooglePhotos } from 'react-icons/tb';
 
 type EditSidebarProps = {
   lineId: number;
-  userProfile: UserProfile;
+  user: User;
   setLineId: React.Dispatch<React.SetStateAction<number>>;
   handleUndoLine: () => void;
   handleDeleteLine: () => void;
@@ -18,7 +18,7 @@ type EditSidebarProps = {
 
 const EditSidebar: React.FC<EditSidebarProps> = ({
   lineId,
-  userProfile,
+  user,
   setLineId,
   handleInsertLine,
   handleDeleteLine,
@@ -29,15 +29,14 @@ const EditSidebar: React.FC<EditSidebarProps> = ({
 
   const [openGallery, setOpenGallery] = useState(false);
 
-  const handleBack = () =>
-    navigator({ pathname: `/user/${userProfile?.userMap}` });
+  const handleBack = () => navigator({ pathname: `/user/${user?.userMap}` });
 
   const handleImages = () => {
     setLineId(0);
     setOpenGallery(true);
   };
 
-  const selectedLine = userProfile?.lines?.find((e) => e?.id === lineId) as any;
+  const selectedLine = user?.lines?.find((e) => e?.id === lineId);
 
   return (
     <StyledContainer>

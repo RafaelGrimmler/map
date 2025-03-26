@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { UserProfile } from '../../../../types';
+import { User } from '../../../../types';
 import Map from '../../../../components/Map';
 import {
   StyledAvatar,
@@ -12,26 +12,23 @@ import {
   StyledVehicle,
 } from './styles';
 
-type ProfileCardProps = {
-  userProfile: UserProfile;
-};
+type ProfileCardProps = { user: User };
 
-const ProfileCard: React.FC<ProfileCardProps> = ({ userProfile }) => {
+const ProfileCard: React.FC<ProfileCardProps> = ({ user }) => {
   const navigator = useNavigate();
 
-  const handleClick = () =>
-    navigator({ pathname: `/user/${userProfile?.userMap}` });
+  const handleClick = () => navigator({ pathname: `/user/${user?.userMap}` });
 
   return (
     <StyledProfileContainer>
-      <Map defaultZoom={9} userProfile={userProfile} />
+      <Map defaultZoom={9} user={user} />
       <StyledProfileOverlay>
         <StyledOverlayWrapper onClick={handleClick}>
           <StyledProfileContent className="profile-content">
-            <StyledAvatar src={userProfile?.image} />
+            <StyledAvatar src={user?.image} />
             <StyledProfileInformations className="profile-informations">
-              <StyledName>{userProfile?.name}</StyledName>
-              <StyledVehicle>{userProfile?.vehicle}</StyledVehicle>
+              <StyledName>{user?.name}</StyledName>
+              <StyledVehicle>{user?.vehicle}</StyledVehicle>
             </StyledProfileInformations>
           </StyledProfileContent>
         </StyledOverlayWrapper>

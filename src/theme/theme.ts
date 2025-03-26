@@ -1,27 +1,29 @@
 import { extendTheme } from '@chakra-ui/react';
+import { Palette } from './type';
 
-const colors = {
-  brand: {
-    1: '#17223B',
-    2: '#263859',
-    3: '#6B778D',
-    4: '#2ECC71',
-    5: '#2ecc9d',
-    error: '#ff3333',
-  },
+const common: Palette['common'] = { black: '#000000', white: '#ffffff' };
+
+const darkPalette: Palette = {
+  background: { main: '#262626' },
+  primary: { light: '#ffc55c', main: '#FFA500', dark: '#a16700' },
+  text: { primary: '#ffffff' },
+  common,
+};
+const lightPalette: Palette = {
+  background: { main: '#ffffff' },
+  primary: { light: '#ffc55c', main: '#FFA500', dark: '#a16700' },
+  text: { primary: '#262626' },
+  common,
 };
 
-const darkPalette = { background: 'black' };
-const lightPalette = { background: 'white' };
-
 export const getTheme = ({
-  handleToggleDarkMode,
+  changeMode,
   isDarkMode,
 }: {
   isDarkMode: boolean;
-  handleToggleDarkMode: () => void;
+  changeMode: () => void;
 }) => {
   const palette = isDarkMode ? darkPalette : lightPalette;
 
-  return extendTheme({ colors, palette, handleToggleDarkMode });
+  return extendTheme({ palette, isDarkMode, changeMode });
 };

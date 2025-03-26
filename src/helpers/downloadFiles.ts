@@ -1,15 +1,15 @@
 import isEqual from 'lodash/isEqual';
-import {  UserProfile } from '../types';
+import { User } from '../types';
 import { getTodayFormat } from './useDates';
-import { useUser } from './useUser';
+import { useUsers } from './useUsers';
 
 type DownloadFilesArgs = {
-  user: UserProfile;
+  user: User;
 };
 
-const checkIfUserHasChanges = (user: UserProfile) => {
-  const { userProfiles } = useUser();
-  const oldUser = userProfiles?.find((e) => e?.userMap === user?.userMap);
+const checkIfUserHasChanges = (user: User) => {
+  const { users } = useUsers();
+  const oldUser = users?.find((e) => e?.userMap === user?.userMap);
   return !isEqual(user, oldUser);
 };
 

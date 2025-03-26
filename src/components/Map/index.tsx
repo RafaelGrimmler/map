@@ -1,6 +1,6 @@
 import { MapContainer, TileLayer, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-import { UserProfile } from '../../types';
+import { User } from '../../types';
 import { StyledContainer } from './styles';
 import { LatLng } from 'leaflet';
 import { useState } from 'react';
@@ -8,7 +8,7 @@ import Polyline from '../Polyline';
 
 type MapProps = {
   defaultZoom?: number;
-  userProfile?: UserProfile;
+  user?: User;
   editLineId?: number;
   handleAppendLine?: (coord: LatLng) => void;
   setLineId?: React.Dispatch<React.SetStateAction<number>>;
@@ -16,7 +16,7 @@ type MapProps = {
 
 const Map: React.FC<MapProps> = ({
   defaultZoom = 11,
-  userProfile,
+  user,
   editLineId,
   handleAppendLine,
   setLineId,
@@ -30,7 +30,7 @@ const Map: React.FC<MapProps> = ({
       },
       zoom: (e) => setZoom(e.target._zoom),
     });
-    return null;
+    return <></>;
   };
 
   return (
@@ -47,7 +47,7 @@ const Map: React.FC<MapProps> = ({
           url={`https://{s}.tile.jawg.io/jawg-streets/{z}/{x}/{y}{r}.png?access-token=${process.env.REACT_APP_MAP_KEY}`}
         />
         <LocationFinderDummy />
-        {userProfile?.lines?.map((line) => (
+        {user?.lines?.map((line) => (
           <Polyline
             key={line?.id}
             line={line}

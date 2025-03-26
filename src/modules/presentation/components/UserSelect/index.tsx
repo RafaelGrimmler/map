@@ -1,14 +1,14 @@
-import { UserProfile } from '../../../../types';
+import { User } from '../../../../types';
 import ProfileCard from '../ProfileCard';
 import { StyledContainer } from './styles';
 
-type UserSelectProps = { userProfiles: UserProfile[] };
+type UserSelectProps = { users: User[] };
 
-const UserSelect: React.FC<UserSelectProps> = ({ userProfiles }) => {
+const UserSelect: React.FC<UserSelectProps> = ({ users }) => {
   return (
     <StyledContainer>
-      {userProfiles?.map((userProfile) => (
-        <ProfileCard key={userProfile?.userMap} userProfile={userProfile} />
+      {users?.map((user) => (
+        <ProfileCard key={user?.userMap} user={user} />
       ))}
     </StyledContainer>
   );

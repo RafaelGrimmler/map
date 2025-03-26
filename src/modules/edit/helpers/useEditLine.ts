@@ -1,10 +1,10 @@
 import { LatLng } from 'leaflet';
-import { Line, UserProfile } from '../../../types';
+import { Line, User } from '../../../types';
 
 type UseEditLineArgs = {
-  user: UserProfile;
+  user: User;
   lineId: number;
-  setUser: React.Dispatch<React.SetStateAction<UserProfile>>;
+  setUser: React.Dispatch<React.SetStateAction<User>>;
   setLineId: React.Dispatch<React.SetStateAction<number>>;
 };
 
