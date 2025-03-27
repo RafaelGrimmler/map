@@ -1,20 +1,6 @@
 import { extendTheme } from '@chakra-ui/react';
-import { Palette } from './type';
-
-const common: Palette['common'] = { black: '#000000', white: '#ffffff' };
-
-const darkPalette: Palette = {
-  background: { main: '#262626' },
-  primary: { light: '#ffc55c', main: '#FFA500', dark: '#a16700' },
-  text: { primary: '#ffffff' },
-  common,
-};
-const lightPalette: Palette = {
-  background: { main: '#ffffff' },
-  primary: { light: '#ffc55c', main: '#FFA500', dark: '#a16700' },
-  text: { primary: '#262626' },
-  common,
-};
+import { Palette } from './types';
+import { rgba } from 'polished';
 
 export const getTheme = ({
   changeMode,
@@ -23,7 +9,13 @@ export const getTheme = ({
   isDarkMode: boolean;
   changeMode: () => void;
 }) => {
-  const palette = isDarkMode ? darkPalette : lightPalette;
+  const palette: Palette = {
+    background: { main: '#ffffff', surface: '#fafafa' },
+    primary: { light: '#ffc55c', main: '#FFA500', dark: '#a16700' },
+    text: { primary: '#262626' },
+    divider: { main: rgba('#000000', 0.16) },
+    common: { black: '#000000', white: '#ffffff' },
+  };
 
   return extendTheme({ palette, isDarkMode, changeMode });
 };

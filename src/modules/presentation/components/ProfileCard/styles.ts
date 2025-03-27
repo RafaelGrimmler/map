@@ -1,27 +1,22 @@
-import { Avatar, Box, Text } from '@chakra-ui/react';
 import styled from '@emotion/styled';
+import Box from '../../../../foundation/Box';
+import Text from '../../../../foundation/Text';
+import { Avatar } from '@chakra-ui/react';
 
 export const StyledProfileContainer = styled(Box)`
-  width: 400px;
+  width: 600px;
   height: 400px;
   position: relative;
   border-radius: 4px;
 
   & .leaflet-container {
-    width: 400px !important;
+    width: 600px !important;
     height: 400px !important;
+    border-radius: 4px;
   }
 
   & .leaflet-bottom {
     display: none;
-  }
-
-  &:hover .profile-content {
-    filter: saturate(1.5) opacity(0.9);
-  }
-
-  &:hover .profile-informations {
-    background-color: #b8f2d1;
   }
 
   @media (max-width: 1500px) {
@@ -52,6 +47,10 @@ export const StyledProfileOverlay = styled(Box)`
   left: 0;
   z-index: 999;
   cursor: pointer;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
 `;
 
 export const StyledOverlayWrapper = styled(Box)`
@@ -78,11 +77,11 @@ export const StyledAvatar = styled(Avatar)`
 `;
 
 export const StyledProfileInformations = styled(Box)`
-  width: 400px;
+  width: 600px;
   height: 60%;
   padding-left: 80px;
   margin-left: -72px;
-  background-color: #2ecc9d;
+  background-color: ${({ theme }) => theme.palette.primary.light};
   display: flex;
   transition: 150ms;
   flex-direction: column;

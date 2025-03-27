@@ -1,8 +1,7 @@
 import { IconButton } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 import { IconButtonColor } from '.';
-import { css } from '@emotion/react';
-import { Theme } from '../../theme/type';
+import { css, Theme } from '@emotion/react';
 
 const getColor = (color: IconButtonColor, theme: Theme) =>
   ({
@@ -23,20 +22,20 @@ export const StyledIconButton = styled(IconButton, {
 })<{ $color: IconButtonColor }>`
   ${({ $color, theme }) => css`
     &.contained {
-      color: ${getColor($color, theme as Theme).text};
-      background-color: ${getColor($color, theme as Theme).background};
+      color: ${getColor($color, theme).text};
+      background-color: ${getColor($color, theme).background};
 
       &:hover {
-        background-color: ${getColor($color, theme as Theme).hover};
+        background-color: ${getColor($color, theme).hover};
       }
     }
 
     &.simple {
-      color: ${getColor($color, theme as Theme).text};
+      color: ${getColor($color, theme).text};
       background-color: transparent;
 
       &:hover {
-        background-color: ${getColor($color, theme as Theme).hover};
+        background-color: ${getColor($color, theme).hover};
       }
     }
   `}
