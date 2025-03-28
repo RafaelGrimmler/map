@@ -1,32 +1,30 @@
-import { Box } from '@chakra-ui/react';
-import Map from '../../components/Map';
-import { useUser } from '../../helpers/useUser';
-import { Navigate, useParams } from 'react-router-dom';
-import UserSelect from './components/UserSelect';
-import Navbar from '../../components/Navbar';
-import { getImages } from '../../helpers/getImages';
-import { getMarkers } from '../../helpers/getMarkers';
+import { useUsers } from '../../helpers/useUsers';
+import Box from '../../foundation/Box';
+import Text from '../../foundation/Text';
+import ProfileCard from './components/ProfileCard';
+import { useTheme } from '@emotion/react';
 
 const HomePage: React.FC = () => {
-  const { id } = useParams();
-  const { userProfiles } = useUser();
-
-  const user = userProfiles?.find((e) => e?.userMap === id);
-  const images = getImages();
-  const markers = getMarkers();
-
-  if (id && !user) return <Navigate to="/map" />;
+  const { palette } = useTheme();
+  const { users } = useUsers();
 
   return (
-    <Box>
-      <Map
-        userProfile={user}
-        images={user && images}
-        markers={user && markers}
-        hiddenToggleMarker={!user}
-      />
-      {user && <Navbar userProfile={user} />}
-      {!user && <UserSelect userProfiles={userProfiles} />}
+    <Box
+      width="100%"
+      height="100%"
+      display="flex"
+      flexDir="column"
+      alignItems="center"
+      gap="10"
+      padding="16"
+      bg={palette.background.main}
+    >
+      <Text fontSize="6xl" fontFamily="fantasy">
+        REGISTROS DAS ANDANÇAS
+      </Text>
+      <Box display="flex" gap="14" pb="14">
+        {users?.map((user) => <ProfileCard key={user?.userMap} user={user} />)}
+      </Box>
     </Box>
   );
 };
