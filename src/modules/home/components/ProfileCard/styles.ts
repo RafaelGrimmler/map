@@ -49,7 +49,7 @@ export const StyledProfileOverlay = styled(Box)`
   cursor: pointer;
 
   &:hover {
-    background-color: rgba(0, 0, 0, 0.1);
+    background-color: rgba(0, 0, 0, 0.05);
   }
 `;
 
@@ -86,6 +86,7 @@ export const StyledProfileInformations = styled(Box)`
   transition: 150ms;
   flex-direction: column;
   padding-bottom: 4px;
+  border-bottom-right-radius: 4px;
   gap: 2px;
   overflow: hidden;
   justify-content: center;

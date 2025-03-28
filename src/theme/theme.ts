@@ -12,6 +12,9 @@ export const getTheme = ({
   const palette: Palette = {
     background: { main: '#ffffff', surface: '#fafafa' },
     primary: { light: '#ffc55c', main: '#FFA500', dark: '#a16700' },
+    decorative: {
+      orange: { light: '#ffc55c', main: '#FFA500', dark: '#a16700' },
+    },
     text: { primary: '#262626' },
     divider: { main: rgba('#000000', 0.16) },
     common: { black: '#000000', white: '#ffffff' },
