@@ -1,4 +1,4 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 
 type LoginContextProps = { children?: React.ReactNode };
 
@@ -8,6 +8,7 @@ export type LoginContextReturn = {
 };
 
 export const LoginContext = createContext({});
+export const useLogin = () => useContext(LoginContext) as LoginContextReturn;
 
 const LoginProvider: React.FC<LoginContextProps> = ({ children }) => {
   const [isLogged, setIsLogged] = useState(
