@@ -3,8 +3,6 @@ import LineEditor from '../LineEditor';
 import { Line, User } from '../../../../types';
 import EditAccordion from '../EditAccordion';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
-import { TbBrandGooglePhotos } from 'react-icons/tb';
 
 type EditSidebarProps = {
   lineId: number;
@@ -27,14 +25,7 @@ const EditSidebar: React.FC<EditSidebarProps> = ({
 }) => {
   const navigator = useNavigate();
 
-  const [openGallery, setOpenGallery] = useState(false);
-
   const handleBack = () => navigator({ pathname: `/user/${user?.userMap}` });
-
-  const handleImages = () => {
-    setLineId(0);
-    setOpenGallery(true);
-  };
 
   const selectedLine = user?.lines?.find((e) => e?.id === lineId);
 
@@ -47,12 +38,6 @@ const EditSidebar: React.FC<EditSidebarProps> = ({
         handleDeleteLine={handleDeleteLine}
         handleInsertLine={handleInsertLine}
         handleUndoLine={handleUndoLine}
-      />
-      <EditAccordion
-        label="Galeria"
-        isSelected={openGallery}
-        icon={TbBrandGooglePhotos}
-        handleClick={handleImages}
       />
       <EditAccordion label="Download" handleClick={handleDownload} />
       <EditAccordion label="Sair" handleClick={handleBack} />
