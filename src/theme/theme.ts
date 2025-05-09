@@ -15,7 +15,7 @@ export const getTheme = ({
     decorative: {
       orange: { light: '#ffc55c', main: '#FFA500', dark: '#a16700' },
     },
-    text: { primary: '#262626' },
+    text: { primary: '#262626', secondary: '#4a4a4a' },
     divider: { main: rgba('#000000', 0.16) },
     common: { black: '#000000', white: '#ffffff' },
   };

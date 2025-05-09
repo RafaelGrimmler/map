@@ -19,7 +19,8 @@ const Polyline: React.FC<PolylineProps> = ({
     <Fragment>
       <PolylineComponent
         positions={line?.lines as any}
-        className={isEditing ? 'selected polyline' : 'polyline'}
+        // className={isEditing ? 'selected polyline' : 'polyline'}
+        className="polyline"
         eventHandlers={{ click: () => !isEditing && handleSelect?.() }}
       />
       {isEditing &&

@@ -4,10 +4,5 @@ import styled from '@emotion/styled';
 export const StyledContainer = styled(Box)`
   width: 100%;
   height: 100%;
-  display: grid;
-  grid-template-columns: 70% 30%;
-
-  & * {
-    outline: none;
-  }
+  position: relative;
 `;

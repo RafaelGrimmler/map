@@ -12,7 +12,7 @@ const getLineWeight = (zoom: number, constant = 1) => {
 
 export const StyledContainer = styled(Box)<{
   zoom: number;
-  editingline?: boolean;
+  disableRoutes: boolean;
 }>`
   & .leaflet-container {
     height: 100vh;
@@ -20,12 +20,12 @@ export const StyledContainer = styled(Box)<{
   }
 
   & .polyline {
-    ${({ zoom, editingline }) => css`
+    ${({ zoom, disableRoutes }) => css`
       stroke-width: ${getLineWeight(zoom)};
-      stroke: #003366;
+      stroke: ${disableRoutes ? '#8a8a8a' : '#003366'};
+      cursor: ${disableRoutes ? 'default' : 'pointer'};
 
-      ${!editingline &&
-      css`
+      /* ${!css`
         &:hover {
           stroke-width: ${getLineWeight(zoom, 2)};
           stroke: #4fd1c5;
@@ -35,7 +35,7 @@ export const StyledContainer = styled(Box)<{
       &.selected {
         stroke-width: ${getLineWeight(zoom, 2)};
         stroke: #2ecc71 !important;
-      }
+      } */
     `}
   }
 

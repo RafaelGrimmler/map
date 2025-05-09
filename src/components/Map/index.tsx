@@ -1,40 +1,38 @@
-import { MapContainer, TileLayer, useMapEvents } from 'react-leaflet';
+import { Circle, MapContainer, TileLayer, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { User } from '../../types';
 import { StyledContainer } from './styles';
-import { LatLng } from 'leaflet';
 import { useState } from 'react';
 import Polyline from '../Polyline';
+import { LatLng } from 'leaflet';
 
 type MapProps = {
   defaultZoom?: number;
   user?: User;
-  editLineId?: number;
-  handleAppendLine?: (coord: LatLng) => void;
-  setLineId?: React.Dispatch<React.SetStateAction<number>>;
+  disableRoutes?: boolean;
+  waypoints?: LatLng[];
+  handleFindLocation?: (coord: LatLng) => void;
 };
 
 const Map: React.FC<MapProps> = ({
   defaultZoom = 11,
   user,
-  editLineId,
-  handleAppendLine,
-  setLineId,
+  disableRoutes,
+  waypoints,
+  handleFindLocation,
 }) => {
   const [zoom, setZoom] = useState(defaultZoom);
 
   const LocationFinderDummy = () => {
     useMapEvents({
-      click: (e) => {
-        if (editLineId) handleAppendLine?.(e?.latlng);
-      },
+      click: (e) => handleFindLocation?.(e?.latlng),
       zoom: (e) => setZoom(e.target._zoom),
     });
     return <></>;
   };
 
   return (
-    <StyledContainer zoom={zoom} editingline={!!editLineId}>
+    <StyledContainer zoom={zoom} disableRoutes={disableRoutes}>
       <MapContainer
         center={[-31.721742613401577, -52.35671997070313]}
         zoom={zoom}
@@ -51,10 +49,19 @@ const Map: React.FC<MapProps> = ({
           <Polyline
             key={line?.id}
             line={line}
-            isEditing={editLineId === line?.id}
-            handleSelect={() => {
-              if (!editLineId) setLineId?.(line?.id);
-            }}
+            // isEditing={editLineId === line?.id}
+            // handleSelect={() => {
+            //   if (!editLineId) setLineId?.(line?.id);
+            // }}
+          />
+        ))}
+        {waypoints?.map((waypoint, i) => (
+          <Circle
+            key={`waypoint-map-${i}`}
+            center={[waypoint?.lat, waypoint?.lng]}
+            radius={100}
+            color="#2ecc9d"
+            weight={3}
           />
         ))}
       </MapContainer>
