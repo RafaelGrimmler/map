@@ -2,7 +2,7 @@ import L, { LatLng } from 'leaflet';
 import Box from '../../../../foundation/Box';
 import IconButton from '../../../../foundation/IconButton';
 import Text from '../../../../foundation/Text';
-import { StyledContainer } from './styles';
+import { StyledContainer, StyledRoute } from './styles';
 import { MdClose } from 'react-icons/md';
 import { IoTrashOutline } from 'react-icons/io5';
 import { useEffect } from 'react';
@@ -12,16 +12,25 @@ import 'leaflet-routing-machine';
 
 export type RoutePanelProps = {
   waypoints: LatLng[];
+  routes: LatLng[][];
+  selectedRoute: number;
   onClose: () => void;
   setWaypoints: React.Dispatch<React.SetStateAction<LatLng[]>>;
+  setRoutes: React.Dispatch<React.SetStateAction<LatLng[][]>>;
+  setSelectedRoute: React.Dispatch<React.SetStateAction<number>>;
 };
 
 const RoutePanel: React.FC<RoutePanelProps> = ({
   waypoints,
+  routes,
+  selectedRoute,
   onClose,
   setWaypoints,
+  setRoutes,
+  setSelectedRoute,
 }) => {
   useEffect(() => {
+    setSelectedRoute(0);
     if (waypoints?.length > 1) {
       const coordinates = waypoints?.map((waypoint) =>
         L.latLng(waypoint?.lat, waypoint?.lng),
@@ -32,9 +41,10 @@ const RoutePanel: React.FC<RoutePanelProps> = ({
 
       router.on('routesfound', function (e: any) {
         const routes = e.routes;
+        setRoutes(routes?.map((r: any) => r.coordinates));
         console.log('Rotas encontradas:', routes);
       });
-    }
+    } else setRoutes([]);
   }, [waypoints]);
 
   return (
@@ -82,6 +92,19 @@ const RoutePanel: React.FC<RoutePanelProps> = ({
             : 'Selecione pontos clicando no mapa'}
         </Text>
       </Box>
+      {routes?.length > 0 && (
+        <Box display="flex" flexDir="column" gap="8px">
+          {routes?.map((_, i) => (
+            <StyledRoute
+              key={`panel-routes-${i}`}
+              $selected={selectedRoute === i}
+              onClick={() => setSelectedRoute(i)}
+            >
+              <Text fontWeight="500">Rota {i + 1}</Text>
+            </StyledRoute>
+          ))}
+        </Box>
+      )}
     </StyledContainer>
   );
 };

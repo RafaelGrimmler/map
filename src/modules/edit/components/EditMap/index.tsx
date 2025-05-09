@@ -14,8 +14,11 @@ type EditMapProps = { user: User };
 const EditMap: React.FC<EditMapProps> = ({ user: defaultUser }) => {
   const [user, setUser] = useState<User>(defaultUser);
   const [lineId, setLineId] = useState(0);
+
   const [routing, setRouting] = useState(false);
   const [waypoints, setWaypoints] = useState<LatLng[]>([]);
+  const [routes, setRoutes] = useState<LatLng[][]>([]);
+  const [selectedRoute, setSelectedRoute] = useState(0);
 
   const lineFunctions = useEditLine({ user, lineId, setUser, setLineId });
 
@@ -32,6 +35,8 @@ const EditMap: React.FC<EditMapProps> = ({ user: defaultUser }) => {
   const handleCloseRouting = () => {
     setRouting(false);
     setWaypoints([]);
+    setRoutes([]);
+    setSelectedRoute(0);
   };
 
   const navbarItems: NavbarItem[] = [
@@ -49,7 +54,9 @@ const EditMap: React.FC<EditMapProps> = ({ user: defaultUser }) => {
       <Map
         user={user}
         waypoints={waypoints}
+        selectedRoute={selectedRoute}
         disableRoutes={routing}
+        routes={routes}
         handleFindLocation={handleFindLocation}
       />
       {user && (
@@ -57,6 +64,10 @@ const EditMap: React.FC<EditMapProps> = ({ user: defaultUser }) => {
       )}
       {routing && (
         <RoutePanel
+          routes={routes}
+          selectedRoute={selectedRoute}
+          setRoutes={setRoutes}
+          setSelectedRoute={setSelectedRoute}
           waypoints={waypoints}
           setWaypoints={setWaypoints}
           onClose={handleCloseRouting}

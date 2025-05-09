@@ -39,6 +39,13 @@ export const StyledContainer = styled(Box)<{
     `}
   }
 
+  & .route {
+    ${({ zoom, theme }) => css`
+      stroke-width: ${getLineWeight(zoom, 4)};
+      filter: drop-shadow(1px 1px 1px ${theme.palette.common.black});
+    `}
+  }
+
   & .leaflet-popup-content-wrapper {
     border-radius: 4px;
     padding: 0px;

@@ -16,3 +16,16 @@ export const StyledContainer = styled(Box)`
   flex-direction: column;
   gap: 12px;
 `;
+
+export const StyledRoute = styled(Box, {
+  shouldForwardProp: (prop) => !['$selected'].includes(prop),
+})<{ $selected: boolean }>`
+  padding: 4px;
+  border-radius: 4px;
+  cursor: pointer;
+  border: 1px solid
+    ${({ $selected, theme }) =>
+      $selected ? theme.palette.primary.main : theme.palette.divider.main};
+  background-color: ${({ $selected, theme }) =>
+    $selected ? theme.palette.primary.light : theme.palette.background.main};
+`;

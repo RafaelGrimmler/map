@@ -5,12 +5,15 @@ import { StyledContainer } from './styles';
 import { useState } from 'react';
 import Polyline from '../Polyline';
 import { LatLng } from 'leaflet';
+import Route from '../Route';
 
 type MapProps = {
   defaultZoom?: number;
   user?: User;
   disableRoutes?: boolean;
   waypoints?: LatLng[];
+  routes?: LatLng[][];
+  selectedRoute?: number;
   handleFindLocation?: (coord: LatLng) => void;
 };
 
@@ -19,6 +22,8 @@ const Map: React.FC<MapProps> = ({
   user,
   disableRoutes,
   waypoints,
+  routes,
+  selectedRoute,
   handleFindLocation,
 }) => {
   const [zoom, setZoom] = useState(defaultZoom);
@@ -30,6 +35,9 @@ const Map: React.FC<MapProps> = ({
     });
     return <></>;
   };
+
+  const currentRoute = routes?.find((_, i) => selectedRoute === i);
+  const othersRoutes = routes?.filter((_, i) => selectedRoute !== i);
 
   return (
     <StyledContainer zoom={zoom} disableRoutes={disableRoutes}>
@@ -64,6 +72,10 @@ const Map: React.FC<MapProps> = ({
             weight={3}
           />
         ))}
+        {othersRoutes?.map((route, i) => (
+          <Route key={`route-map-${i}`} route={route} />
+        ))}
+        {currentRoute && <Route route={currentRoute} selected />}
       </MapContainer>
     </StyledContainer>
   );
