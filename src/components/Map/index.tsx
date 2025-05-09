@@ -1,11 +1,17 @@
-import { Circle, MapContainer, TileLayer, useMapEvents } from 'react-leaflet';
+import {
+  Circle,
+  MapContainer,
+  Polyline,
+  TileLayer,
+  useMapEvents,
+} from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { User } from '../../types';
 import { StyledContainer } from './styles';
 import { useState } from 'react';
-import Polyline from '../Polyline';
 import { LatLng } from 'leaflet';
 import Route from '../Route';
+import Line from '../Line';
 
 type MapProps = {
   defaultZoom?: number;
@@ -14,7 +20,9 @@ type MapProps = {
   waypoints?: LatLng[];
   routes?: LatLng[][];
   selectedRoute?: number;
+  selectedLine?: number;
   handleFindLocation?: (coord: LatLng) => void;
+  handleSelectLine?: (id: number) => void;
 };
 
 const Map: React.FC<MapProps> = ({
@@ -24,9 +32,16 @@ const Map: React.FC<MapProps> = ({
   waypoints,
   routes,
   selectedRoute,
+  selectedLine,
   handleFindLocation,
+  handleSelectLine,
 }) => {
   const [zoom, setZoom] = useState(defaultZoom);
+
+  const currentRoute = routes?.find((_, i) => selectedRoute === i);
+  const othersRoutes = routes?.filter((_, i) => selectedRoute !== i);
+  const currentLine = user?.lines?.find((e) => selectedLine === e?.id);
+  const othersLines = user?.lines?.filter((e) => selectedLine !== e?.id);
 
   const LocationFinderDummy = () => {
     useMapEvents({
@@ -36,8 +51,9 @@ const Map: React.FC<MapProps> = ({
     return <></>;
   };
 
-  const currentRoute = routes?.find((_, i) => selectedRoute === i);
-  const othersRoutes = routes?.filter((_, i) => selectedRoute !== i);
+  const onSelectLine = (id: number) => {
+    if (!disableRoutes && !selectedLine) handleSelectLine?.(id);
+  };
 
   return (
     <StyledContainer zoom={zoom} disableRoutes={disableRoutes}>
@@ -53,16 +69,15 @@ const Map: React.FC<MapProps> = ({
           url={`https://{s}.tile.jawg.io/jawg-streets/{z}/{x}/{y}{r}.png?access-token=${process.env.REACT_APP_MAP_KEY}`}
         />
         <LocationFinderDummy />
-        {user?.lines?.map((line) => (
+        {othersLines?.map((e) => (
           <Polyline
-            key={line?.id}
-            line={line}
-            // isEditing={editLineId === line?.id}
-            // handleSelect={() => {
-            //   if (!editLineId) setLineId?.(line?.id);
-            // }}
+            key={e?.id}
+            positions={e?.lines as any}
+            className="polyline"
+            eventHandlers={{ click: () => onSelectLine(e?.id) }}
           />
         ))}
+        {currentLine && <Line line={currentLine} />}
         {waypoints?.map((waypoint, i) => (
           <Circle
             key={`waypoint-map-${i}`}

@@ -20,22 +20,27 @@ export const StyledContainer = styled(Box)<{
   }
 
   & .polyline {
-    ${({ zoom, disableRoutes }) => css`
-      stroke-width: ${getLineWeight(zoom)};
+    ${({ zoom, disableRoutes, theme }) => css`
+      stroke-width: ${getLineWeight(zoom, 1)};
       stroke: ${disableRoutes ? '#8a8a8a' : '#003366'};
       cursor: ${disableRoutes ? 'default' : 'pointer'};
 
-      /* ${!css`
+      ${!disableRoutes &&
+      css`
         &:hover {
           stroke-width: ${getLineWeight(zoom, 2)};
-          stroke: #4fd1c5;
+          stroke: #2ecc71 !important;
+          filter: drop-shadow(1px 1px 1px ${theme.palette.common.black});
         }
       `}
+    `}
+  }
 
-      &.selected {
-        stroke-width: ${getLineWeight(zoom, 2)};
-        stroke: #2ecc71 !important;
-      } */
+  & .line {
+    ${({ zoom, theme }) => css`
+      stroke-width: ${getLineWeight(zoom, 2)};
+      stroke: #2ecc71;
+      filter: drop-shadow(1px 1px 1px ${theme.palette.common.black});
     `}
   }
 

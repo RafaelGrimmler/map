@@ -2,22 +2,25 @@ import L, { LatLng } from 'leaflet';
 import Box from '../../../../foundation/Box';
 import IconButton from '../../../../foundation/IconButton';
 import Text from '../../../../foundation/Text';
-import { StyledContainer, StyledRoute } from './styles';
+import { StyledContainer, StyledLoadingContainer, StyledRoute } from './styles';
 import { MdClose } from 'react-icons/md';
 import { IoTrashOutline } from 'react-icons/io5';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import 'leaflet-routing-machine/dist/leaflet-routing-machine.css';
 import 'leaflet-routing-machine';
+import Button from '../../../../foundation/Button';
+import { Spinner } from '@chakra-ui/react';
 
 export type RoutePanelProps = {
   waypoints: LatLng[];
   routes: LatLng[][];
   selectedRoute: number;
   onClose: () => void;
-  setWaypoints: React.Dispatch<React.SetStateAction<LatLng[]>>;
-  setRoutes: React.Dispatch<React.SetStateAction<LatLng[][]>>;
-  setSelectedRoute: React.Dispatch<React.SetStateAction<number>>;
+  setWaypoints: (e: LatLng[]) => void;
+  setRoutes: (e: LatLng[][]) => void;
+  setSelectedRoute: (e: number) => void;
+  onSave: (coordinates: LatLng[]) => void;
 };
 
 const RoutePanel: React.FC<RoutePanelProps> = ({
@@ -28,7 +31,10 @@ const RoutePanel: React.FC<RoutePanelProps> = ({
   setWaypoints,
   setRoutes,
   setSelectedRoute,
+  onSave,
 }) => {
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     setSelectedRoute(0);
     if (waypoints?.length > 1) {
@@ -38,13 +44,19 @@ const RoutePanel: React.FC<RoutePanelProps> = ({
 
       const router = (L as any).Routing.control({ waypoints: coordinates });
       router.route(coordinates);
+      setLoading(true);
+
+      console.log(router);
 
       router.on('routesfound', function (e: any) {
         const routes = e.routes;
         setRoutes(routes?.map((r: any) => r.coordinates));
-        console.log('Rotas encontradas:', routes);
+        setLoading(false);
       });
-    } else setRoutes([]);
+    } else {
+      setLoading(false);
+      setRoutes([]);
+    }
   }, [waypoints]);
 
   return (
@@ -92,7 +104,15 @@ const RoutePanel: React.FC<RoutePanelProps> = ({
             : 'Selecione pontos clicando no mapa'}
         </Text>
       </Box>
-      {routes?.length > 0 && (
+      {loading && (
+        <StyledLoadingContainer>
+          <Spinner />
+          <Text fontWeight="500" fontSize="14px">
+            Procurando rotas
+          </Text>
+        </StyledLoadingContainer>
+      )}
+      {!loading && routes?.length > 0 && (
         <Box display="flex" flexDir="column" gap="8px">
           {routes?.map((_, i) => (
             <StyledRoute
@@ -105,6 +125,15 @@ const RoutePanel: React.FC<RoutePanelProps> = ({
           ))}
         </Box>
       )}
+      <Button
+        disabled={routes?.length === 0}
+        onClick={() => {
+          onSave(routes?.[selectedRoute]);
+          onClose();
+        }}
+      >
+        Salvar
+      </Button>
     </StyledContainer>
   );
 };

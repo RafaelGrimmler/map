@@ -1,24 +1,44 @@
 import { LatLng } from 'leaflet';
 import { Line, User } from '../../../types';
+import { getTimestamp } from '../../../helpers/useDates';
 
 type UseEditLineArgs = {
   user: User;
-  lineId: number;
+  selectedLine: number;
   setUser: React.Dispatch<React.SetStateAction<User>>;
-  setLineId: React.Dispatch<React.SetStateAction<number>>;
+  setSelectedLine: React.Dispatch<React.SetStateAction<number>>;
 };
 
-const useEditLine = ({ lineId, user, setUser, setLineId }: UseEditLineArgs) => {
-  const handleInsertLine = (line: Line) => {
+const useEditLine = ({
+  selectedLine,
+  user,
+  setUser,
+  setSelectedLine,
+}: UseEditLineArgs) => {
+  const getNewLine = (lines: number[][] = []): Line => ({
+    id: getTimestamp(),
+    lines,
+  });
+
+  const getLine = (id: number) => user?.lines?.find((e) => e?.id === id);
+
+  const handleInsertRoute = (coordinates: LatLng[]) => {
+    const line = getNewLine(coordinates?.map((c) => [c?.lat, c?.lng]));
     setUser({ ...user, lines: [...user?.lines, line] });
+  };
+
+  const handleInsertLine = () => {
+    const line = getNewLine();
+    setUser({ ...user, lines: [...user?.lines, line] });
+    return line;
   };
 
   const handleAppendLine = (coord: LatLng) => {
     const { lat, lng } = coord || {};
 
     const lines = user?.lines?.map((line) => {
-      if (line?.id === lineId) {
-        return { id: lineId, lines: [...line?.lines, [lat, lng]] };
+      if (line?.id === selectedLine) {
+        return { id: selectedLine, lines: [...line?.lines, [lat, lng]] };
       }
 
       return line;
@@ -29,9 +49,9 @@ const useEditLine = ({ lineId, user, setUser, setLineId }: UseEditLineArgs) => {
 
   const handleUndoLine = () => {
     const lines = user?.lines?.map((line) => {
-      if (line?.id === lineId) {
+      if (line?.id === selectedLine) {
         return {
-          id: lineId,
+          id: selectedLine,
           lines: line?.lines?.filter((_, i) => i !== line?.lines?.length - 1),
         };
       }
@@ -43,9 +63,9 @@ const useEditLine = ({ lineId, user, setUser, setLineId }: UseEditLineArgs) => {
   };
 
   const handleDeleteLine = () => {
-    const lines = user?.lines?.filter((line) => line?.id !== lineId);
+    const lines = user?.lines?.filter((line) => line?.id !== selectedLine);
     setUser({ ...user, lines });
-    setLineId(0);
+    setSelectedLine(0);
   };
 
   return {
@@ -53,6 +73,8 @@ const useEditLine = ({ lineId, user, setUser, setLineId }: UseEditLineArgs) => {
     handleAppendLine,
     handleUndoLine,
     handleDeleteLine,
+    handleInsertRoute,
+    getLine,
   };
 };
 

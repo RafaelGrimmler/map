@@ -4,7 +4,9 @@ import { ReactNode } from 'react';
 
 type ButtonProps = {
   size?: ChakraButtonProps['size'];
+  disabled?: boolean;
   children: ReactNode;
+  onClick?: ChakraButtonProps['onClick'];
 };
 
 const Button: React.FC<ButtonProps> = (props) => {

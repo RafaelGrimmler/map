@@ -12,7 +12,7 @@ type LineEditorProps = {
   setLineId: React.Dispatch<React.SetStateAction<number>>;
   handleUndoLine: () => void;
   handleDeleteLine: () => void;
-  handleInsertLine: (line: Line) => void;
+  handleInsertLine: () => void;
 };
 
 const LineEditor: React.FC<LineEditorProps> = ({
@@ -32,7 +32,7 @@ const LineEditor: React.FC<LineEditorProps> = ({
     else {
       const line = handleCreateLine();
       setLineId(line.id);
-      handleInsertLine(line);
+      handleInsertLine();
     }
   };
 

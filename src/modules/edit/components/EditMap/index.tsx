@@ -1,6 +1,6 @@
 import { StyledContainer } from './styles';
 import Map from '../../../../components/Map';
-import { User } from '../../../../types';
+import { Line, User } from '../../../../types';
 import { useState } from 'react';
 import useEditLine from '../../helpers/useEditLine';
 import Navbar, { NavbarItem } from '../../../../components/Navbar';
@@ -8,44 +8,78 @@ import { IoAnalyticsOutline } from 'react-icons/io5';
 import { TbRoute, TbDownload } from 'react-icons/tb';
 import RoutePanel from '../RoutePanel';
 import { LatLng } from 'leaflet';
+import LinePanel from '../LinePanel';
 
+type Panel = 'ROUTING' | 'LINE';
 type EditMapProps = { user: User };
 
 const EditMap: React.FC<EditMapProps> = ({ user: defaultUser }) => {
   const [user, setUser] = useState<User>(defaultUser);
-  const [lineId, setLineId] = useState(0);
+  const [panel, setPanel] = useState<Panel>();
 
-  const [routing, setRouting] = useState(false);
+  // line states
+  const [selectedLine, setSelectedLine] = useState(0);
+  const [backupLine, setBackupLine] = useState<Line>();
+
+  // routing states
   const [waypoints, setWaypoints] = useState<LatLng[]>([]);
   const [routes, setRoutes] = useState<LatLng[][]>([]);
   const [selectedRoute, setSelectedRoute] = useState(0);
 
-  const lineFunctions = useEditLine({ user, lineId, setUser, setLineId });
-
-  console.log(lineFunctions);
+  const { handleInsertRoute, handleInsertLine, handleAppendLine, getLine } =
+    useEditLine({ user, selectedLine, setUser, setSelectedLine });
 
   // const handleDownload = () => downloadFiles({ user });
+  console.log({ backupLine });
 
   const handleFindLocation = (coord: LatLng) => {
-    if (routing) {
+    if (panel === 'ROUTING') {
       if (waypoints?.length < 5) setWaypoints([...waypoints, coord]);
+    } else if (panel === 'LINE') {
+      handleAppendLine(coord);
     }
   };
 
   const handleCloseRouting = () => {
-    setRouting(false);
+    setPanel(undefined);
     setWaypoints([]);
     setRoutes([]);
     setSelectedRoute(0);
+  };
+
+  const handleCloseLinePanel = () => {
+    setPanel(undefined);
+    setSelectedLine(0);
+  };
+
+  const handleSelectLine = (id: number) => {
+    setSelectedLine(id);
+    setBackupLine(getLine(id));
+    setPanel('LINE');
+  };
+
+  const handleOpenLinePanel = () => {
+    const line = handleInsertLine();
+    setSelectedLine(line?.id);
+    setBackupLine(line);
+    setPanel('LINE');
+  };
+
+  const handleSetRoute = (e: LatLng[][]) => {
+    if (panel === 'ROUTING') setRoutes(e);
   };
 
   const navbarItems: NavbarItem[] = [
     {
       icon: <TbRoute />,
       label: 'Rota',
-      onClick: () => setRouting(true),
+      onClick: () => setPanel('ROUTING'),
     },
-    { icon: <IoAnalyticsOutline />, label: 'Linha', onClick: () => {} },
+    {
+      icon: <IoAnalyticsOutline />,
+      label: 'Linha',
+      onClick: () => handleOpenLinePanel(),
+    },
     { icon: <TbDownload />, label: 'Download', onClick: () => {} },
   ];
 
@@ -55,24 +89,28 @@ const EditMap: React.FC<EditMapProps> = ({ user: defaultUser }) => {
         user={user}
         waypoints={waypoints}
         selectedRoute={selectedRoute}
-        disableRoutes={routing}
+        disableRoutes={!!panel}
+        selectedLine={selectedLine}
         routes={routes}
         handleFindLocation={handleFindLocation}
+        handleSelectLine={handleSelectLine}
       />
       {user && (
-        <Navbar image={user?.image} items={navbarItems} disabled={routing} />
+        <Navbar image={user?.image} items={navbarItems} disabled={!!panel} />
       )}
-      {routing && (
+      {panel === 'ROUTING' && (
         <RoutePanel
           routes={routes}
           selectedRoute={selectedRoute}
-          setRoutes={setRoutes}
+          setRoutes={handleSetRoute}
           setSelectedRoute={setSelectedRoute}
           waypoints={waypoints}
           setWaypoints={setWaypoints}
           onClose={handleCloseRouting}
+          onSave={handleInsertRoute}
         />
       )}
+      {panel === 'LINE' && <LinePanel onClose={handleCloseLinePanel} />}
     </StyledContainer>
   );
 };

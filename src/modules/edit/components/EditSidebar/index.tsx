@@ -1,6 +1,6 @@
 import { StyledContainer } from './styles';
 import LineEditor from '../LineEditor';
-import { Line, User } from '../../../../types';
+import { User } from '../../../../types';
 import EditAccordion from '../EditAccordion';
 import { useNavigate } from 'react-router-dom';
 
@@ -10,7 +10,7 @@ type EditSidebarProps = {
   setLineId: React.Dispatch<React.SetStateAction<number>>;
   handleUndoLine: () => void;
   handleDeleteLine: () => void;
-  handleInsertLine: (line: Line) => void;
+  handleInsertLine: () => void;
   handleDownload: () => void;
 };
 
