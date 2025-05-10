@@ -43,10 +43,8 @@ const RoutePanel: React.FC<RoutePanelProps> = ({
       );
 
       const router = (L as any).Routing.control({ waypoints: coordinates });
-      router.route(coordinates);
+      // router.route(coordinates);
       setLoading(true);
-
-      console.log(router);
 
       router.on('routesfound', function (e: any) {
         const routes = e.routes;
@@ -126,10 +124,82 @@ const RoutePanel: React.FC<RoutePanelProps> = ({
         </Box>
       )}
       <Button
-        disabled={routes?.length === 0}
+        // disabled={routes?.length === 0}
         onClick={() => {
-          onSave(routes?.[selectedRoute]);
-          onClose();
+          // const points = waypoints
+          //   ?.map((e) => `${e?.lat},${e?.lng}`)
+          //   ?.join(';');
+
+          // d1288e4d-973e-4dbd-99eb-7b025c62016b
+
+          // fetch(
+          //   `https://routing.openstreetmap.de/routed-car/route/v1/driving/${points}?overview=false&alternatives=true&steps=true`,
+          // )
+          //   .then(async (response) => {
+          //     if (!response.ok) {
+          //       throw new Error(
+          //         'Network response was not ok ' + response.statusText,
+          //       );
+          //     }
+          //     return await response.json();
+          //   })
+          //   .then((data) => {
+          //     console.log(data); // Full routing data
+          //   })
+          //   .catch((error) => {
+          //     console.error(
+          //       'There was a problem with the fetch operation:',
+          //       error,
+          //     );
+          //   });
+
+          const url = `https://graphhopper.com/api/1/route?key=${process.env.REACT_APP_ROUTING_API_KEY}`;
+
+          const points = waypoints?.map((e) => [e?.lng, e?.lat]);
+
+          const payload = {
+            points,
+            profile: 'car',
+            elevation: false,
+            instructions: false,
+            locale: 'pt_BR',
+            points_encoded: false,
+            points_encoded_multiplier: 1000000,
+            timeout_ms: 10000,
+            'alternative_route.max_paths': 3,
+            algorithm: 'alternative_route',
+          };
+
+          fetch(url, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload),
+          })
+            .then(async (response) => {
+              if (!response.ok) {
+                throw new Error(`Erro na requisição: ${response.statusText}`);
+              }
+              return await response.json();
+            })
+            .then((data) => {
+              const r = data?.paths?.[0]?.points?.coordinates?.map(
+                (e: any) => ({
+                  lat: e?.[1],
+                  lng: e?.[0],
+                }),
+              );
+
+              console.log(r);
+              setRoutes([r]);
+            })
+            .catch((error) => {
+              console.error('Erro ao fazer a requisição:', error);
+            });
+
+          // onSave(routes?.[selectedRoute]);
+          // onClose();
         }}
       >
         Salvar
