@@ -29,7 +29,7 @@ export const downloadFiles = ({ user }: DownloadFilesArgs) => {
 
   const userData = {
     ...user,
-    lines: user?.lines?.filter((e) => e?.lines?.length > 0),
+    lines: user?.lines?.filter((e) => e?.lines?.length > 1),
   };
 
   const userHasChanges = checkIfUserHasChanges(user);

@@ -1,40 +1,62 @@
-import { MapContainer, TileLayer, useMapEvents } from 'react-leaflet';
+import {
+  Circle,
+  MapContainer,
+  Polyline,
+  TileLayer,
+  useMapEvents,
+} from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { User } from '../../types';
 import { StyledContainer } from './styles';
-import { LatLng } from 'leaflet';
 import { useState } from 'react';
-import Polyline from '../Polyline';
+import { LatLng } from 'leaflet';
+import Route from '../Route';
+import Line from '../Line';
 
 type MapProps = {
   defaultZoom?: number;
   user?: User;
-  editLineId?: number;
-  handleAppendLine?: (coord: LatLng) => void;
-  setLineId?: React.Dispatch<React.SetStateAction<number>>;
+  disableRoutes?: boolean;
+  waypoints?: LatLng[];
+  routes?: LatLng[][];
+  selectedRoute?: number;
+  selectedLine?: number;
+  handleFindLocation?: (coord: LatLng) => void;
+  handleSelectLine?: (id: number) => void;
 };
 
 const Map: React.FC<MapProps> = ({
   defaultZoom = 11,
   user,
-  editLineId,
-  handleAppendLine,
-  setLineId,
+  disableRoutes,
+  waypoints,
+  routes,
+  selectedRoute,
+  selectedLine,
+  handleFindLocation,
+  handleSelectLine,
 }) => {
   const [zoom, setZoom] = useState(defaultZoom);
 
+  const currentRoute = routes?.find((_, i) => selectedRoute === i);
+  const othersRoutes = routes?.filter((_, i) => selectedRoute !== i);
+  const currentLine = user?.lines?.find((e) => selectedLine === e?.id);
+  const othersLines = user?.lines?.filter((e) => selectedLine !== e?.id);
+
   const LocationFinderDummy = () => {
     useMapEvents({
-      click: (e) => {
-        if (editLineId) handleAppendLine?.(e?.latlng);
-      },
+      click: (e) => handleFindLocation?.(e?.latlng),
       zoom: (e) => setZoom(e.target._zoom),
     });
     return <></>;
   };
 
+  const onSelectLine = (id: number) => {
+    if (!disableRoutes && !selectedLine) handleSelectLine?.(id);
+  };
+
   return (
-    <StyledContainer zoom={zoom} editingline={!!editLineId}>
+    <StyledContainer zoom={zoom} disableRoutes={disableRoutes}>
       <MapContainer
         center={[-31.721742613401577, -52.35671997070313]}
         zoom={zoom}
@@ -47,16 +69,28 @@ const Map: React.FC<MapProps> = ({
           url={`https://{s}.tile.jawg.io/jawg-streets/{z}/{x}/{y}{r}.png?access-token=${process.env.REACT_APP_MAP_KEY}`}
         />
         <LocationFinderDummy />
-        {user?.lines?.map((line) => (
+        {othersLines?.map((e) => (
           <Polyline
-            key={line?.id}
-            line={line}
-            isEditing={editLineId === line?.id}
-            handleSelect={() => {
-              if (!editLineId) setLineId?.(line?.id);
-            }}
+            key={e?.id}
+            positions={e?.lines as any}
+            className="polyline"
+            eventHandlers={{ click: () => onSelectLine(e?.id) }}
           />
         ))}
+        {currentLine && <Line line={currentLine} />}
+        {waypoints?.map((waypoint, i) => (
+          <Circle
+            key={`waypoint-map-${i}`}
+            center={[waypoint?.lat, waypoint?.lng]}
+            radius={100}
+            color="#2ecc9d"
+            weight={3}
+          />
+        ))}
+        {othersRoutes?.map((route, i) => (
+          <Route key={`route-map-${i}`} route={route} />
+        ))}
+        {currentRoute && <Route route={currentRoute} selected />}
       </MapContainer>
     </StyledContainer>
   );

@@ -21,7 +21,7 @@ const IconButton: React.FC<IconButtonProps> = ({
 }) => {
   return (
     <StyledIconButton
-      size={size}
+      $size={size}
       aria-label="any"
       className={variant}
       $color={color}

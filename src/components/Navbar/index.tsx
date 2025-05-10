@@ -1,64 +1,38 @@
-import { Text } from '@chakra-ui/react';
-import { User } from '../../types';
 import {
-  StyledActionContainer,
   StyledAvatar,
-  StyledButton,
-  StyledHeader,
-  StyledNameContainer,
   StyledNavbarContainer,
+  StyledOverlay,
   StyledWrapper,
 } from './styles';
-import { useNavigate } from 'react-router-dom';
-import { useContext, useState } from 'react';
-import LoginModal from '../../modules/presentation/components/LoginModal';
-import { LoginContext, LoginContextReturn } from '../../context/Login';
+import { ReactNode } from 'react';
+import NavbarButton from '../NavbarButton';
 
-type NavbarProps = { user: User; showButtons?: boolean };
+export type NavbarItem = {
+  label: string;
+  icon: ReactNode;
+  onClick: () => void;
+};
+export type NavbarProps = {
+  items: NavbarItem[];
+  image: string;
+  disabled?: boolean;
+};
 
-const Navbar: React.FC<NavbarProps> = ({ user, showButtons = true }) => {
-  const navigator = useNavigate();
-  const loginContext = useContext(LoginContext);
-
-  const [open, setOpen] = useState(false);
-
-  const { handleLogin, isLogged } = loginContext as LoginContextReturn;
-
-  const handleBack = () => navigator({ pathname: `/` });
-
+const Navbar: React.FC<NavbarProps> = ({ items, image, disabled }) => {
   return (
     <StyledNavbarContainer>
       <StyledWrapper>
-        <StyledHeader>
-          <StyledNameContainer>
-            <Text>{user?.name}</Text>
-          </StyledNameContainer>
-          <StyledAvatar src={user?.image} />
-        </StyledHeader>
-        {showButtons && (
-          <StyledActionContainer>
-            <StyledButton
-              onClick={() => {
-                if (isLogged)
-                  navigator({ pathname: `/user/${user?.userMap}/edit` });
-                else setOpen(true);
-              }}
-            >
-              Entrar
-            </StyledButton>
-            <StyledButton onClick={handleBack}>Voltar</StyledButton>
-          </StyledActionContainer>
-        )}
+        <StyledAvatar src={image} />
+        {items?.map((item) => (
+          <NavbarButton
+            key={`${item?.label}-navbar`}
+            icon={item?.icon}
+            label={item?.label}
+            onClick={item?.onClick}
+          />
+        ))}
+        {disabled && <StyledOverlay />}
       </StyledWrapper>
-
-      {open && (
-        <LoginModal
-          id={user?.userMap}
-          handleSave={handleLogin}
-          isOpen
-          onClose={() => setOpen(false)}
-        />
-      )}
     </StyledNavbarContainer>
   );
 };

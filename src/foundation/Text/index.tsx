@@ -4,7 +4,7 @@ import {
 } from '@chakra-ui/react';
 import { useTheme } from '@emotion/react';
 
-export type TextProps = { color?: 'textPrimary' } & Omit<
+export type TextProps = { color?: 'textPrimary' | 'textSecondary' } & Omit<
   ChakraTextProps,
   'color'
 >;
@@ -14,6 +14,7 @@ const Text: React.FC<TextProps> = ({ color = 'textPrimary', ...props }) => {
 
   const colors = {
     textPrimary: palette.text.primary,
+    textSecondary: palette.text.secondary,
   };
 
   return <ChakraText {...props} color={colors[color]} />;
