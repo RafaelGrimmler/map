@@ -2,7 +2,7 @@ import { IconButtonProps as ChakraIconButtonProps } from '@chakra-ui/react';
 import { StyledIconButton } from './styles';
 
 export type IconButtonVariant = 'contained' | 'simple';
-export type IconButtonColor = 'primary' | 'neutral';
+export type IconButtonColor = 'primary' | 'neutral' | 'red';
 
 export type IconButtonProps = {
   children: React.ReactNode;

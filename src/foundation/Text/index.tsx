@@ -15,6 +15,7 @@ const Text: React.FC<TextProps> = ({ color = 'textPrimary', ...props }) => {
   const colors = {
     textPrimary: palette.text.primary,
     textSecondary: palette.text.secondary,
+    
   };
 
   return <ChakraText {...props} color={colors[color]} />;

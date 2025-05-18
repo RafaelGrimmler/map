@@ -1,6 +1,6 @@
 import { StyledContainer } from './styles';
 import Map from '../../../../components/Map';
-import { Line, User } from '../../../../types';
+import { User } from '../../../../types';
 import { useState } from 'react';
 import useEditLine from '../../helpers/useEditLine';
 import Navbar, { NavbarItem } from '../../../../components/Navbar';
@@ -10,32 +10,41 @@ import RoutePanel from '../RoutePanel';
 import { LatLng } from 'leaflet';
 import LinePanel from '../LinePanel';
 import { downloadFiles } from '../../../../helpers/downloadFiles';
+import { useGraphhoperToken } from '../../helpers/useGraphhoperToken';
 
 type Panel = 'ROUTING' | 'LINE';
 type EditMapProps = { user: User };
 
 const EditMap: React.FC<EditMapProps> = ({ user: defaultUser }) => {
+  const { getToken } = useGraphhoperToken();
+
   const [user, setUser] = useState<User>(defaultUser);
   const [panel, setPanel] = useState<Panel>();
 
   // line states
   const [selectedLine, setSelectedLine] = useState(0);
-  const [backupLine, setBackupLine] = useState<Line>();
 
   // routing states
   const [waypoints, setWaypoints] = useState<LatLng[]>([]);
   const [routes, setRoutes] = useState<LatLng[][]>([]);
   const [selectedRoute, setSelectedRoute] = useState(0);
 
-  const { handleInsertRoute, handleInsertLine, handleAppendLine, getLine } =
-    useEditLine({ user, selectedLine, setUser, setSelectedLine });
+  const {
+    handleInsertRoute,
+    handleInsertLine,
+    handleAppendLine,
+    handleDeleteLine,
+    handleUndoLine,
+  } = useEditLine({ user, selectedLine, setUser, setSelectedLine });
 
   const handleDownload = () => downloadFiles({ user });
-  console.log({ backupLine });
 
   const handleFindLocation = (coord: LatLng) => {
     if (panel === 'ROUTING') {
-      if (waypoints?.length < 5) setWaypoints([...waypoints, coord]);
+      if (waypoints?.length < 5) {
+        setWaypoints([...waypoints, coord]);
+        setRoutes([]);
+      }
     } else if (panel === 'LINE') {
       handleAppendLine(coord);
     }
@@ -55,14 +64,12 @@ const EditMap: React.FC<EditMapProps> = ({ user: defaultUser }) => {
 
   const handleSelectLine = (id: number) => {
     setSelectedLine(id);
-    setBackupLine(getLine(id));
     setPanel('LINE');
   };
 
   const handleOpenLinePanel = () => {
     const line = handleInsertLine();
     setSelectedLine(line?.id);
-    setBackupLine(line);
     setPanel('LINE');
   };
 
@@ -109,9 +116,16 @@ const EditMap: React.FC<EditMapProps> = ({ user: defaultUser }) => {
           setWaypoints={setWaypoints}
           onClose={handleCloseRouting}
           onSave={handleInsertRoute}
+          getToken={getToken}
         />
       )}
-      {panel === 'LINE' && <LinePanel onClose={handleCloseLinePanel} />}
+      {panel === 'LINE' && (
+        <LinePanel
+          onClose={handleCloseLinePanel}
+          handleUndoLine={handleUndoLine}
+          handleDeleteLine={handleDeleteLine}
+        />
+      )}
     </StyledContainer>
   );
 };

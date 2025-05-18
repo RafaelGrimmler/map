@@ -5,6 +5,7 @@ export type Palette = {
   primary: { light: string; main: string; dark: string };
   decorative: {
     orange: { light: string; main: string; dark: string };
+    red: { light: string; main: string; dark: string };
   };
   text: { primary: string; secondary: string };
   divider: { main: string };
