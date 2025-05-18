@@ -1,16 +1,17 @@
-import L, { LatLng } from 'leaflet';
+import { LatLng } from 'leaflet';
 import Box from '../../../../foundation/Box';
 import IconButton from '../../../../foundation/IconButton';
 import Text from '../../../../foundation/Text';
 import { StyledContainer, StyledLoadingContainer, StyledRoute } from './styles';
 import { MdClose } from 'react-icons/md';
 import { IoTrashOutline } from 'react-icons/io5';
-import { useEffect, useState } from 'react';
 
 import 'leaflet-routing-machine/dist/leaflet-routing-machine.css';
 import 'leaflet-routing-machine';
 import Button from '../../../../foundation/Button';
 import { Spinner } from '@chakra-ui/react';
+import { getRoute } from '../../../../requests/graphhoper';
+import { useState } from 'react';
 
 export type RoutePanelProps = {
   waypoints: LatLng[];
@@ -21,6 +22,7 @@ export type RoutePanelProps = {
   setRoutes: (e: LatLng[][]) => void;
   setSelectedRoute: (e: number) => void;
   onSave: (coordinates: LatLng[]) => void;
+  getToken: () => string;
 };
 
 const RoutePanel: React.FC<RoutePanelProps> = ({
@@ -32,30 +34,9 @@ const RoutePanel: React.FC<RoutePanelProps> = ({
   setRoutes,
   setSelectedRoute,
   onSave,
+  getToken,
 }) => {
   const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    setSelectedRoute(0);
-    if (waypoints?.length > 1) {
-      const coordinates = waypoints?.map((waypoint) =>
-        L.latLng(waypoint?.lat, waypoint?.lng),
-      );
-
-      const router = (L as any).Routing.control({ waypoints: coordinates });
-      // router.route(coordinates);
-      setLoading(true);
-
-      router.on('routesfound', function (e: any) {
-        const routes = e.routes;
-        setRoutes(routes?.map((r: any) => r.coordinates));
-        setLoading(false);
-      });
-    } else {
-      setLoading(false);
-      setRoutes([]);
-    }
-  }, [waypoints]);
 
   return (
     <StyledContainer>
@@ -85,9 +66,10 @@ const RoutePanel: React.FC<RoutePanelProps> = ({
               </Box>
               <IconButton
                 size="xs"
-                onClick={() =>
-                  setWaypoints(waypoints?.filter((_, index) => index !== i))
-                }
+                onClick={() => {
+                  setWaypoints(waypoints?.filter((_, index) => index !== i));
+                  setRoutes([]);
+                }}
               >
                 <IoTrashOutline />
               </IconButton>
@@ -123,87 +105,33 @@ const RoutePanel: React.FC<RoutePanelProps> = ({
           ))}
         </Box>
       )}
-      <Button
-        // disabled={routes?.length === 0}
-        onClick={() => {
-          // const points = waypoints
-          //   ?.map((e) => `${e?.lat},${e?.lng}`)
-          //   ?.join(';');
-
-          // d1288e4d-973e-4dbd-99eb-7b025c62016b
-
-          // fetch(
-          //   `https://routing.openstreetmap.de/routed-car/route/v1/driving/${points}?overview=false&alternatives=true&steps=true`,
-          // )
-          //   .then(async (response) => {
-          //     if (!response.ok) {
-          //       throw new Error(
-          //         'Network response was not ok ' + response.statusText,
-          //       );
-          //     }
-          //     return await response.json();
-          //   })
-          //   .then((data) => {
-          //     console.log(data); // Full routing data
-          //   })
-          //   .catch((error) => {
-          //     console.error(
-          //       'There was a problem with the fetch operation:',
-          //       error,
-          //     );
-          //   });
-
-          const url = `https://graphhopper.com/api/1/route?key=${process.env.REACT_APP_ROUTING_API_KEY}`;
-
-          const points = waypoints?.map((e) => [e?.lng, e?.lat]);
-
-          const payload = {
-            points,
-            profile: 'car',
-            elevation: false,
-            instructions: false,
-            locale: 'pt_BR',
-            points_encoded: false,
-            points_encoded_multiplier: 1000000,
-            timeout_ms: 10000,
-            'alternative_route.max_paths': 3,
-            algorithm: 'alternative_route',
-          };
-
-          fetch(url, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(payload),
-          })
-            .then(async (response) => {
-              if (!response.ok) {
-                throw new Error(`Erro na requisição: ${response.statusText}`);
-              }
-              return await response.json();
-            })
-            .then((data) => {
-              const r = data?.paths?.[0]?.points?.coordinates?.map(
-                (e: any) => ({
-                  lat: e?.[1],
-                  lng: e?.[0],
-                }),
-              );
-
-              console.log(r);
-              setRoutes([r]);
-            })
-            .catch((error) => {
-              console.error('Erro ao fazer a requisição:', error);
+      {!loading && routes?.length === 0 && waypoints?.length > 1 && (
+        <Button
+          onClick={() => {
+            setLoading(true);
+            getRoute({
+              waypoints,
+              token: getToken(),
+              onCompleted: (r) => {
+                setRoutes(r);
+                setLoading(false);
+              },
             });
-
-          // onSave(routes?.[selectedRoute]);
-          // onClose();
-        }}
-      >
-        Salvar
-      </Button>
+          }}
+        >
+          Procurar rotas
+        </Button>
+      )}
+      {!loading && routes?.length > 0 && (
+        <Button
+          onClick={() => {
+            onSave(routes?.[selectedRoute]);
+            onClose();
+          }}
+        >
+          Salvar
+        </Button>
+      )}
     </StyledContainer>
   );
 };

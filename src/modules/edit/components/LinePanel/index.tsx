@@ -1,14 +1,30 @@
+import { useState } from 'react';
 import Box from '../../../../foundation/Box';
+import Button from '../../../../foundation/Button';
 import IconButton from '../../../../foundation/IconButton';
 import Text from '../../../../foundation/Text';
 import { StyledContainer } from './styles';
 import { MdClose } from 'react-icons/md';
+import DeleteAlert from '../../../../components/DeleteAlert';
 
 export type LinePanelProps = {
   onClose: () => void;
+  handleDeleteLine: () => void;
+  handleUndoLine: () => void;
 };
 
-const LinePanel: React.FC<LinePanelProps> = ({ onClose }) => {
+const LinePanel: React.FC<LinePanelProps> = ({
+  onClose,
+  handleDeleteLine,
+  handleUndoLine,
+}) => {
+  const [open, setOpen] = useState(false);
+
+  const onDelete = () => {
+    handleDeleteLine();
+    onClose();
+  };
+
   return (
     <StyledContainer>
       <Box display="flex" alignItems="center" justifyContent="space-between">
@@ -24,15 +40,12 @@ const LinePanel: React.FC<LinePanelProps> = ({ onClose }) => {
         </Text>
       </Box>
 
-      {/* <Button
-        disabled={routes?.length === 0}
-        onClick={() => {
-          onSave(routes?.[selectedRoute]);
-          onClose();
-        }}
-      >
-        Salvar
-      </Button> */}
+      <Button onClick={handleUndoLine}>Desfazer linha</Button>
+      <Button onClick={() => setOpen(true)}>Deletar rota</Button>
+
+      {open && (
+        <DeleteAlert onClose={() => setOpen(false)} onConfirm={onDelete} open />
+      )}
     </StyledContainer>
   );
 };

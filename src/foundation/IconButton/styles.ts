@@ -8,13 +8,18 @@ type SizeType = { boxSize: string; iconSize: string };
 const getColor = (color: IconButtonColor, theme: Theme) =>
   ({
     primary: {
-      background: theme.palette.primary.main,
-      hover: theme.palette.primary.light,
+      main: theme.palette.primary.main,
+      light: theme.palette.primary.light,
       text: theme.palette.text.primary,
     },
     neutral: {
-      background: theme.palette.primary.main,
-      hover: theme.palette.primary.light,
+      main: theme.palette.primary.main,
+      light: theme.palette.primary.light,
+      text: theme.palette.text.primary,
+    },
+    red: {
+      main: theme.palette.decorative.red.main,
+      light: theme.palette.decorative.red.light,
       text: theme.palette.text.primary,
     },
   })[color];
@@ -43,10 +48,10 @@ export const StyledIconButton = styled(IconButton, {
 
     &.contained {
       color: ${getColor($color, theme).text};
-      background-color: ${getColor($color, theme).background};
+      background-color: ${getColor($color, theme).light};
 
       &:hover {
-        background-color: ${getColor($color, theme).hover};
+        background-color: ${getColor($color, theme).main};
       }
     }
 
@@ -55,7 +60,7 @@ export const StyledIconButton = styled(IconButton, {
       background-color: transparent;
 
       &:hover {
-        background-color: ${getColor($color, theme).hover};
+        background-color: ${getColor($color, theme).light};
       }
     }
   `}
