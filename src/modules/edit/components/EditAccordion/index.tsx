@@ -25,7 +25,7 @@ const EditAccordion: React.FC<EditAccordionProps> = ({
           onClick={handleClick}
         >
           <Box display="flex" alignItems="center" gap={2}>
-            <Text fontSize="15px" lineHeight="24px" fontWeight="bold">
+            <Text fontSize="17px" lineHeight="24px" fontWeight="bold">
               {label}
             </Text>
             {icon && <Icon fontSize="20px" as={icon} />}
