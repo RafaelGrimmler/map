@@ -96,7 +96,7 @@ const Map: React.FC<MapProps> = ({
             name="Ruas e Nomes (Esri)"
           >
             <TileLayer
-              url="https://tiles.stadiamaps.com/tiles/stamen_terrain_lines/{z}/{x}/{y}.png"
+              url={`https://tiles.stadiamaps.com/tiles/stamen_terrain_lines/{z}/{x}/{y}.png?api_key=${process.env.REACT_APP_STADIA_API_KEY}`}
               minZoom={0}
               maxZoom={18}
               attribution='&copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://www.stamen.com/" target="_blank">Stamen Design</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
