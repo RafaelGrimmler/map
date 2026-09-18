@@ -3,7 +3,7 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 const getLineWeight = (zoom: number, constant = 1) => {
-  if (zoom <= 9) return 0.8 * constant;
+  if (zoom <= 9) return 2 * constant;
   if (zoom <= 13) return 1.3 * constant;
   if (zoom <= 14) return 1.8 * constant;
   if (zoom <= 16) return 1.4 * constant;
@@ -17,12 +17,16 @@ export const StyledContainer = styled(Box)<{
   & .leaflet-container {
     height: 100vh;
     cursor: default !important;
+
+    & .leaflet-control-layers {
+      display: none;
+    }
   }
 
   & .polyline {
     ${({ zoom, disableRoutes, theme }) => css`
       stroke-width: ${getLineWeight(zoom, 1)};
-      stroke: ${disableRoutes ? '#8a8a8a' : '#003366'};
+      stroke: ${disableRoutes ? '#8a8a8a' : '#ffcc40'};
       cursor: ${disableRoutes ? 'default' : 'pointer'};
 
       ${!disableRoutes &&
