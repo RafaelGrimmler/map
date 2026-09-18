@@ -17,6 +17,7 @@ import { StyledContainer } from './styles';
 import Route from '../Route';
 import Line from '../Line';
 import municipios from '../../files/municipios.json';
+import RoadsLayer from '../RoadsLayer';
 
 type MapProps = {
   defaultZoom?: number;
@@ -95,12 +96,7 @@ const Map: React.FC<MapProps> = ({
             checked
             name="Ruas e Nomes (Esri)"
           >
-            <TileLayer
-              url={`https://tiles.stadiamaps.com/tiles/stamen_terrain_lines/{z}/{x}/{y}.png?api_key=${process.env.STADIA_API_KEY}`}
-              minZoom={0}
-              maxZoom={18}
-              attribution='&copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://www.stamen.com/" target="_blank">Stamen Design</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            />
+            <RoadsLayer />
           </LayersControl.Overlay>
         </LayersControl>
 
