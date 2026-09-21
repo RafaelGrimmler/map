@@ -18,7 +18,7 @@ export const StyledContainer = styled(Box)<{
     height: 100vh;
     cursor: default !important;
 
-    & .leaflet-control-layers {
+    & .leaflet-control-layers, & .leaflet-control-attribution {
       display: none;
     }
   }
