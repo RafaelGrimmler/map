@@ -1,11 +1,10 @@
 import { LatLng } from 'leaflet';
-import { Line, User } from '../../../types';
 import { getTimestamp } from '../../../helpers/useDates';
 
 type UseEditLineArgs = {
-  user: User;
+  user: any;
   selectedLine: number;
-  setUser: React.Dispatch<React.SetStateAction<User>>;
+  setUser: React.Dispatch<React.SetStateAction<any>>;
   setSelectedLine: React.Dispatch<React.SetStateAction<number>>;
 };
 
@@ -15,12 +14,12 @@ const useEditLine = ({
   setUser,
   setSelectedLine,
 }: UseEditLineArgs) => {
-  const getNewLine = (lines: number[][] = []): Line => ({
+  const getNewLine = (lines: number[][] = []): any => ({
     id: getTimestamp(),
     lines,
   });
 
-  const getLine = (id: number) => user?.lines?.find((e) => e?.id === id);
+  const getLine = (id: number) => user?.lines?.find((e: any) => e?.id === id);
 
   const handleInsertRoute = (coordinates: LatLng[]) => {
     const line = getNewLine(coordinates?.map((c) => [c?.lat, c?.lng]));
@@ -36,7 +35,7 @@ const useEditLine = ({
   const handleAppendLine = (coord: LatLng) => {
     const { lat, lng } = coord || {};
 
-    const lines = user?.lines?.map((line) => {
+    const lines = user?.lines?.map((line: any) => {
       if (line?.id === selectedLine) {
         return { id: selectedLine, lines: [...line?.lines, [lat, lng]] };
       }
@@ -48,11 +47,11 @@ const useEditLine = ({
   };
 
   const handleUndoLine = () => {
-    const lines = user?.lines?.map((line) => {
+    const lines = user?.lines?.map((line: any) => {
       if (line?.id === selectedLine) {
         return {
           id: selectedLine,
-          lines: line?.lines?.filter((_, i) => i !== line?.lines?.length - 1),
+          lines: line?.lines?.filter((_: any, i: any) => i !== line?.lines?.length - 1),
         };
       }
 
@@ -63,7 +62,7 @@ const useEditLine = ({
   };
 
   const handleDeleteLine = () => {
-    const lines = user?.lines?.filter((line) => line?.id !== selectedLine);
+    const lines = user?.lines?.filter((line: any) => line?.id !== selectedLine);
     setUser({ ...user, lines });
     setSelectedLine(0);
   };

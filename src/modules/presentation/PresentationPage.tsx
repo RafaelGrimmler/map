@@ -1,6 +1,5 @@
 import { Box } from '@chakra-ui/react';
 import Map from '../../components/Map';
-import { useUsers } from '../../helpers/useUsers';
 import { Navigate, useParams, useNavigate } from 'react-router-dom';
 import Navbar from '../../components/Navbar';
 
@@ -13,13 +12,12 @@ const PresentationPage: React.FC = () => {
   const navigator = useNavigate();
   const loginContext = useContext(LoginContext);
   const { id } = useParams();
-  const { users } = useUsers();
 
   const [open, setOpen] = useState(false);
 
   const { isLogged, handleLogin } = loginContext as LoginContextReturn;
 
-  const user = users?.find((e) => e?.userMap === id);
+  const user = []?.find((e) => e?.userMap === id);
 
   if (id && !user) return <Navigate to="/map" />;
 

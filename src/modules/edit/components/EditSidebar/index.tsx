@@ -1,12 +1,11 @@
 import { StyledContainer } from './styles';
 import LineEditor from '../LineEditor';
-import { User } from '../../../../types';
 import EditAccordion from '../EditAccordion';
 import { useNavigate } from 'react-router-dom';
 
 type EditSidebarProps = {
   lineId: number;
-  user: User;
+  user: any;
   setLineId: React.Dispatch<React.SetStateAction<number>>;
   handleUndoLine: () => void;
   handleDeleteLine: () => void;
@@ -27,7 +26,7 @@ const EditSidebar: React.FC<EditSidebarProps> = ({
 
   const handleBack = () => navigator({ pathname: `/user/${user?.userMap}` });
 
-  const selectedLine = user?.lines?.find((e) => e?.id === lineId);
+  const selectedLine = user?.lines?.find((e: any) => e?.id === lineId);
 
   return (
     <StyledContainer>

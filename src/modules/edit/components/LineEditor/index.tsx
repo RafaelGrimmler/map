@@ -1,6 +1,5 @@
 import { GiPathDistance } from 'react-icons/gi';
 import { getTimestamp } from '../../../../helpers/useDates';
-import { Line } from '../../../../types';
 import DeleteAlert from '../../../../components/DeleteAlert';
 import { useState } from 'react';
 import EditAccordion from '../EditAccordion';
@@ -25,7 +24,7 @@ const LineEditor: React.FC<LineEditorProps> = ({
 }) => {
   const [open, setOpen] = useState(false);
 
-  const handleCreateLine = (): Line => ({ id: getTimestamp(), lines: [] });
+  const handleCreateLine = (): any => ({ id: getTimestamp(), lines: [] });
 
   const handleClick = () => {
     if (lineId) setLineId(0);

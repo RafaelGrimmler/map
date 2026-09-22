@@ -1,6 +1,5 @@
 import { StyledContainer } from './styles';
 import Map from '../../../../components/Map';
-import { User } from '../../../../types';
 import { useState } from 'react';
 import useEditLine from '../../helpers/useEditLine';
 import Navbar, { NavbarItem } from '../../../../components/Navbar';
@@ -13,12 +12,12 @@ import { downloadFiles } from '../../../../helpers/downloadFiles';
 import { useGraphhoperToken } from '../../helpers/useGraphhoperToken';
 
 type Panel = 'ROUTING' | 'LINE';
-type EditMapProps = { user: User };
+type EditMapProps = { user: any };
 
 const EditMap: React.FC<EditMapProps> = ({ user: defaultUser }) => {
   const { getToken } = useGraphhoperToken();
 
-  const [user, setUser] = useState<User>(defaultUser);
+  const [user, setUser] = useState<any>(defaultUser);
   const [panel, setPanel] = useState<Panel>();
 
   // line states

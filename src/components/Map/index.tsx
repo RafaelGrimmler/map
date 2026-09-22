@@ -12,7 +12,6 @@ import 'leaflet/dist/leaflet.css';
 import { useState } from 'react';
 import { LatLng } from 'leaflet';
 
-import { User } from '../../types';
 import { StyledContainer } from './styles';
 import Route from '../Route';
 import Line from '../Line';
@@ -21,7 +20,7 @@ import RoadsLayer from '../RoadsLayer';
 
 type MapProps = {
   defaultZoom?: number;
-  user?: User;
+  user?: any;
   disableRoutes?: boolean;
   waypoints?: LatLng[];
   routes?: LatLng[][];
@@ -48,10 +47,10 @@ const Map: React.FC<MapProps> = ({
 
   const othersRoutes = routes?.filter((_, i) => selectedRoute !== i);
 
-  const currentLine = user?.lines?.find((e) => selectedLine === e?.id);
+  const currentLine = user?.lines?.find((e: any) => selectedLine === e?.id);
 
   const othersLines = user?.lines?.filter(
-    (e) => selectedLine !== e?.id,
+    (e: any) => selectedLine !== e?.id,
   );
 
   const LocationFinderDummy = () => {
@@ -128,10 +127,10 @@ const Map: React.FC<MapProps> = ({
             </Circle>
           ))}
 
-        {othersLines?.map((e) => (
+        {othersLines?.map((e: any) => (
           <Polyline
             key={e?.id}
-            positions={e?.lines as any}
+            positions={e?.lines}
             className="polyline"
             eventHandlers={{
               click: () => onSelectLine(e?.id),
