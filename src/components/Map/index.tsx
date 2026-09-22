@@ -56,7 +56,9 @@ const Map: React.FC<MapProps> = ({
   const LocationFinderDummy = () => {
     useMapEvents({
       click: (e) => handleFindLocation?.(e?.latlng),
-      zoom: (e) => setZoom(e.target._zoom),
+      zoom: (e) => {
+        setZoom(e.target._zoom)
+      },
     });
 
     return <></>;

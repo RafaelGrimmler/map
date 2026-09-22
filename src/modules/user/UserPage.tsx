@@ -11,7 +11,7 @@ const UserPage: React.FC = () => {
 
   return (
     <Routes>
-      <Route path="/map" element={<UserMapPage />} />
+      <Route path="/map" element={<UserMapPage user={user} />} />
       <Route path="/*" element={<Navigate to="map" />} />
     </Routes>
   );

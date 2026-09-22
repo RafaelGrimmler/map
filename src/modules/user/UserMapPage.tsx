@@ -1,7 +1,10 @@
 import Map from '../../components/Map';
 import Box from '../../foundation/Box';
+import { User } from '../../types';
 
-const UserMapPage: React.FC = () => {
+type UserMapPageProps = { user: User };
+
+const UserMapPage: React.FC<UserMapPageProps> = ({ user }) => {
   return (
     <Box>
       <Map />

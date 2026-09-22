@@ -1,4 +1,6 @@
-export const getUserById = (id: string) => {
+import { User } from "../types";
+
+export const getUserById = (id: string): User => {
   try {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const profile = require(`../files/users/${id}/profile.json`);
