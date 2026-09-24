@@ -9,8 +9,8 @@ import {
 } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 
-import { useState } from 'react';
-import { LatLng } from 'leaflet';
+import { useRef, useState } from 'react';
+import { LatLng, Map as LeafletMap } from 'leaflet';
 
 import { StyledContainer } from './styles';
 import Route from '../Route';
@@ -42,6 +42,7 @@ const Map: React.FC<MapProps> = ({
   handleSelectLine,
 }) => {
   const [zoom, setZoom] = useState(defaultZoom);
+  const mapRef = useRef<LeafletMap | null>(null);
 
   const currentRoute = routes?.find((_, i) => selectedRoute === i);
 
@@ -49,15 +50,13 @@ const Map: React.FC<MapProps> = ({
 
   const currentLine = user?.lines?.find((e: any) => selectedLine === e?.id);
 
-  const othersLines = user?.lines?.filter(
-    (e: any) => selectedLine !== e?.id,
-  );
+  const othersLines = user?.lines?.filter((e: any) => selectedLine !== e?.id);
 
   const LocationFinderDummy = () => {
     useMapEvents({
       click: (e) => handleFindLocation?.(e?.latlng),
-      zoom: (e) => {
-        setZoom(e.target._zoom)
+      zoomend: () => {
+        if (mapRef.current) setZoom(mapRef.current.getZoom());
       },
     });
 
@@ -71,32 +70,27 @@ const Map: React.FC<MapProps> = ({
   };
 
   return (
-    <StyledContainer
-      zoom={zoom}
-      disableRoutes={disableRoutes}
-    >
+    <StyledContainer zoom={zoom} disableRoutes={disableRoutes}>
       <MapContainer
         center={[-31.721742613401577, -52.35671997070313]}
         zoom={zoom}
         zoomControl={false}
         minZoom={6}
         maxZoom={16}
+        ref={mapRef}
+        zoomSnap={1}
+        zoomDelta={1}
+        wheelPxPerZoomLevel={120}
       >
         <LayersControl position="topright">
-          <LayersControl.BaseLayer
-            checked
-            name="Satélite (Esri)"
-          >
+          <LayersControl.BaseLayer checked name="Satélite (Esri)">
             <TileLayer
               url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
               attribution="Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community"
             />
           </LayersControl.BaseLayer>
 
-          <LayersControl.Overlay
-            checked
-            name="Ruas e Nomes (Esri)"
-          >
+          <LayersControl.Overlay checked name="Ruas e Nomes (Esri)">
             <RoadsLayer />
           </LayersControl.Overlay>
         </LayersControl>
@@ -107,10 +101,7 @@ const Map: React.FC<MapProps> = ({
           municipios.map((municipio) => (
             <Circle
               key={municipio.codigo_ibge}
-              center={[
-                municipio.latitude,
-                municipio.longitude,
-              ]}
+              center={[municipio.latitude, municipio.longitude]}
               radius={1000}
               pathOptions={{
                 color: '#1D51D3',
@@ -119,11 +110,7 @@ const Map: React.FC<MapProps> = ({
                 weight: 1,
               }}
             >
-              <Tooltip
-                direction="top"
-                offset={[0, -5]}
-                opacity={1}
-              >
+              <Tooltip direction="top" offset={[0, -5]} opacity={1}>
                 {municipio.nome}
               </Tooltip>
             </Circle>
@@ -153,18 +140,10 @@ const Map: React.FC<MapProps> = ({
         ))}
 
         {othersRoutes?.map((route, i) => (
-          <Route
-            key={`route-map-${i}`}
-            route={route}
-          />
+          <Route key={`route-map-${i}`} route={route} />
         ))}
 
-        {currentRoute && (
-          <Route
-            route={currentRoute}
-            selected
-          />
-        )}
+        {currentRoute && <Route route={currentRoute} selected />}
       </MapContainer>
     </StyledContainer>
   );
