@@ -13,14 +13,14 @@ export const StyledContainer = styled(Box)`
   box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.08);
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 8px;
 `;
 
 export const StyledHeader = styled(Box)`
   display: flex;
   padding: 16px;
   gap: 12px;
-  padding-bottom: 0px;
+  padding-bottom: 8px;
 
   & > img {
     width: 48px;
@@ -52,5 +52,29 @@ export const StyledHeaderTextContainer = styled(Box)`
     font-size: 12px;
     line-height: 18px;
     color: rgb(131, 131, 131);
+  }
+`;
+
+export const StyledActionsContainer = styled(Box)`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`;
+
+export const StyledActionOption = styled(Box)`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 18px;
+
+  & > #action-option-label {
+    color: rgb(71, 71, 71);
+  }
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.04);
   }
 `;
