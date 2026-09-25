@@ -1,13 +1,8 @@
-import { Input as ChakraInput, InputProps } from '@chakra-ui/react';
+import { InputProps } from '@chakra-ui/react';
+import { StyledInput } from './styles';
 
 const Input: React.FC<InputProps> = (props) => {
-  return (
-    <ChakraInput
-      {...props}
-      borderColor="gray.900"
-      _hover={{ borderColor: 'gray.800' }}
-    />
-  );
+  return <StyledInput {...props} />;
 };
 
 export default Input;

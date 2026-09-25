@@ -3,8 +3,9 @@ import { User } from '../../../../types';
 import { StyledActionsContainer } from './styles';
 import { LoginContext, LoginContextReturn } from '../../../../context/Login';
 import { UserActionEnum } from './utils';
-import ActionOption from './ActionOption';
-import { TbRouteSquare, TbUpload, TbDownload } from 'react-icons/tb';
+import ActionOption, { ActionOptionType } from './ActionOption';
+import { TbRouteSquare, TbUpload, TbDownload, TbLogin2 } from 'react-icons/tb';
+import ActionLogin from './ActionLogin';
 
 type ActionsType = {
   user: User;
@@ -12,34 +13,39 @@ type ActionsType = {
   setAction: React.Dispatch<React.SetStateAction<UserActionEnum>>;
 };
 
-type OptionType = {
-  label: string;
-  type?: UserActionEnum;
-  iconComponent: React.ReactNode;
-};
-
-const Actions: React.FC<ActionsType> = ({ user }) => {
+const Actions: React.FC<ActionsType> = ({ user, action, setAction }) => {
   const loginContext = useContext(LoginContext);
 
   const { isLogged } = loginContext as LoginContextReturn;
 
-  const options: OptionType[] = isLogged
+  const options: ActionOptionType[] = isLogged
     ? [
         {
           label: 'Rotas',
-          type: UserActionEnum.ROUTES,
           iconComponent: <TbRouteSquare />,
+          onClick: () => setAction(UserActionEnum.ROUTES),
         },
-        { label: 'Upload', iconComponent: <TbUpload /> },
-        { label: 'Download', iconComponent: <TbDownload /> },
+        { label: 'Upload', iconComponent: <TbUpload />, onClick: () => {} },
+        { label: 'Download', iconComponent: <TbDownload />, onClick: () => {} },
       ]
     : [
         {
           label: 'Login',
-          type: UserActionEnum.LOGIN,
-          iconComponent: <TbDownload />,
+          iconComponent: <TbLogin2 />,
+          onClick: () => setAction(UserActionEnum.LOGIN),
         },
       ];
+
+  if (action !== UserActionEnum.NONE) {
+    switch (action) {
+      case UserActionEnum.LOGIN:
+        return <ActionLogin setAction={setAction} />;
+      case UserActionEnum.ROUTES:
+        return <></>;
+      default:
+        return null;
+    }
+  }
 
   return (
     <StyledActionsContainer>
@@ -48,6 +54,7 @@ const Actions: React.FC<ActionsType> = ({ user }) => {
           key={option?.label}
           iconComponent={option?.iconComponent}
           label={option?.label}
+          onClick={option?.onClick}
         />
       ))}
     </StyledActionsContainer>

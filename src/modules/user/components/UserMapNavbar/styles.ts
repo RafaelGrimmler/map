@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import Box from '../../../../foundation/Box';
+import Text from '../../../../foundation/Text';
 
 export const StyledContainer = styled(Box)`
   position: absolute;
@@ -69,12 +70,22 @@ export const StyledActionOption = styled(Box)`
   cursor: pointer;
   font-size: 14px;
   line-height: 18px;
-
-  & > #action-option-label {
-    color: rgb(71, 71, 71);
-  }
+  color: rgb(71, 71, 71);
 
   &:hover {
     background-color: rgba(0, 0, 0, 0.04);
   }
+`;
+
+export const StyledActionLoginContainer = styled(Box)`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0px 16px;
+`;
+
+export const StyledActionTitle = styled(Text)`
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 16px;
 `;
