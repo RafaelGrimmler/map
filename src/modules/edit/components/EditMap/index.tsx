@@ -1,5 +1,4 @@
 import { StyledContainer } from './styles';
-import Map from '../../../../components/Map';
 import { useState } from 'react';
 import useEditLine from '../../helpers/useEditLine';
 import Navbar, { NavbarItem } from '../../../../components/Navbar';
@@ -31,23 +30,22 @@ const EditMap: React.FC<EditMapProps> = ({ user: defaultUser }) => {
   const {
     handleInsertRoute,
     handleInsertLine,
-    handleAppendLine,
     handleDeleteLine,
     handleUndoLine,
   } = useEditLine({ user, selectedLine, setUser, setSelectedLine });
 
   const handleDownload = () => downloadFiles({ user });
 
-  const handleFindLocation = (coord: LatLng) => {
-    if (panel === 'ROUTING') {
-      if (waypoints?.length < 5) {
-        setWaypoints([...waypoints, coord]);
-        setRoutes([]);
-      }
-    } else if (panel === 'LINE') {
-      handleAppendLine(coord);
-    }
-  };
+  // const handleFindLocation = (coord: LatLng) => {
+  //   if (panel === 'ROUTING') {
+  //     if (waypoints?.length < 5) {
+  //       setWaypoints([...waypoints, coord]);
+  //       setRoutes([]);
+  //     }
+  //   } else if (panel === 'LINE') {
+  //     handleAppendLine(coord);
+  //   }
+  // };
 
   const handleCloseRouting = () => {
     setPanel(undefined);
@@ -61,10 +59,10 @@ const EditMap: React.FC<EditMapProps> = ({ user: defaultUser }) => {
     setSelectedLine(0);
   };
 
-  const handleSelectLine = (id: number) => {
-    setSelectedLine(id);
-    setPanel('LINE');
-  };
+  // const handleSelectLine = (id: number) => {
+  //   setSelectedLine(id);
+  //   setPanel('LINE');
+  // };
 
   const handleOpenLinePanel = () => {
     const line = handleInsertLine();
@@ -92,16 +90,6 @@ const EditMap: React.FC<EditMapProps> = ({ user: defaultUser }) => {
 
   return (
     <StyledContainer>
-      <Map
-        user={user}
-        waypoints={waypoints}
-        selectedRoute={selectedRoute}
-        disableRoutes={!!panel}
-        selectedLine={selectedLine}
-        routes={routes}
-        handleFindLocation={handleFindLocation}
-        handleSelectLine={handleSelectLine}
-      />
       {user && (
         <Navbar image={user?.image} items={navbarItems} disabled={!!panel} />
       )}

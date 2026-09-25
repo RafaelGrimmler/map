@@ -1,18 +1,18 @@
 import { useContext, useState } from 'react';
 import Input from '../../../../foundation/Input';
-import { StyledActionLoginContainer, StyledActionTitle } from './styles';
+import { StyledActionLoginContainer } from './styles';
 import Box from '../../../../foundation/Box';
 import Label from '../../../../foundation/Label';
 import Button from '../../../../foundation/Button';
-import { UserActionEnum } from './utils';
 import { LoginContext, LoginContextReturn } from '../../../../context/Login';
 import InputError from '../../../../foundation/Input/InputError';
+import ActionBreadcrumb from './ActionBreadcrumb';
 
 type ActionLoginProps = {
-  setAction: React.Dispatch<React.SetStateAction<UserActionEnum>>;
+  handleClose: () => void;
 };
 
-const ActionLogin: React.FC<ActionLoginProps> = ({ setAction }) => {
+const ActionLogin: React.FC<ActionLoginProps> = ({ handleClose }) => {
   const loginContext = useContext(LoginContext);
 
   const [text, setText] = useState('');
@@ -23,7 +23,7 @@ const ActionLogin: React.FC<ActionLoginProps> = ({ setAction }) => {
   const handleSave = () => {
     if (text.toLowerCase() === process.env.REACT_APP_EDIT_KEY) {
       handleLogin();
-      setAction(UserActionEnum.NONE);
+      handleClose();
     } else {
       setErrorCount(errorCount + 1);
     }
@@ -31,7 +31,13 @@ const ActionLogin: React.FC<ActionLoginProps> = ({ setAction }) => {
 
   return (
     <StyledActionLoginContainer>
-      <StyledActionTitle>Login</StyledActionTitle>
+      <ActionBreadcrumb
+        padding="0px"
+        options={[
+          { label: 'Menu principal', onClick: handleClose },
+          { label: 'Login' },
+        ]}
+      />
       <Box>
         <Label>Access token</Label>
         <Input
@@ -46,7 +52,7 @@ const ActionLogin: React.FC<ActionLoginProps> = ({ setAction }) => {
         {errorCount > 0 && <InputError text="Invalid Access Token" />}
       </Box>
       <Box display="flex" gap="8px">
-        <Button onClick={() => setAction(UserActionEnum.NONE)}>Cancelar</Button>
+        <Button onClick={handleClose}>Cancelar</Button>
         <Button
           contained
           disabled={!text || errorCount >= 5}

@@ -1,5 +1,4 @@
 import { Box } from '@chakra-ui/react';
-import Map from '../../components/Map';
 import { Navigate, useParams, useNavigate } from 'react-router-dom';
 import Navbar from '../../components/Navbar';
 
@@ -28,7 +27,6 @@ const PresentationPage: React.FC = () => {
 
   return (
     <Box>
-      <Map user={user} />
       {user && (
         <Navbar
           image={user?.image}

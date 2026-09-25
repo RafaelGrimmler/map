@@ -4,24 +4,16 @@ import Divider from '../../../../components/Divider';
 import Header from './Header';
 import Actions from './Actions';
 import Box from '../../../../foundation/Box';
-import { UserActionEnum } from './utils';
+import { useRoutingReturn } from '../../helpers/useRouting';
 
-type UserMapNavbarProps = {
-  user: User;
-  action: UserActionEnum;
-  setAction: React.Dispatch<React.SetStateAction<UserActionEnum>>;
-};
+type UserMapNavbarProps = { user: User; routing: useRoutingReturn };
 
-const UserMapNavbar: React.FC<UserMapNavbarProps> = ({
-  user,
-  action,
-  setAction,
-}) => {
+const UserMapNavbar: React.FC<UserMapNavbarProps> = ({ user, routing }) => {
   return (
     <StyledContainer>
       <Header user={user} />
       <Divider />
-      <Actions user={user} action={action} setAction={setAction} />
+      <Actions routing={routing} user={user} />
       <Box />
     </StyledContainer>
   );

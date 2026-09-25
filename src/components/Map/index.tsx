@@ -1,60 +1,51 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   Circle,
   MapContainer,
-  Polyline,
   TileLayer,
   useMapEvents,
   LayersControl,
   Tooltip,
+  Polyline,
 } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 
 import { useRef, useState } from 'react';
-import { LatLng, Map as LeafletMap } from 'leaflet';
+import { Map as LeafletMap, LatLngExpression } from 'leaflet';
 
 import { StyledContainer } from './styles';
-import Route from '../Route';
-import Line from '../Line';
 import municipios from '../../files/municipios.json';
 import RoadsLayer from '../RoadsLayer';
+import { User } from '../../types';
+import { useRoutingReturn } from '../../modules/user/helpers/useRouting';
+
+// type MapProps = {
+//   user?: any;
+//   defaultZoom?: number;
+//   disableRoutes?: boolean;
+//   waypoints?: LatLng[];
+//   routes?: LatLng[][];
+//   selectedRoute?: number;
+//   selectedLine?: number;
+//   handleFindLocation?: (coord: LatLng) => void;
+//   handleSelectLine?: (id: number) => void;
+// };
 
 type MapProps = {
-  defaultZoom?: number;
-  user?: any;
-  disableRoutes?: boolean;
-  waypoints?: LatLng[];
-  routes?: LatLng[][];
-  selectedRoute?: number;
-  selectedLine?: number;
-  handleFindLocation?: (coord: LatLng) => void;
-  handleSelectLine?: (id: number) => void;
+  user: User;
+  routing: useRoutingReturn;
 };
 
-const Map: React.FC<MapProps> = ({
-  defaultZoom = 11,
-  user,
-  disableRoutes,
-  waypoints,
-  routes,
-  selectedRoute,
-  selectedLine,
-  handleFindLocation,
-  handleSelectLine,
-}) => {
-  const [zoom, setZoom] = useState(defaultZoom);
+const CENTER = [-31.721742613401577, -52.35671997070313] as LatLngExpression;
+
+const Map: React.FC<MapProps> = ({ user, routing }) => {
+  const [zoom, setZoom] = useState(11);
+
   const mapRef = useRef<LeafletMap | null>(null);
-
-  const currentRoute = routes?.find((_, i) => selectedRoute === i);
-
-  const othersRoutes = routes?.filter((_, i) => selectedRoute !== i);
-
-  const currentLine = user?.lines?.find((e: any) => selectedLine === e?.id);
-
-  const othersLines = user?.lines?.filter((e: any) => selectedLine !== e?.id);
 
   const LocationFinderDummy = () => {
     useMapEvents({
-      click: (e) => handleFindLocation?.(e?.latlng),
+      click: (e) => routing?.addRoute(e.latlng),
       zoomend: () => {
         if (mapRef.current) setZoom(mapRef.current.getZoom());
       },
@@ -63,16 +54,20 @@ const Map: React.FC<MapProps> = ({
     return <></>;
   };
 
-  const onSelectLine = (id: number) => {
-    if (!disableRoutes && !selectedLine) {
-      handleSelectLine?.(id);
-    }
-  };
+  // const onSelectLine = (id: number) => {
+  //   if (!disableRoutes && !selectedLine) {
+  //     handleSelectLine?.(id);
+  //   }
+  // };
 
   return (
-    <StyledContainer zoom={zoom} disableRoutes={disableRoutes}>
+    <StyledContainer
+      zoom={zoom}
+      disableRoutes={false}
+      selectingRoutes={routing?.selecting}
+    >
       <MapContainer
-        center={[-31.721742613401577, -52.35671997070313]}
+        center={CENTER}
         zoom={zoom}
         zoomControl={false}
         minZoom={6}
@@ -97,26 +92,45 @@ const Map: React.FC<MapProps> = ({
 
         <LocationFinderDummy />
 
-        {zoom >= 6 &&
-          municipios.map((municipio) => (
-            <Circle
-              key={municipio.codigo_ibge}
-              center={[municipio.latitude, municipio.longitude]}
-              radius={1000}
-              pathOptions={{
-                color: '#1D51D3',
-                fillColor: '#1D51D3',
-                fillOpacity: 0.7,
-                weight: 1,
-              }}
-            >
-              <Tooltip direction="top" offset={[0, -5]} opacity={1}>
-                {municipio.nome}
-              </Tooltip>
-            </Circle>
-          ))}
+        {/* {zoom >= 6 &&
+            municipios.map((municipio) => (
+              <Circle
+                key={municipio.codigo_ibge}
+                center={[municipio.latitude, municipio.longitude]}
+                radius={1000}
+                pathOptions={{
+                  color: '#1D51D3',
+                  fillColor: '#1D51D3',
+                  fillOpacity: 0.7,
+                  weight: 1,
+                }}
+              >
+                <Tooltip direction="top" offset={[0, -5]} opacity={1}>
+                  {municipio.nome}
+                </Tooltip>
+              </Circle>
+            ))} */}
 
-        {othersLines?.map((e: any) => (
+        {user?.map?.lines?.map((e) =>
+          e?.id !== routing?.route?.id ? (
+            <Polyline
+              key={e?.id}
+              positions={e?.points}
+              eventHandlers={{ click: () => routing?.selectRoute(e) }}
+              className="polyline"
+            />
+          ) : null,
+        )}
+
+        {routing?.enabled && routing?.route && (
+          <Polyline
+            key={routing?.route?.id}
+            positions={routing?.route?.points}
+            className="polyline selected"
+          />
+        )}
+
+        {/* {othersLines?.map((e: any) => (
           <Polyline
             key={e?.id}
             positions={e?.lines}
@@ -143,7 +157,7 @@ const Map: React.FC<MapProps> = ({
           <Route key={`route-map-${i}`} route={route} />
         ))}
 
-        {currentRoute && <Route route={currentRoute} selected />}
+        {currentRoute && <Route route={currentRoute} selected />} */}
       </MapContainer>
     </StyledContainer>
   );

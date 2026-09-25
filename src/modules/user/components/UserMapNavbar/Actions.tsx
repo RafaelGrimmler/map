@@ -1,29 +1,31 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { User } from '../../../../types';
 import { StyledActionsContainer } from './styles';
 import { LoginContext, LoginContextReturn } from '../../../../context/Login';
-import { UserActionEnum } from './utils';
-import ActionOption, { ActionOptionType } from './ActionOption';
+import ActionOption, { ActionOptionProps } from './ActionOption';
 import { TbRouteSquare, TbUpload, TbDownload, TbLogin2 } from 'react-icons/tb';
 import ActionLogin from './ActionLogin';
+import ActionRoutes from './ActionRoutes';
+import { useRoutingReturn } from '../../helpers/useRouting';
 
 type ActionsType = {
   user: User;
-  action: UserActionEnum;
-  setAction: React.Dispatch<React.SetStateAction<UserActionEnum>>;
+  routing: useRoutingReturn;
 };
 
-const Actions: React.FC<ActionsType> = ({ user, action, setAction }) => {
+const Actions: React.FC<ActionsType> = ({ user, routing }) => {
   const loginContext = useContext(LoginContext);
+
+  const [loginEnabled, setLoginEnabled] = useState(false);
 
   const { isLogged } = loginContext as LoginContextReturn;
 
-  const options: ActionOptionType[] = isLogged
+  const options: ActionOptionProps[] = isLogged
     ? [
         {
           label: 'Rotas',
           iconComponent: <TbRouteSquare />,
-          onClick: () => setAction(UserActionEnum.ROUTES),
+          onClick: () => routing?.start(),
         },
         { label: 'Upload', iconComponent: <TbUpload />, onClick: () => {} },
         { label: 'Download', iconComponent: <TbDownload />, onClick: () => {} },
@@ -32,20 +34,14 @@ const Actions: React.FC<ActionsType> = ({ user, action, setAction }) => {
         {
           label: 'Login',
           iconComponent: <TbLogin2 />,
-          onClick: () => setAction(UserActionEnum.LOGIN),
+          onClick: () => setLoginEnabled(true),
         },
       ];
 
-  if (action !== UserActionEnum.NONE) {
-    switch (action) {
-      case UserActionEnum.LOGIN:
-        return <ActionLogin setAction={setAction} />;
-      case UserActionEnum.ROUTES:
-        return <></>;
-      default:
-        return null;
-    }
-  }
+  if (loginEnabled)
+    return <ActionLogin handleClose={() => setLoginEnabled(false)} />;
+
+  if (routing?.enabled) return <ActionRoutes routing={routing} />;
 
   return (
     <StyledActionsContainer>

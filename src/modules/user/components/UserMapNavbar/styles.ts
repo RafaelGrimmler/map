@@ -84,8 +84,27 @@ export const StyledActionLoginContainer = styled(Box)`
   padding: 0px 16px;
 `;
 
-export const StyledActionTitle = styled(Text)`
+export const StyledActionTitle = styled(Text)<{ $clickable: boolean }>`
   font-weight: 700;
   font-size: 12px;
   line-height: 16px;
+
+  ${({ $clickable }) =>
+    $clickable &&
+    `
+    color: rgb(255, 174, 0);
+    cursor: pointer;
+  `}
+`;
+
+export const StyledActionRoutesContainer = styled(Box)`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`;
+
+export const StyledActionRouteSection = styled(Box)`
+  display: flex;
+  flex-direction: column;
+  padding: 0px 16px;
 `;

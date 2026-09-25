@@ -1,13 +1,13 @@
 import Text from '../../../../foundation/Text';
 import { StyledActionOption } from './styles';
 
-export type ActionOptionType = {
+export type ActionOptionProps = {
   label: string;
-  iconComponent: React.ReactNode;
+  iconComponent?: React.ReactNode;
   onClick: () => void;
 };
 
-const ActionOption: React.FC<ActionOptionType> = ({
+const ActionOption: React.FC<ActionOptionProps> = ({
   iconComponent,
   label,
   onClick,
