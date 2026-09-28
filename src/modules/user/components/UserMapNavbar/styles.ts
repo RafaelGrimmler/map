@@ -59,10 +59,23 @@ export const StyledHeaderTextContainer = styled(Box)`
 export const StyledActionsContainer = styled(Box)`
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 4px;
+  position: relative;
 `;
 
-export const StyledActionOption = styled(Box)`
+export const StyledActionsOptionsOverlay = styled(Box)`
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.08);
+  top: 0;
+  left: 0;
+  position: absolute;
+`;
+
+export const StyledActionOption = styled(Box)<{
+  $selected?: boolean;
+  $disabled?: boolean;
+}>`
   display: flex;
   align-items: center;
   gap: 8px;
@@ -75,6 +88,26 @@ export const StyledActionOption = styled(Box)`
   &:hover {
     background-color: rgba(0, 0, 0, 0.04);
   }
+
+  ${({ $selected }) =>
+    $selected &&
+    `
+    color: rgba(255, 174, 0, 0.84);
+
+    & > p {
+     color: rgba(255, 174, 0, 0.84);
+    }
+  `}
+
+  ${({ $disabled }) =>
+    $disabled &&
+    `
+    color: rgba(0, 0, 0, 0.64);
+
+    & > p {
+      color: rgba(0, 0, 0, 0.64);
+    }
+  `}
 `;
 
 export const StyledActionLoginContainer = styled(Box)`
@@ -106,5 +139,4 @@ export const StyledActionRoutesContainer = styled(Box)`
 export const StyledActionRouteSection = styled(Box)`
   display: flex;
   flex-direction: column;
-  padding: 0px 16px;
 `;

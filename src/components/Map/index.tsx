@@ -45,7 +45,7 @@ const Map: React.FC<MapProps> = ({ user, routing }) => {
 
   const LocationFinderDummy = () => {
     useMapEvents({
-      click: (e) => routing?.addRoute(e.latlng),
+      click: (e) => routing?.handleClick(e.latlng),
       zoomend: () => {
         if (mapRef.current) setZoom(mapRef.current.getZoom());
       },
@@ -63,8 +63,8 @@ const Map: React.FC<MapProps> = ({ user, routing }) => {
   return (
     <StyledContainer
       zoom={zoom}
-      disableRoutes={false}
       selectingRoutes={routing?.selecting}
+      disableRoutes={routing?.enabled && !routing?.selecting}
     >
       <MapContainer
         center={CENTER}
@@ -129,6 +129,25 @@ const Map: React.FC<MapProps> = ({ user, routing }) => {
             className="polyline selected"
           />
         )}
+
+        {routing?.enabled && routing?.path?.length > 0 && (
+          <Polyline
+            key="Generated path"
+            positions={routing?.path}
+            className="polyline selected"
+          />
+        )}
+
+        {routing?.enabled &&
+          routing?.points?.map((p, i) => (
+            <Circle
+              key={`routing?.points-${i}`}
+              center={[p?.lat, p?.lng]}
+              radius={20}
+              color="#ff5e00"
+              weight={5}
+            />
+          ))}
 
         {/* {othersLines?.map((e: any) => (
           <Polyline

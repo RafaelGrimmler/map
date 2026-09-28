@@ -34,10 +34,7 @@ export const getRoute = ({ waypoints, token, onCompleted }: GetRouteArgs) => {
     })
     .then((data) => {
       const routes = data?.paths?.map((route: any) =>
-        route?.points?.coordinates?.map((e: any) => ({
-          lat: e?.[1],
-          lng: e?.[0],
-        })),
+        route?.points?.coordinates?.map((c: any[]) => c.reverse()),
       );
 
       onCompleted(routes);

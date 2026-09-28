@@ -19,7 +19,7 @@ export const StyledContainer = styled(Box)<{
   }
 
   & .polyline {
-    ${({ zoom, selectingRoutes }) => css`
+    ${({ zoom, selectingRoutes, disableRoutes }) => css`
       stroke-width: ${getPolylineWeight(zoom)};
       stroke: rgb(255, 230, 0);
       cursor: ${selectingRoutes ? 'pointer' : 'default'};
@@ -31,6 +31,11 @@ export const StyledContainer = styled(Box)<{
           stroke-width: ${getPolylineWeight(zoom) * 1.5};
         `}
       }
+
+      ${disableRoutes &&
+      css`
+        stroke: rgb(43, 43, 43);
+      `}
     `}
   }
 

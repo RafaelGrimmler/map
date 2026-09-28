@@ -7,11 +7,18 @@ type ButtonProps = {
   disabled?: boolean;
   children: ReactNode;
   contained?: boolean;
+  small?: boolean;
   onClick?: ChakraButtonProps['onClick'];
 };
 
 const Button: React.FC<ButtonProps> = (props) => {
-  return <StyledButton $contained={props?.contained} {...props} />;
+  return (
+    <StyledButton
+      $contained={props?.contained}
+      $small={props?.small}
+      {...props}
+    />
+  );
 };
 
 export default Button;
