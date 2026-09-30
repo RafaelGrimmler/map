@@ -1,19 +1,25 @@
-import { User } from '../../../../types';
 import { StyledContainer } from './styles';
 import Divider from '../../../../components/Divider';
 import Header from './Header';
 import Actions from './Actions';
 import Box from '../../../../foundation/Box';
 import { useRoutingReturn } from '../../helpers/useRouting';
+import { UseUserContainerReturn } from '../../../../helpers/useUserContainer';
 
-type UserMapNavbarProps = { user: User; routing: useRoutingReturn };
+type UserMapNavbarProps = {
+  userController: UseUserContainerReturn;
+  routing: useRoutingReturn;
+};
 
-const UserMapNavbar: React.FC<UserMapNavbarProps> = ({ user, routing }) => {
+const UserMapNavbar: React.FC<UserMapNavbarProps> = ({
+  userController,
+  routing,
+}) => {
   return (
     <StyledContainer>
-      <Header user={user} />
+      <Header user={userController?.user} />
       <Divider />
-      <Actions routing={routing} user={user} />
+      <Actions routing={routing} user={userController?.user} />
       <Box />
     </StyledContainer>
   );

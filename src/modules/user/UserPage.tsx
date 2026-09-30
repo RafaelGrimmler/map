@@ -1,22 +1,24 @@
 import { Navigate, Route, Routes, useParams } from 'react-router-dom';
 import UserMapPage from './UserMapPage';
-import { getUserById } from '../../helpers/getUserById';
-import { useEffect, useState } from 'react';
+import { useUserContainer } from '../../helpers/useUserContainer';
+import { useEffect } from 'react';
 
 const UserPage: React.FC = () => {
   const { id } = useParams();
+  const userController = useUserContainer(id);
 
-  const [user, setUser] = useState(getUserById(id));
-
-  if (!user) return <Navigate to="/" />;
+  if (!userController?.user) return <Navigate to="/" />;
 
   useEffect(() => {
-    setUser(getUserById(id));
+    userController?.reset();
   }, [id]);
 
   return (
     <Routes>
-      <Route path="/map" element={<UserMapPage user={user} />} />
+      <Route
+        path="/map"
+        element={<UserMapPage userController={userController} />}
+      />
       <Route path="/*" element={<Navigate to="map" />} />
     </Routes>
   );

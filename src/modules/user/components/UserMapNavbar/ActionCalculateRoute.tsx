@@ -1,10 +1,11 @@
 import Box from '../../../../foundation/Box';
 import Text from '../../../../foundation/Text';
 import { HiMiniTrash } from 'react-icons/hi2';
-import { useRoutingReturn } from '../../helpers/useRouting';
+import { RouteState, useRoutingReturn } from '../../helpers/useRouting';
 import Button from '../../../../foundation/Button';
 import { getRoute } from '../../../../requests/graphhoper';
 import { useGraphhoperToken } from '../../../../requests/useGraphhoperToken';
+import { Spinner } from '@chakra-ui/react';
 
 type ActionCalculateRouteProps = { routing: useRoutingReturn };
 
@@ -40,23 +41,39 @@ const ActionCalculateRoute: React.FC<ActionCalculateRouteProps> = ({
           </Box>
         ))}
       </Box>
-      {routing?.points?.length > 1 && (
-        <Box px="16px">
-          <Box width="130px">
-            <Button
-              contained
-              small
-              onClick={() => {
-                getRoute({
-                  waypoints: routing?.points,
-                  token: getToken(),
-                  onCompleted: routing?.updatePath as any,
-                });
-              }}
-            >
-              Calcular
-            </Button>
+      {routing?.points?.length > 1 &&
+        !routing?.calculating &&
+        !routing?.calculated && (
+          <Box px="16px">
+            <Box width="130px">
+              <Button
+                contained
+                small
+                onClick={() => {
+                  routing?.changeRouteState(RouteState.LOADING);
+                  getRoute({
+                    waypoints: routing?.points,
+                    token: getToken(),
+                    onCompleted: (path) => routing?.updatePath(path as any),
+                  });
+                }}
+              >
+                Calcular
+              </Button>
+            </Box>
           </Box>
+        )}
+      {routing?.calculating && (
+        <Box px="16px" display="flex" alignItems="center" gap="8px">
+          <Spinner color="rgb(255, 174, 0)" />
+          <Text fontSize="12px">Procurando rota...</Text>
+        </Box>
+      )}
+      {routing?.calculated && (
+        <Box px="16px" display="flex" alignItems="center" gap="8px">
+          <Text fontSize="12px" fontWeight="700">
+            Rota calculada com sucesso!
+          </Text>
         </Box>
       )}
     </Box>

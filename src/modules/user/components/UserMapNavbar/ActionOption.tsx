@@ -19,7 +19,7 @@ const ActionOption: React.FC<ActionOptionProps> = ({
 }) => {
   return (
     <StyledActionOption
-      onClick={onClick}
+      onClick={disabled ? undefined : onClick}
       $selected={selected}
       $disabled={disabled}
     >

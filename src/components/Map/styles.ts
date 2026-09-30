@@ -34,8 +34,13 @@ export const StyledContainer = styled(Box)<{
 
       ${disableRoutes &&
       css`
-        stroke: rgb(43, 43, 43);
+        stroke: rgb(0, 0, 0);
       `}
+
+      &.selected {
+        stroke: rgb(255, 174, 0);
+        stroke-width: ${getPolylineWeight(zoom) * 1.5};
+      }
     `}
   }
 

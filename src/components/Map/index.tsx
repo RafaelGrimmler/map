@@ -63,8 +63,8 @@ const Map: React.FC<MapProps> = ({ user, routing }) => {
   return (
     <StyledContainer
       zoom={zoom}
-      selectingRoutes={routing?.selecting}
-      disableRoutes={routing?.enabled && !routing?.selecting}
+      selectingRoutes={false}
+      disableRoutes={routing?.disableRoutes}
     >
       <MapContainer
         center={CENTER}
@@ -143,9 +143,9 @@ const Map: React.FC<MapProps> = ({ user, routing }) => {
             <Circle
               key={`routing?.points-${i}`}
               center={[p?.lat, p?.lng]}
-              radius={20}
+              radius={7}
               color="#ff5e00"
-              weight={5}
+              weight={3}
             />
           ))}
 
