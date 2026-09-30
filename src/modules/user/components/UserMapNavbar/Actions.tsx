@@ -1,5 +1,4 @@
 import { useContext, useState } from 'react';
-import { User } from '../../../../types';
 import { StyledActionsContainer } from './styles';
 import { LoginContext, LoginContextReturn } from '../../../../context/Login';
 import ActionOption, { ActionOptionProps } from './ActionOption';
@@ -7,13 +6,14 @@ import { TbRouteSquare, TbUpload, TbDownload, TbLogin2 } from 'react-icons/tb';
 import ActionLogin from './ActionLogin';
 import ActionRoutes from './ActionRoutes';
 import { useRoutingReturn } from '../../helpers/useRouting';
+import { UseUserContainerReturn } from '../../../../helpers/useUserContainer';
 
 type ActionsType = {
-  user: User;
+  userController: UseUserContainerReturn;
   routing: useRoutingReturn;
 };
 
-const Actions: React.FC<ActionsType> = ({ user, routing }) => {
+const Actions: React.FC<ActionsType> = ({ userController, routing }) => {
   const loginContext = useContext(LoginContext);
 
   const [loginEnabled, setLoginEnabled] = useState(false);
@@ -28,7 +28,12 @@ const Actions: React.FC<ActionsType> = ({ user, routing }) => {
           onClick: () => routing?.start(),
         },
         { label: 'Upload', iconComponent: <TbUpload />, onClick: () => {} },
-        { label: 'Download', iconComponent: <TbDownload />, onClick: () => {} },
+        {
+          label: 'Download',
+          iconComponent: <TbDownload />,
+          notification: userController?.pendingDownload,
+          onClick: () => userController?.downloadMap(),
+        },
       ]
     : [
         {
@@ -50,6 +55,7 @@ const Actions: React.FC<ActionsType> = ({ user, routing }) => {
           key={option?.label}
           iconComponent={option?.iconComponent}
           label={option?.label}
+          notification={option?.notification}
           onClick={option?.onClick}
         />
       ))}

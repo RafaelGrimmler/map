@@ -7,7 +7,6 @@ import { TbRoute, TbDownload } from 'react-icons/tb';
 import RoutePanel from '../RoutePanel';
 import { LatLng } from 'leaflet';
 import LinePanel from '../LinePanel';
-import { downloadFiles } from '../../../../helpers/downloadFiles';
 import { useGraphhoperToken } from '../../helpers/useGraphhoperToken';
 
 type Panel = 'ROUTING' | 'LINE';
@@ -34,7 +33,7 @@ const EditMap: React.FC<EditMapProps> = ({ user: defaultUser }) => {
     handleUndoLine,
   } = useEditLine({ user, selectedLine, setUser, setSelectedLine });
 
-  const handleDownload = () => downloadFiles({ user });
+  // const handleDownload = () => downloadFiles({ user });
 
   // const handleFindLocation = (coord: LatLng) => {
   //   if (panel === 'ROUTING') {
@@ -85,7 +84,7 @@ const EditMap: React.FC<EditMapProps> = ({ user: defaultUser }) => {
       label: 'Linha',
       onClick: handleOpenLinePanel,
     },
-    { icon: <TbDownload />, label: 'Download', onClick: handleDownload },
+    { icon: <TbDownload />, label: 'Download', onClick: () => {} },
   ];
 
   return (

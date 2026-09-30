@@ -1,15 +1,19 @@
 import { useState } from 'react';
 import { getUserById } from './getUserById';
 import { Line, User } from '../types';
+import { downloadJSON } from './download';
 
 export type UseUserContainerReturn = {
   user: User;
+  pendingDownload: boolean;
   reset: () => void;
   upsertRoute: (route: Line) => void;
+  downloadMap: () => void;
 };
 
 export const useUserContainer = (id: string): UseUserContainerReturn => {
   const [user, setUser] = useState(getUserById(id));
+  const [pendingDownload, setPendingDownload] = useState(false);
 
   const reset = () => setUser(getUserById(id));
 
@@ -18,6 +22,8 @@ export const useUserContainer = (id: string): UseUserContainerReturn => {
       (line) => line.id === route.id,
     );
 
+    setPendingDownload(true);
+
     if (existingRouteIndex !== -1) {
       const updatedLines = [...user.map.lines];
       updatedLines[existingRouteIndex] = route;
@@ -25,5 +31,10 @@ export const useUserContainer = (id: string): UseUserContainerReturn => {
     } else setUser({ ...user, map: { lines: [...user.map.lines, route] } });
   };
 
-  return { user, reset, upsertRoute };
+  const downloadMap = () => {
+    downloadJSON('map.json', user.map);
+    setPendingDownload(false);
+  };
+
+  return { user, pendingDownload, reset, upsertRoute, downloadMap };
 };

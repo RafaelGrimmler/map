@@ -19,7 +19,7 @@ const UserMapNavbar: React.FC<UserMapNavbarProps> = ({
     <StyledContainer>
       <Header user={userController?.user} />
       <Divider />
-      <Actions routing={routing} user={userController?.user} />
+      <Actions routing={routing} userController={userController} />
       <Box />
     </StyledContainer>
   );

@@ -1,3 +1,4 @@
+import Box from '../../../../foundation/Box';
 import Text from '../../../../foundation/Text';
 import { StyledActionOption } from './styles';
 
@@ -7,6 +8,7 @@ export type ActionOptionProps = {
   type?: string;
   selected?: boolean;
   disabled?: boolean;
+  notification?: boolean;
   onClick: () => void;
 };
 
@@ -15,6 +17,7 @@ const ActionOption: React.FC<ActionOptionProps> = ({
   label,
   selected,
   disabled,
+  notification,
   onClick,
 }) => {
   return (
@@ -25,6 +28,9 @@ const ActionOption: React.FC<ActionOptionProps> = ({
     >
       {iconComponent}
       <Text>{label}</Text>
+      {notification && (
+        <Box boxSize="6px" borderRadius="50%" bg="rgb(255, 63, 63)" />
+      )}
     </StyledActionOption>
   );
 };

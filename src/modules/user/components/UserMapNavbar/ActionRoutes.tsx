@@ -54,7 +54,7 @@ const EmptyState: React.FC<EmptyStateProps> = ({ routing }) => {
         <Radio options={options} selected={value} onChange={setValue} />
       </Box>
       <Box display="flex" gap="8px">
-        <Button onClick={routing?.stop}>Cancelar</Button>
+        <Button onClick={routing?.stop}>Voltar</Button>
         <Button
           contained
           onClick={() => routing?.chooseOperation(value as RouteOperation)}
