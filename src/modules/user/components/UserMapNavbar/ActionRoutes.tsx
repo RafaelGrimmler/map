@@ -23,13 +23,20 @@ import { HiMiniTrash } from 'react-icons/hi2';
 import ActionDeleteRoute from './ActionDeleteRoute';
 
 type ActionRoutesProps = { routing: useRoutingReturn };
-type EmptyStateProps = { routing: useRoutingReturn };
 type AddRouteProps = { routing: useRoutingReturn };
 type EditRouteProps = { routing: useRoutingReturn };
 
-const EmptyState: React.FC<EmptyStateProps> = ({ routing }) => {
-  const [value, setValue] = useState(RouteOperation.ADD as string);
+type EmptyStateProps = {
+  value: string;
+  routing: useRoutingReturn;
+  setValue: (value: string) => void;
+};
 
+const EmptyState: React.FC<EmptyStateProps> = ({
+  value,
+  routing,
+  setValue,
+}) => {
   const options: RadioOption[] = [
     {
       value: RouteOperation.ADD,
@@ -183,24 +190,25 @@ const EditRoute: React.FC<EditRouteProps> = ({ routing }) => {
           )}
 
           {routing?.action === OperationAction.DELETE && <ActionDeleteRoute />}
-
-          <Box display="flex" gap="8px" px="16px">
-            <Button onClick={routing?.reset}>Cancelar</Button>
-            <Button
-              contained
-              disabled={!routing?.validate()}
-              onClick={() => routing?.applyChanges()}
-            >
-              Aplicar
-            </Button>
-          </Box>
         </Box>
       )}
+      <Box display="flex" gap="8px" px="16px">
+        <Button onClick={routing?.reset}>Cancelar</Button>
+        <Button
+          contained
+          disabled={!routing?.validate()}
+          onClick={() => routing?.applyChanges()}
+        >
+          Aplicar
+        </Button>
+      </Box>
     </Box>
   );
 };
 
 const ActionRoutes: React.FC<ActionRoutesProps> = ({ routing }) => {
+  const [value, setValue] = useState(RouteOperation.ADD as string);
+
   const Component =
     routing?.operation === RouteOperation.EDIT ? EditRoute : AddRoute;
 
@@ -216,7 +224,7 @@ const ActionRoutes: React.FC<ActionRoutesProps> = ({ routing }) => {
         {routing?.operation ? (
           <Component routing={routing} />
         ) : (
-          <EmptyState routing={routing} />
+          <EmptyState value={value} setValue={setValue} routing={routing} />
         )}
       </StyledActionRouteSection>
     </StyledActionRoutesContainer>

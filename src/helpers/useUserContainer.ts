@@ -40,9 +40,13 @@ export const useUserContainer = (id: string): UseUserContainerReturn => {
   const deleteRoute = (id: number) => {
     const updatedLines = user.map.lines.filter((line) => line.id !== id);
     setUser({ ...user, map: { ...user.map, lines: updatedLines } });
+    setPendingDownload(true);
   };
 
-  const uploadMap = (map: any) => setUser({ ...user, map });
+  const uploadMap = (map: any) => {
+    setUser({ ...user, map });
+    setPendingDownload(false);
+  };
 
   const downloadMap = () => {
     downloadJSON('map.json', user.map);
