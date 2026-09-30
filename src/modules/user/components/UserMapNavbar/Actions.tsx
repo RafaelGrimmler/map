@@ -1,11 +1,19 @@
-import { useContext, useState } from 'react';
+import { useContext, useRef, useState } from 'react';
+
 import { StyledActionsContainer } from './styles';
+
 import { LoginContext, LoginContextReturn } from '../../../../context/Login';
+
 import ActionOption, { ActionOptionProps } from './ActionOption';
+
 import { TbRouteSquare, TbUpload, TbDownload, TbLogin2 } from 'react-icons/tb';
+
 import ActionLogin from './ActionLogin';
+
 import ActionRoutes from './ActionRoutes';
+
 import { useRoutingReturn } from '../../helpers/useRouting';
+
 import { UseUserContainerReturn } from '../../../../helpers/useUserContainer';
 
 type ActionsType = {
@@ -18,7 +26,32 @@ const Actions: React.FC<ActionsType> = ({ userController, routing }) => {
 
   const [loginEnabled, setLoginEnabled] = useState(false);
 
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   const { isLogged } = loginContext as LoginContextReturn;
+
+  const handleUpload = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+
+    if (!file) return;
+
+    const reader = new FileReader();
+
+    reader.onload = (event) => {
+      const data = JSON.parse(event.target?.result as string);
+      console.log(event, data);
+
+      userController.uploadMap(data);
+    };
+
+    reader.readAsText(file);
+
+    event.target.value = '';
+  };
 
   const options: ActionOptionProps[] = isLogged
     ? [
@@ -27,7 +60,11 @@ const Actions: React.FC<ActionsType> = ({ userController, routing }) => {
           iconComponent: <TbRouteSquare />,
           onClick: () => routing?.start(),
         },
-        { label: 'Upload', iconComponent: <TbUpload />, onClick: () => {} },
+        {
+          label: 'Upload',
+          iconComponent: <TbUpload />,
+          onClick: handleUpload,
+        },
         {
           label: 'Download',
           iconComponent: <TbDownload />,
@@ -49,17 +86,27 @@ const Actions: React.FC<ActionsType> = ({ userController, routing }) => {
   if (routing?.enabled) return <ActionRoutes routing={routing} />;
 
   return (
-    <StyledActionsContainer>
-      {options?.map((option) => (
-        <ActionOption
-          key={option?.label}
-          iconComponent={option?.iconComponent}
-          label={option?.label}
-          notification={option?.notification}
-          onClick={option?.onClick}
-        />
-      ))}
-    </StyledActionsContainer>
+    <>
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept=".json,application/json"
+        style={{ display: 'none' }}
+        onChange={handleFileChange}
+      />
+
+      <StyledActionsContainer>
+        {options?.map((option) => (
+          <ActionOption
+            key={option?.label}
+            iconComponent={option?.iconComponent}
+            label={option?.label}
+            notification={option?.notification}
+            onClick={option?.onClick}
+          />
+        ))}
+      </StyledActionsContainer>
+    </>
   );
 };
 

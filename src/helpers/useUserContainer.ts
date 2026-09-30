@@ -8,6 +8,7 @@ export type UseUserContainerReturn = {
   pendingDownload: boolean;
   reset: () => void;
   upsertRoute: (route: Line) => void;
+  uploadMap: (map: any) => void;
   downloadMap: () => void;
 };
 
@@ -31,10 +32,12 @@ export const useUserContainer = (id: string): UseUserContainerReturn => {
     } else setUser({ ...user, map: { lines: [...user.map.lines, route] } });
   };
 
+  const uploadMap = (map: any) => setUser({ ...user, map });
+
   const downloadMap = () => {
     downloadJSON('map.json', user.map);
     setPendingDownload(false);
   };
 
-  return { user, pendingDownload, reset, upsertRoute, downloadMap };
+  return { user, pendingDownload, reset, upsertRoute, uploadMap, downloadMap };
 };
