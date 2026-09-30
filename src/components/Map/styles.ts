@@ -7,6 +7,7 @@ export const StyledContainer = styled(Box)<{
   zoom: number;
   disableRoutes: boolean;
   selectingRoutes: boolean;
+  deletingRoute: boolean;
 }>`
   & .leaflet-container {
     height: 100vh;
@@ -19,7 +20,7 @@ export const StyledContainer = styled(Box)<{
   }
 
   & .polyline {
-    ${({ zoom, selectingRoutes, disableRoutes }) => css`
+    ${({ zoom, selectingRoutes, disableRoutes, deletingRoute }) => css`
       stroke-width: ${getPolylineWeight(zoom)};
       stroke: rgb(255, 230, 0);
       cursor: ${selectingRoutes ? 'pointer' : 'default'};
@@ -38,7 +39,7 @@ export const StyledContainer = styled(Box)<{
       `}
 
       &.selected {
-        stroke: rgb(255, 174, 0);
+        stroke: ${deletingRoute ? 'rgb(255, 63, 63)' : 'rgb(255, 174, 0)'};
         stroke-width: ${getPolylineWeight(zoom) * 1.5};
       }
     `}

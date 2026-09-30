@@ -66,8 +66,9 @@ const Map: React.FC<MapProps> = ({ user, routing }) => {
   return (
     <StyledContainer
       zoom={zoom}
-      selectingRoutes={false}
+      selectingRoutes={routing?.selectingRoute}
       disableRoutes={routing?.disableRoutes}
+      deletingRoute={routing?.deletingRoute}
     >
       <MapContainer
         center={CENTER}
@@ -166,35 +167,6 @@ const Map: React.FC<MapProps> = ({ user, routing }) => {
               weight={3}
             />
           )}
-
-        {/* {othersLines?.map((e: any) => (
-          <Polyline
-            key={e?.id}
-            positions={e?.lines}
-            className="polyline"
-            eventHandlers={{
-              click: () => onSelectLine(e?.id),
-            }}
-          />
-        ))}
-
-        {currentLine && <Line line={currentLine} />}
-
-        {waypoints?.map((waypoint, i) => (
-          <Circle
-            key={`waypoint-map-${i}`}
-            center={[waypoint?.lat, waypoint?.lng]}
-            radius={100}
-            color="#2ecc9d"
-            weight={3}
-          />
-        ))}
-
-        {othersRoutes?.map((route, i) => (
-          <Route key={`route-map-${i}`} route={route} />
-        ))}
-
-        {currentRoute && <Route route={currentRoute} selected />} */}
       </MapContainer>
     </StyledContainer>
   );

@@ -19,10 +19,13 @@ import ActionCalculateRoute from './ActionCalculateRoute';
 import Radio, { RadioOption } from '../../../../components/Radio';
 import { useState } from 'react';
 import ActionFreeRoute from './ActionFreeRoute';
+import { HiMiniTrash } from 'react-icons/hi2';
+import ActionDeleteRoute from './ActionDeleteRoute';
 
 type ActionRoutesProps = { routing: useRoutingReturn };
 type EmptyStateProps = { routing: useRoutingReturn };
 type AddRouteProps = { routing: useRoutingReturn };
+type EditRouteProps = { routing: useRoutingReturn };
 
 const EmptyState: React.FC<EmptyStateProps> = ({ routing }) => {
   const [value, setValue] = useState(RouteOperation.ADD as string);
@@ -123,8 +126,78 @@ const AddRoute: React.FC<AddRouteProps> = ({ routing }) => {
   );
 };
 
-const EditRoute: React.FC = () => {
-  return <>test</>;
+const EditRoute: React.FC<EditRouteProps> = ({ routing }) => {
+  const options: ActionOptionProps[] = [
+    {
+      label: 'Calcular rota',
+      iconComponent: <MdRoute />,
+      type: OperationAction.CALCULATE,
+      onClick: () => routing?.chooseAction(OperationAction.CALCULATE),
+    },
+    {
+      label: 'Seleção livre',
+      iconComponent: <MdOutlineDraw />,
+      type: OperationAction.FREE,
+      onClick: () => routing?.chooseAction(OperationAction.FREE),
+    },
+    {
+      label: 'Deletar rota',
+      iconComponent: <HiMiniTrash />,
+      type: OperationAction.DELETE,
+      onClick: () => routing?.chooseAction(OperationAction.DELETE),
+    },
+  ];
+
+  return (
+    <Box display="flex" flexDir="column" gap="8px">
+      <Text fontSize="12px" px="16px">
+        {routing?.route
+          ? `Você está a editando a rota: ${routing?.route?.id}`
+          : 'Escolha a rota que deseja editar:'}
+      </Text>
+      {routing?.route && (
+        <Box display="flex" flexDir="column" gap="8px">
+          <Text fontSize="12px" px="16px">
+            O que você deseja fazer?
+          </Text>
+          <StyledActionsContainer>
+            {options?.map((option) => (
+              <ActionOption
+                key={option?.label}
+                iconComponent={option?.iconComponent}
+                label={option?.label}
+                selected={routing?.action === option?.type}
+                disabled={routing?.action && routing?.action !== option?.type}
+                onClick={option?.onClick}
+              />
+            ))}
+            {routing?.action && <StyledActionsOptionsOverlay />}
+          </StyledActionsContainer>
+
+          {routing?.action === OperationAction.CALCULATE && (
+            <ActionCalculateRoute routing={routing} />
+          )}
+
+          {routing?.action === OperationAction.FREE && (
+            <ActionFreeRoute routing={routing} />
+          )}
+
+          {routing?.action === OperationAction.DELETE && <ActionDeleteRoute />}
+
+          <Box display="flex" gap="8px" px="16px">
+            <Button onClick={routing?.reset}>Cancelar</Button>
+            <Button
+              contained
+              disabled={!routing?.validate()}
+              onClick={() => routing?.applyChanges()}
+            >
+              Aplicar
+            </Button>
+          </Box>
+        </Box>
+      )}
+    </Box>
+  );
 };
 
 const ActionRoutes: React.FC<ActionRoutesProps> = ({ routing }) => {

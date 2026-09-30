@@ -20,12 +20,14 @@ export enum RouteOperation {
 export enum OperationAction {
   CALCULATE = 'CALCULATE',
   FREE = 'FREE',
+  DELETE = 'DELETE',
 }
 
 export type useRoutingReturn = {
   route: Line;
   disableRoutes: boolean;
   selectingRoute: boolean;
+  deletingRoute: boolean;
   enabled: boolean;
   operation: RouteOperation;
   points: LatLng[];
@@ -63,6 +65,7 @@ export const useRouting = ({
   const [routingState, setRoutingState] = useState<RouteState>();
 
   const selectingRoute = enabled && operation === RouteOperation.EDIT && !route;
+  const deletingRoute = enabled && action === OperationAction.DELETE;
   const disableRoutes =
     enabled && (operation === RouteOperation.ADD || !!route);
 
@@ -146,6 +149,7 @@ export const useRouting = ({
     if (action === OperationAction.CALCULATE)
       return points?.length > 1 && calculated;
     if (action === OperationAction.FREE) return route?.points?.length > 1;
+    if (action === OperationAction.DELETE) return !!route?.id;
     return false;
   };
 
@@ -154,7 +158,8 @@ export const useRouting = ({
 
     const r: Line = { id: route?.id, points: [...route?.points, ...path] };
 
-    userController?.upsertRoute(r);
+    if (action === OperationAction.DELETE) userController?.deleteRoute(r?.id);
+    else userController?.upsertRoute(r);
 
     reset();
   };
@@ -163,6 +168,7 @@ export const useRouting = ({
     route,
     disableRoutes,
     selectingRoute,
+    deletingRoute,
     enabled,
     operation,
     points,
