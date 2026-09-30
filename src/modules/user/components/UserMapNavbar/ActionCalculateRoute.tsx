@@ -1,7 +1,11 @@
 import Box from '../../../../foundation/Box';
 import Text from '../../../../foundation/Text';
 import { HiMiniTrash } from 'react-icons/hi2';
-import { RouteState, useRoutingReturn } from '../../helpers/useRouting';
+import {
+  RouteOperation,
+  RouteState,
+  useRoutingReturn,
+} from '../../helpers/useRouting';
 import Button from '../../../../foundation/Button';
 import { getRoute } from '../../../../requests/graphhoper';
 import { useGraphhoperToken } from '../../../../requests/useGraphhoperToken';
@@ -32,12 +36,15 @@ const ActionCalculateRoute: React.FC<ActionCalculateRouteProps> = ({
             <Text fontSize="12px">{`Lat: ${point?.lat.toFixed(
               5,
             )}, Lng: ${point?.lng.toFixed(5)}`}</Text>
-            <HiMiniTrash
-              color="rgb(255, 63, 63)"
-              cursor="pointer"
-              fontSize="14px"
-              onClick={() => routing?.removePoint(index)}
-            />
+            {routing?.operation === RouteOperation.ADD ||
+              (routing?.operation === RouteOperation.EDIT && index > 0 && (
+                <HiMiniTrash
+                  color="rgb(255, 63, 63)"
+                  cursor="pointer"
+                  fontSize="14px"
+                  onClick={() => routing?.removePoint(index)}
+                />
+              ))}
           </Box>
         ))}
       </Box>

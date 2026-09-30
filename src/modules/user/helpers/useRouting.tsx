@@ -141,7 +141,16 @@ export const useRouting = ({
     if (op === RouteOperation.ADD) addRoute();
   };
 
-  const chooseAction = (act: OperationAction) => setAction(act);
+  const chooseAction = (act: OperationAction) => {
+    setAction(act);
+    if (
+      operation === RouteOperation.EDIT &&
+      act === OperationAction.CALCULATE
+    ) {
+      const latlng = { lat: lastRoutePoint?.[0], lng: lastRoutePoint?.[1] };
+      setPoints([latlng as any]);
+    }
+  };
 
   const changeRouteState = (state: RouteState) => setRoutingState(state);
 

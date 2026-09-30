@@ -37,7 +37,7 @@ export const getRoute = ({ waypoints, token, onCompleted }: GetRouteArgs) => {
         route?.points?.coordinates?.map((c: any[]) => c.reverse()),
       );
 
-      onCompleted(routes);
+      onCompleted(routes?.[0]);
     })
     .catch((error) => {
       console.error('Erro ao fazer a requisição:', error);
