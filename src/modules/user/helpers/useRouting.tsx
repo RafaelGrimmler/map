@@ -33,6 +33,7 @@ export type useRoutingReturn = {
   action: OperationAction;
   calculating: boolean;
   calculated: boolean;
+  lastRoutePoint: [number, number];
   start: () => void;
   reset: () => void;
   stop: () => void;
@@ -45,6 +46,7 @@ export type useRoutingReturn = {
   changeRouteState: (state: RouteState) => void;
   validate: () => boolean;
   applyChanges: () => void;
+  removeLastPointAtRoute: () => void;
 };
 
 type UseRoutingArgs = { userController: UseUserContainerReturn };
@@ -66,6 +68,8 @@ export const useRouting = ({
 
   const calculating = enabled && routingState === RouteState.LOADING;
   const calculated = enabled && routingState === RouteState.READY;
+
+  const lastRoutePoint = route?.points?.[route?.points?.length - 1];
 
   const start = () => setEnabled(true);
 
@@ -97,6 +101,19 @@ export const useRouting = ({
     }
   };
 
+  const addPointAtRoute = (latlng: LatLng) => {
+    setRoute((prev) => {
+      return {
+        ...prev,
+        points: [...(prev.points || []), [latlng.lat, latlng.lng]],
+      };
+    });
+  };
+
+  const removeLastPointAtRoute = () => {
+    setRoute((prev) => ({ ...prev, points: prev.points?.slice(0, -1) }));
+  };
+
   const removePoint = (index: number) => {
     if (!calculating) {
       setPoints((prev) => prev.filter((_, i) => i !== index));
@@ -113,6 +130,7 @@ export const useRouting = ({
   const handleClick = (latlng: LatLng) => {
     if (!enabled) return;
     if (action === OperationAction.CALCULATE) addPoint(latlng);
+    if (action === OperationAction.FREE) addPointAtRoute(latlng);
   };
 
   const chooseOperation = (op: RouteOperation) => {
@@ -127,7 +145,7 @@ export const useRouting = ({
   const validate = () => {
     if (action === OperationAction.CALCULATE)
       return points?.length > 1 && calculated;
-    if (action === OperationAction.FREE) return route?.points?.length > 2;
+    if (action === OperationAction.FREE) return route?.points?.length > 1;
     return false;
   };
 
@@ -152,6 +170,7 @@ export const useRouting = ({
     action,
     calculating,
     calculated,
+    lastRoutePoint,
     start,
     reset,
     stop,
@@ -164,5 +183,6 @@ export const useRouting = ({
     changeRouteState,
     validate,
     applyChanges,
+    removeLastPointAtRoute,
   };
 };

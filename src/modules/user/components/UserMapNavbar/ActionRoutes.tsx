@@ -18,6 +18,7 @@ import Button from '../../../../foundation/Button';
 import ActionCalculateRoute from './ActionCalculateRoute';
 import Radio, { RadioOption } from '../../../../components/Radio';
 import { useState } from 'react';
+import ActionFreeRoute from './ActionFreeRoute';
 
 type ActionRoutesProps = { routing: useRoutingReturn };
 type EmptyStateProps = { routing: useRoutingReturn };
@@ -102,6 +103,10 @@ const AddRoute: React.FC<AddRouteProps> = ({ routing }) => {
 
       {routing?.action === OperationAction.CALCULATE && (
         <ActionCalculateRoute routing={routing} />
+      )}
+
+      {routing?.action === OperationAction.FREE && (
+        <ActionFreeRoute routing={routing} />
       )}
 
       <Box display="flex" gap="8px" px="16px">

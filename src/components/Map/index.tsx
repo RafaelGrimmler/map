@@ -17,7 +17,10 @@ import { StyledContainer } from './styles';
 import municipios from '../../files/municipios.json';
 import RoadsLayer from '../RoadsLayer';
 import { User } from '../../types';
-import { useRoutingReturn } from '../../modules/user/helpers/useRouting';
+import {
+  OperationAction,
+  useRoutingReturn,
+} from '../../modules/user/helpers/useRouting';
 
 // type MapProps = {
 //   user?: any;
@@ -148,6 +151,21 @@ const Map: React.FC<MapProps> = ({ user, routing }) => {
               weight={3}
             />
           ))}
+
+        {routing?.enabled &&
+          routing?.action === OperationAction.FREE &&
+          !!routing?.lastRoutePoint && (
+            <Circle
+              key={`last-point-circle`}
+              center={[
+                routing?.lastRoutePoint?.[0],
+                routing?.lastRoutePoint?.[1],
+              ]}
+              radius={7}
+              color="#ff5e00"
+              weight={3}
+            />
+          )}
 
         {/* {othersLines?.map((e: any) => (
           <Polyline
