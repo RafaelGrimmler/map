@@ -159,7 +159,7 @@ const EditRoute: React.FC<EditRouteProps> = ({ routing }) => {
     <Box display="flex" flexDir="column" gap="8px">
       <Text fontSize="12px" px="16px">
         {routing?.route
-          ? `Você está a editando a rota: ${routing?.route?.id}`
+          ? `Você está editando a rota: ${routing?.route?.id}`
           : 'Escolha a rota que deseja editar:'}
       </Text>
       {routing?.route && (
