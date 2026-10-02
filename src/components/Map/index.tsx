@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   Circle,
   MapContainer,
@@ -7,61 +6,80 @@ import {
   LayersControl,
   Tooltip,
   Polyline,
+  useMap,
 } from 'react-leaflet';
+
 import 'leaflet/dist/leaflet.css';
 
-import { useRef, useState } from 'react';
-import { Map as LeafletMap, LatLngExpression } from 'leaflet';
+import { useEffect, useRef, useState } from 'react';
+
+import { Map as LeafletMap, LatLngBounds, LatLngExpression } from 'leaflet';
 
 import { StyledContainer } from './styles';
+
 import municipios from '../../files/municipios.json';
+
 import RoadsLayer from '../RoadsLayer';
+
 import { User } from '../../types';
+
 import {
   OperationAction,
   useRoutingReturn,
 } from '../../modules/user/helpers/useRouting';
 
-// type MapProps = {
-//   user?: any;
-//   defaultZoom?: number;
-//   disableRoutes?: boolean;
-//   waypoints?: LatLng[];
-//   routes?: LatLng[][];
-//   selectedRoute?: number;
-//   selectedLine?: number;
-//   handleFindLocation?: (coord: LatLng) => void;
-//   handleSelectLine?: (id: number) => void;
-// };
-
 type MapProps = {
   user: User;
+
   routing: useRoutingReturn;
 };
 
 const CENTER = [-31.721742613401577, -52.35671997070313] as LatLngExpression;
 
+type MapEventsProps = {
+  routing: useRoutingReturn;
+  setBounds: (bounds: LatLngBounds) => void;
+  setZoom: (zoom: number) => void;
+};
+
+const MapEvents: React.FC<MapEventsProps> = ({
+  routing,
+  setBounds,
+  setZoom,
+}) => {
+  const map = useMap();
+
+  useEffect(() => {
+    setBounds(map.getBounds());
+    setZoom(map.getZoom());
+  }, [map, setBounds, setZoom]);
+
+  useMapEvents({
+    click: (e) => {
+      routing?.handleClick(e.latlng);
+    },
+
+    moveend: () => {
+      setBounds(map.getBounds());
+      setZoom(map.getZoom());
+    },
+  });
+
+  return null;
+};
+
 const Map: React.FC<MapProps> = ({ user, routing }) => {
   const [zoom, setZoom] = useState(11);
 
+  const [bounds, setBounds] = useState<LatLngBounds | null>(null);
+
   const mapRef = useRef<LeafletMap | null>(null);
 
-  const LocationFinderDummy = () => {
-    useMapEvents({
-      click: (e) => routing?.handleClick(e.latlng),
-      zoomend: () => {
-        if (mapRef.current) setZoom(mapRef.current.getZoom());
-      },
-    });
-
-    return <></>;
-  };
-
-  // const onSelectLine = (id: number) => {
-  //   if (!disableRoutes && !selectedLine) {
-  //     handleSelectLine?.(id);
-  //   }
-  // };
+  const visibleMunicipios = bounds
+    ? municipios.filter((municipio) =>
+        bounds.contains([municipio.latitude, municipio.longitude]),
+      )
+    : [];
 
   return (
     <StyledContainer
@@ -94,33 +112,34 @@ const Map: React.FC<MapProps> = ({ user, routing }) => {
           </LayersControl.Overlay>
         </LayersControl>
 
-        <LocationFinderDummy />
+        <MapEvents routing={routing} setBounds={setBounds} setZoom={setZoom} />
 
-        {/* {zoom >= 6 &&
-            municipios.map((municipio) => (
-              <Circle
-                key={municipio.codigo_ibge}
-                center={[municipio.latitude, municipio.longitude]}
-                radius={1000}
-                pathOptions={{
-                  color: '#1D51D3',
-                  fillColor: '#1D51D3',
-                  fillOpacity: 0.7,
-                  weight: 1,
-                }}
-              >
-                <Tooltip direction="top" offset={[0, -5]} opacity={1}>
-                  {municipio.nome}
-                </Tooltip>
-              </Circle>
-            ))} */}
+        {visibleMunicipios.map((municipio) => (
+          <Circle
+            key={municipio.codigo_ibge}
+            center={[municipio.latitude, municipio.longitude]}
+            radius={1000}
+            pathOptions={{
+              color: '#1D51D3',
+              fillColor: '#1D51D3',
+              fillOpacity: 0.7,
+              weight: 1,
+            }}
+          >
+            <Tooltip direction="top" offset={[0, -5]} opacity={1}>
+              {municipio.nome}
+            </Tooltip>
+          </Circle>
+        ))}
 
         {user?.map?.lines?.map((e) =>
           e?.id !== routing?.route?.id ? (
             <Polyline
               key={e?.id}
               positions={e?.points}
-              eventHandlers={{ click: () => routing?.selectRoute(e) }}
+              eventHandlers={{
+                click: () => routing?.selectRoute(e),
+              }}
               className="polyline"
             />
           ) : null,
@@ -157,7 +176,7 @@ const Map: React.FC<MapProps> = ({ user, routing }) => {
           routing?.action === OperationAction.FREE &&
           !!routing?.lastRoutePoint && (
             <Circle
-              key={`last-point-circle`}
+              key="last-point-circle"
               center={[
                 routing?.lastRoutePoint?.[0],
                 routing?.lastRoutePoint?.[1],
