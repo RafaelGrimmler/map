@@ -116,7 +116,7 @@ const Map: React.FC<MapProps> = ({ user, routing }) => {
 
         {visibleMunicipios.map((municipio) => (
           <Circle
-            key={municipio.codigo_ibge}
+            key={municipio.name}
             center={[municipio.latitude, municipio.longitude]}
             radius={1000}
             pathOptions={{
@@ -127,7 +127,7 @@ const Map: React.FC<MapProps> = ({ user, routing }) => {
             }}
           >
             <Tooltip direction="top" offset={[0, -5]} opacity={1}>
-              {municipio.nome}
+              {municipio.name}
             </Tooltip>
           </Circle>
         ))}
