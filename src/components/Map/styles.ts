@@ -45,6 +45,35 @@ export const StyledContainer = styled(Box)<{
     `}
   }
 
+  & .city-circle {
+    pointer-events: none;
+    cursor: default;
+    outline-style: none !important;
+    fill-opacity: 1;
+    fill: rgb(255, 255, 255);
+  }
+
+  & .leaflet-tooltip {
+    background-color: transparent;
+    border: none;
+    color: black;
+    box-shadow: none;
+    margin-top: 0px;
+    font-weight: bold;
+    padding: 0px;
+    line-height: 16px;
+
+    text-shadow:
+      -1px -1px 0 white,
+      1px -1px 0 white,
+      -1px 1px 0 white,
+      1px 1px 0 white;
+
+    &::before {
+      display: none;
+    }
+  }
+
   & .leaflet-popup-content-wrapper {
     border-radius: 4px;
     padding: 0px;

@@ -130,7 +130,7 @@ export const StyledActionTitle = styled(Text)<{ $clickable: boolean }>`
   `}
 `;
 
-export const StyledActionRoutesContainer = styled(Box)`
+export const StyledActionBaseContainer = styled(Box)`
   display: flex;
   flex-direction: column;
   gap: 8px;

@@ -1,27 +1,28 @@
 import { useContext, useRef, useState } from 'react';
-
 import { StyledActionsContainer } from './styles';
-
 import { LoginContext, LoginContextReturn } from '../../../../context/Login';
-
 import ActionOption, { ActionOptionProps } from './ActionOption';
-
-import { TbRouteSquare, TbUpload, TbDownload, TbLogin2 } from 'react-icons/tb';
-
+import { TbUpload, TbDownload, TbLogin2 } from 'react-icons/tb';
+import { LiaCitySolid } from 'react-icons/lia';
+import { IoAnalyticsOutline } from 'react-icons/io5';
 import ActionLogin from './ActionLogin';
-
 import ActionRoutes from './ActionRoutes';
-
 import { useRoutingReturn } from '../../helpers/useRouting';
-
 import { UseUserContainerReturn } from '../../../../helpers/useUserContainer';
+import { UseCitiesReturn } from '../../helpers/useCities';
+import ActionCities from './ActionCities';
 
 type ActionsType = {
   userController: UseUserContainerReturn;
   routing: useRoutingReturn;
+  cityController: UseCitiesReturn;
 };
 
-const Actions: React.FC<ActionsType> = ({ userController, routing }) => {
+const Actions: React.FC<ActionsType> = ({
+  userController,
+  routing,
+  cityController,
+}) => {
   const loginContext = useContext(LoginContext);
 
   const [loginEnabled, setLoginEnabled] = useState(false);
@@ -57,8 +58,13 @@ const Actions: React.FC<ActionsType> = ({ userController, routing }) => {
     ? [
         {
           label: 'Rotas',
-          iconComponent: <TbRouteSquare />,
+          iconComponent: <IoAnalyticsOutline />,
           onClick: () => routing?.start(),
+        },
+        {
+          label: 'Cidades',
+          iconComponent: <LiaCitySolid />,
+          onClick: () => cityController.start(),
         },
         {
           label: 'Upload',
@@ -82,6 +88,9 @@ const Actions: React.FC<ActionsType> = ({ userController, routing }) => {
 
   if (loginEnabled)
     return <ActionLogin handleClose={() => setLoginEnabled(false)} />;
+
+  if (cityController?.enabled)
+    return <ActionCities cityController={cityController} />;
 
   if (routing?.enabled) return <ActionRoutes routing={routing} />;
 

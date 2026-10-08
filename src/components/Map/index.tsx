@@ -119,14 +119,16 @@ const Map: React.FC<MapProps> = ({ user, routing }) => {
             key={municipio.name}
             center={[municipio.latitude, municipio.longitude]}
             radius={1000}
-            pathOptions={{
-              color: '#1D51D3',
-              fillColor: '#1D51D3',
-              fillOpacity: 0.7,
-              weight: 1,
-            }}
+            weight={0.5}
+            color="#000000"
+            className="city-circle"
           >
-            <Tooltip direction="top" offset={[0, -5]} opacity={1}>
+            <Tooltip
+              direction="top"
+              opacity={1}
+              permanent={municipio.name === 'Pelotas'}
+              className="custom-tooltip"
+            >
               {municipio.name}
             </Tooltip>
           </Circle>

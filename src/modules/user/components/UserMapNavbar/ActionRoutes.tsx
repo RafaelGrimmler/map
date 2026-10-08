@@ -22,7 +22,7 @@ import ActionDeleteRoute from './ActionDeleteRoute';
 import Radio, { RadioOption } from '../../../../components/Radio';
 
 import {
-  StyledActionRoutesContainer,
+  StyledActionBaseContainer,
   StyledActionRouteSection,
   StyledActionsContainer,
   StyledActionsOptionsOverlay,
@@ -207,16 +207,11 @@ const ActionRoutes: React.FC<ActionRoutesProps> = ({ routing }) => {
     routing?.operation === RouteOperation.EDIT ? EditRoute : AddRoute;
 
   return (
-    <StyledActionRoutesContainer>
+    <StyledActionBaseContainer>
       <ActionBreadcrumb
         options={[
-          {
-            label: 'Menu principal',
-            onClick: routing?.stop,
-          },
-          {
-            label: 'Gerenciamento de rotas',
-          },
+          { label: 'Menu principal', onClick: routing?.stop },
+          { label: 'Gerenciamento de rotas' },
         ]}
       />
 
@@ -227,7 +222,7 @@ const ActionRoutes: React.FC<ActionRoutesProps> = ({ routing }) => {
           <EmptyState value={value} setValue={setValue} routing={routing} />
         )}
       </StyledActionRouteSection>
-    </StyledActionRoutesContainer>
+    </StyledActionBaseContainer>
   );
 };
 
