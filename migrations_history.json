@@ -2,5 +2,6 @@
   "1790092576_replace_user_files.js",
   "1790114268_replace_key_lines_in_map_json.js",
   "1790963075_organize_municipios_json.js",
-  "1790964637_insert_uuid_to_municipios.js"
+  "1790964637_insert_uuid_to_municipios.js",
+  "1791451518_add_elevation_on_cities.js"
 ]
