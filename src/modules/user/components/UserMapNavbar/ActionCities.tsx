@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import Box from '../../../../foundation/Box';
 import Button from '../../../../foundation/Button';
 import Text from '../../../../foundation/Text';
@@ -31,15 +32,70 @@ const ActionCitiesSettings: React.FC<ActionCitiesSettingsProps> = ({
   const city = cityController?.city;
   const state = city?.state?.abbr;
 
+  useEffect(() => {
+    if (!city?.id) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      const { latitude, longitude } = city;
+
+      const distance = 100; // metros
+      const latitudeOffset = distance / 111320;
+      const longitudeOffset =
+        distance / (111320 * Math.cos((latitude * Math.PI) / 180));
+
+      let newLatitude = latitude;
+      let newLongitude = longitude;
+
+      switch (event.key) {
+        case 'w':
+          newLatitude += latitudeOffset;
+          break;
+
+        case 's':
+          newLatitude -= latitudeOffset;
+          break;
+
+        case 'd':
+          newLongitude += longitudeOffset;
+          break;
+
+        case 'a':
+          newLongitude -= longitudeOffset;
+          break;
+
+        default:
+          return;
+      }
+
+      event.preventDefault();
+
+      cityController?.editCity({
+        latitude: newLatitude,
+        longitude: newLongitude,
+      });
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [city, cityController]);
+
   return (
     <StyledActionBaseContainer px="16px">
       {city?.id ? (
-        <Text fontSize="14px">
-          Cidade:{' '}
-          <span style={{ fontWeight: 'bold' }}>
-            {city?.name} - {state}
-          </span>
-        </Text>
+        <Box display="flex" flexDir="column" gap="8px">
+          <Text fontSize="14px">
+            Cidade:{' '}
+            <span style={{ fontWeight: 'bold' }}>
+              {city.name} - {state}
+            </span>
+          </Text>
+          <Text fontSize="12px">
+            Utilize as teclas W, A, S e D para mover a cidade no mapa.
+          </Text>
+        </Box>
       ) : (
         <Box display="flex" flexDir="column" gap="4px">
           <Text fontSize="14px" fontWeight="bold">
@@ -50,6 +106,7 @@ const ActionCitiesSettings: React.FC<ActionCitiesSettingsProps> = ({
           </Text>
         </Box>
       )}
+
       <Button contained onClick={() => cityController?.saveSettings()}>
         Salvar e voltar
       </Button>

@@ -14,6 +14,7 @@ export type UseCitiesReturn = {
   startSettings: () => void;
   selectCity: (c: City) => void;
   saveSettings: () => void;
+  editCity: (c: Partial<City>) => void;
 };
 
 type UseCitiesArgs = { userController: UseUserContainerReturn };
@@ -57,6 +58,8 @@ export const useCities = ({
     setSettings(false);
   };
 
+  const editCity = (c: Partial<City>) => setCity({ ...city, ...c });
+
   return {
     enabled,
     settings,
@@ -68,5 +71,6 @@ export const useCities = ({
     startSettings,
     selectCity,
     saveSettings,
+    editCity,
   };
 };
