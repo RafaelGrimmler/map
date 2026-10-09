@@ -150,7 +150,6 @@ const RouteFooter: React.FC<RouteProps> = ({ routing }) => {
   return (
     <Box display="flex" gap="8px" px="16px">
       <Button onClick={routing?.reset}>Cancelar</Button>
-
       <Button
         contained
         disabled={!routing?.validate()}

@@ -13,7 +13,11 @@ const UserMapPage: React.FC<UserMapPageProps> = ({ userController }) => {
 
   return (
     <Box position="relative" width="100%" height="100%">
-      <Map user={userController?.user} routing={routing} />
+      <Map
+        userController={userController}
+        cityController={cityController}
+        routing={routing}
+      />
       <UserMapNavbar
         routing={routing}
         userController={userController}

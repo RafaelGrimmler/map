@@ -8,6 +8,7 @@ export const StyledContainer = styled(Box)<{
   disableRoutes: boolean;
   selectingRoutes: boolean;
   deletingRoute: boolean;
+  selectingCity: boolean;
 }>`
   & .leaflet-container {
     height: 100vh;
@@ -51,6 +52,21 @@ export const StyledContainer = styled(Box)<{
     outline-style: none !important;
     fill-opacity: 1;
     fill: rgb(255, 255, 255);
+    stroke: black;
+
+    &.editing {
+      fill: rgb(255, 174, 0);
+    }
+
+    ${({ selectingCity }) =>
+      selectingCity &&
+      css`
+        cursor: pointer;
+
+        &:hover {
+          fill: rgb(255, 174, 0);
+        }
+      `}
   }
 
   & .leaflet-tooltip {

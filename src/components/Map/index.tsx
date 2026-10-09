@@ -4,33 +4,26 @@ import {
   TileLayer,
   useMapEvents,
   LayersControl,
-  Tooltip,
   Polyline,
   useMap,
 } from 'react-leaflet';
-
 import 'leaflet/dist/leaflet.css';
-
 import { useEffect, useRef, useState } from 'react';
-
 import { Map as LeafletMap, LatLngBounds, LatLngExpression } from 'leaflet';
-
 import { StyledContainer } from './styles';
-
-import municipios from '../../files/municipios.json';
-
 import RoadsLayer from '../RoadsLayer';
-
-import { User } from '../../types';
 
 import {
   OperationAction,
   useRoutingReturn,
 } from '../../modules/user/helpers/useRouting';
+import { UseUserContainerReturn } from '../../helpers/useUserContainer';
+import { UseCitiesReturn } from '../../modules/user/helpers/useCities';
+import CityMaker from './CityMarker';
 
 type MapProps = {
-  user: User;
-
+  userController: UseUserContainerReturn;
+  cityController: UseCitiesReturn;
   routing: useRoutingReturn;
 };
 
@@ -68,17 +61,21 @@ const MapEvents: React.FC<MapEventsProps> = ({
   return null;
 };
 
-const Map: React.FC<MapProps> = ({ user, routing }) => {
+const Map: React.FC<MapProps> = ({
+  userController,
+  cityController,
+  routing,
+}) => {
   const [zoom, setZoom] = useState(11);
-
   const [bounds, setBounds] = useState<LatLngBounds | null>(null);
 
   const mapRef = useRef<LeafletMap | null>(null);
 
-  const visibleMunicipios = bounds
-    ? municipios.filter((municipio) =>
-        bounds.contains([municipio.latitude, municipio.longitude]),
-      )
+  const user = userController?.user;
+  const cities = cityController?.cities;
+
+  const visibleCities = bounds
+    ? cities.filter((city) => bounds.contains([city.latitude, city.longitude]))
     : [];
 
   return (
@@ -87,6 +84,7 @@ const Map: React.FC<MapProps> = ({ user, routing }) => {
       selectingRoutes={routing?.selectingRoute}
       disableRoutes={routing?.disableRoutes}
       deletingRoute={routing?.deletingRoute}
+      selectingCity={cityController?.selectingCity}
     >
       <MapContainer
         center={CENTER}
@@ -113,26 +111,6 @@ const Map: React.FC<MapProps> = ({ user, routing }) => {
         </LayersControl>
 
         <MapEvents routing={routing} setBounds={setBounds} setZoom={setZoom} />
-
-        {visibleMunicipios.map((municipio) => (
-          <Circle
-            key={municipio.name}
-            center={[municipio.latitude, municipio.longitude]}
-            radius={1000}
-            weight={0.5}
-            color="#000000"
-            className="city-circle"
-          >
-            <Tooltip
-              direction="top"
-              opacity={1}
-              permanent={municipio.name === 'Pelotas'}
-              className="custom-tooltip"
-            >
-              {municipio.name}
-            </Tooltip>
-          </Circle>
-        ))}
 
         {user?.map?.lines?.map((e) =>
           e?.id !== routing?.route?.id ? (
@@ -188,6 +166,20 @@ const Map: React.FC<MapProps> = ({ user, routing }) => {
               weight={3}
             />
           )}
+
+        {visibleCities.map((city) =>
+          city?.id !== cityController?.city?.id ? (
+            <CityMaker
+              city={city}
+              key={city?.id}
+              handleSelect={cityController?.selectCity}
+            />
+          ) : null,
+        )}
+
+        {cityController?.city?.id && (
+          <CityMaker editing city={cityController?.city} />
+        )}
       </MapContainer>
     </StyledContainer>
   );

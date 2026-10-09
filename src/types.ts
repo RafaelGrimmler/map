@@ -7,3 +7,13 @@ export type User = {
   map: { lines: Line[] };
   vehicles: Vehicle[];
 };
+
+export type City = {
+  id: string;
+  name: string;
+  latitude: number;
+  longitude: number;
+  radius: number;
+  inactive: boolean;
+  state: { name: string; abbr: string };
+};
