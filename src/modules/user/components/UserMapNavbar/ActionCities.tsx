@@ -5,6 +5,7 @@ import Text from '../../../../foundation/Text';
 import { UseCitiesReturn } from '../../helpers/useCities';
 import ActionBreadcrumb from './ActionBreadcrumb';
 import { StyledActionBaseContainer } from './styles';
+import Radio from '../../../../components/Radio';
 
 type ActionCitiesProps = { cityController: UseCitiesReturn };
 type ActionCitiesListProps = { cityController: UseCitiesReturn };
@@ -82,6 +83,16 @@ const ActionCitiesSettings: React.FC<ActionCitiesSettingsProps> = ({
     };
   }, [city, cityController]);
 
+  const operationOptions = [
+    { label: 'Zoom >= 6', value: 6 },
+    { label: 'Zoom >= 7', value: 7 },
+    { label: 'Zoom >= 8', value: 8 },
+    { label: 'Zoom >= 9', value: 9 },
+    { label: 'Zoom >= 10', value: 10 },
+    { label: 'Zoom >= 11', value: 11 },
+    { label: 'Zoom >= 12', value: 12 },
+  ];
+
   return (
     <StyledActionBaseContainer px="16px">
       {city?.id ? (
@@ -92,9 +103,14 @@ const ActionCitiesSettings: React.FC<ActionCitiesSettingsProps> = ({
               {city.name} - {state}
             </span>
           </Text>
-          <Text fontSize="12px">
+          <Text fontSize="12px" lineHeight="12px">
             Utilize as teclas W, A, S e D para mover a cidade no mapa.
           </Text>
+          <Radio
+            options={operationOptions as any}
+            selected={city?.elevation as any}
+            onChange={(v: any) => cityController?.editCity({ elevation: v })}
+          />
         </Box>
       ) : (
         <Box display="flex" flexDir="column" gap="4px">

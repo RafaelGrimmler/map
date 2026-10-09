@@ -16,4 +16,5 @@ export type City = {
   radius: number;
   inactive: boolean;
   state: { name: string; abbr: string };
+  elevation: number;
 };

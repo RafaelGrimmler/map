@@ -78,6 +78,8 @@ const Map: React.FC<MapProps> = ({
     ? cities.filter((city) => bounds.contains([city.latitude, city.longitude]))
     : [];
 
+  console.log(zoom);
+
   return (
     <StyledContainer
       zoom={zoom}
