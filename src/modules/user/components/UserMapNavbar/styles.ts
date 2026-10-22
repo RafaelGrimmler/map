@@ -6,7 +6,7 @@ export const StyledContainer = styled(Box)`
   position: absolute;
   top: 24px;
   left: 24px;
-  width: 350px;
+  width: 305px;
   background-color: red;
   z-index: 999;
   background-color: rgb(250, 250, 250);
@@ -139,4 +139,12 @@ export const StyledActionBaseContainer = styled(Box)`
 export const StyledActionRouteSection = styled(Box)`
   display: flex;
   flex-direction: column;
+`;
+
+export const StyledViewContainer = styled(Box)`
+  display: flex;
+  flex-direction: column;
+  padding: 0px 16px;
+  padding-bottom: 8px;
+  gap: 4px;
 `;

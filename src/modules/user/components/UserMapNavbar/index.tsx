@@ -2,21 +2,21 @@ import { StyledContainer } from './styles';
 import Divider from '../../../../components/Divider';
 import Header from './Header';
 import Actions from './Actions';
-import Box from '../../../../foundation/Box';
 import { useRoutingReturn } from '../../helpers/useRouting';
 import { UseUserContainerReturn } from '../../../../helpers/useUserContainer';
 import { UseCitiesReturn } from '../../helpers/useCities';
+import View from './View';
 
 type UserMapNavbarProps = {
   userController: UseUserContainerReturn;
-  routing: useRoutingReturn;
   cityController: UseCitiesReturn;
+  routing: useRoutingReturn;
 };
 
 const UserMapNavbar: React.FC<UserMapNavbarProps> = ({
   userController,
-  routing,
   cityController,
+  routing,
 }) => {
   return (
     <StyledContainer>
@@ -27,7 +27,8 @@ const UserMapNavbar: React.FC<UserMapNavbarProps> = ({
         userController={userController}
         cityController={cityController}
       />
-      <Box />
+      <Divider />
+      <View cityController={cityController} />
     </StyledContainer>
   );
 };

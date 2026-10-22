@@ -74,13 +74,14 @@ const Map: React.FC<MapProps> = ({
   const user = userController?.user;
   const cities = cityController?.cities;
 
-  const visibleCities = bounds
-    ? cities.filter((city) => bounds.contains([city.latitude, city.longitude]))
-    : [];
+  const visibleCities =
+    bounds && cityController?.viewEnabled
+      ? cities.filter((city) =>
+          bounds.contains([city.latitude, city.longitude]),
+        )
+      : [];
 
   const radius = cityController?.getRadius(zoom);
-
-  console.log(zoom);
 
   return (
     <StyledContainer
@@ -170,10 +171,11 @@ const Map: React.FC<MapProps> = ({
           )}
 
         {visibleCities.map((city) =>
-          city?.id !== cityController?.city?.id && zoom >= city?.elevation ? (
+          city?.id !== cityController?.city?.id &&
+          (cityController?.viewAll || zoom >= city?.elevation) ? (
             <CityMaker
               city={city}
-              key={city?.id}
+              key={cityController?.viewAll ? city?.id + zoom : city?.id}
               radius={radius}
               permanent={zoom >= city?.elevation}
               handleSelect={cityController?.selectCity}
