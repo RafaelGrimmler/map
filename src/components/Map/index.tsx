@@ -66,7 +66,7 @@ const Map: React.FC<MapProps> = ({
   cityController,
   routing,
 }) => {
-  const [zoom, setZoom] = useState(11);
+  const [zoom, setZoom] = useState(8);
   const [bounds, setBounds] = useState<LatLngBounds | null>(null);
 
   const mapRef = useRef<LeafletMap | null>(null);
