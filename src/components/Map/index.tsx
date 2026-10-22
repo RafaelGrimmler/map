@@ -78,8 +78,6 @@ const Map: React.FC<MapProps> = ({
     ? cities.filter((city) => bounds.contains([city.latitude, city.longitude]))
     : [];
 
-  console.log(zoom);
-
   return (
     <StyledContainer
       zoom={zoom}
@@ -119,9 +117,7 @@ const Map: React.FC<MapProps> = ({
             <Polyline
               key={e?.id}
               positions={e?.points}
-              eventHandlers={{
-                click: () => routing?.selectRoute(e),
-              }}
+              eventHandlers={{ click: () => routing?.selectRoute(e) }}
               className="polyline"
             />
           ) : null,

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { UseUserContainerReturn } from '../../../helpers/useUserContainer';
 import { City } from '../../../types';
 import defaultCities from '../../../files/cities.json';
+import { downloadJSON } from '../../../helpers/download';
 
 export type UseCitiesReturn = {
   enabled: boolean;
@@ -24,7 +25,6 @@ export const useCities = ({
 }: UseCitiesArgs): UseCitiesReturn => {
   const [enabled, setEnabled] = useState(false);
   const [settings, setSettings] = useState(false);
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const [cities, setCities] = useState<City[]>(defaultCities);
   const [city, setCity] = useState<City>(null);
 
@@ -51,10 +51,13 @@ export const useCities = ({
   };
 
   const saveSettings = () => {
+    let citiesToSave = cities;
     if (city?.id) {
-      setCities(cities?.map((o) => (o?.id === city?.id ? city : o)));
+      citiesToSave = cities?.map((o) => (o?.id === city?.id ? city : o));
+      setCities(citiesToSave);
       setCity(null);
     }
+    downloadJSON('cities.json', citiesToSave);
     setSettings(false);
   };
 
