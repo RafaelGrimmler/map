@@ -4,5 +4,6 @@
   "1790963075_organize_municipios_json.js",
   "1790964637_insert_uuid_to_municipios.js",
   "1791451518_add_elevation_on_cities.js",
-  "1792678620_inactivate_cities.js"
+  "1792678620_inactivate_cities.js",
+  "1792692616_replace_rs_elevation.js"
 ]
