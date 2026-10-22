@@ -16,6 +16,7 @@ export type UseCitiesReturn = {
   selectCity: (c: City) => void;
   saveSettings: () => void;
   editCity: (c: Partial<City>) => void;
+  getRadius: (zoom: number) => number;
 };
 
 type UseCitiesArgs = { userController: UseUserContainerReturn };
@@ -25,7 +26,9 @@ export const useCities = ({
 }: UseCitiesArgs): UseCitiesReturn => {
   const [enabled, setEnabled] = useState(false);
   const [settings, setSettings] = useState(false);
-  const [cities, setCities] = useState<City[]>(defaultCities);
+  const [cities, setCities] = useState<City[]>(
+    defaultCities?.filter((c) => !c?.inactive),
+  );
   const [city, setCity] = useState<City>(null);
 
   const selectingCity = settings;
@@ -42,6 +45,21 @@ export const useCities = ({
     setSettings(true);
   };
 
+  const getRadius = (zoom: number) =>
+    ({
+      6: 7000,
+      7: 3500,
+      8: 1500,
+      9: 800,
+      10: 500,
+      11: 200,
+      12: 90,
+      13: 70,
+      14: 30,
+      15: 18,
+      16: 8,
+    })[zoom] || 1000;
+
   const selectCity = (c: City) => {
     if (enabled && selectingCity) {
       if (city?.id)
@@ -57,7 +75,12 @@ export const useCities = ({
       setCities(citiesToSave);
       setCity(null);
     }
-    downloadJSON('cities.json', citiesToSave);
+    downloadJSON(
+      'cities.json',
+      defaultCities?.map(
+        (c) => citiesToSave?.find((o) => o?.id === c?.id) || c,
+      ),
+    );
     setSettings(false);
   };
 
@@ -75,5 +98,6 @@ export const useCities = ({
     selectCity,
     saveSettings,
     editCity,
+    getRadius,
   };
 };

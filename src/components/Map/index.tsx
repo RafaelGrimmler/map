@@ -78,6 +78,10 @@ const Map: React.FC<MapProps> = ({
     ? cities.filter((city) => bounds.contains([city.latitude, city.longitude]))
     : [];
 
+  const radius = cityController?.getRadius(zoom);
+
+  console.log(zoom);
+
   return (
     <StyledContainer
       zoom={zoom}
@@ -166,17 +170,24 @@ const Map: React.FC<MapProps> = ({
           )}
 
         {visibleCities.map((city) =>
-          city?.id !== cityController?.city?.id ? (
+          city?.id !== cityController?.city?.id && zoom >= city?.elevation ? (
             <CityMaker
               city={city}
               key={city?.id}
+              radius={radius}
+              permanent={zoom >= city?.elevation}
               handleSelect={cityController?.selectCity}
             />
           ) : null,
         )}
 
         {cityController?.city?.id && (
-          <CityMaker editing city={cityController?.city} />
+          <CityMaker
+            editing
+            radius={radius}
+            permanent
+            city={cityController?.city}
+          />
         )}
       </MapContainer>
     </StyledContainer>
