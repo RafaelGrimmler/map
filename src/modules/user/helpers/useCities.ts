@@ -4,13 +4,14 @@ import { City } from '../../../types';
 import defaultCities from '../../../files/cities.json';
 import { downloadJSON } from '../../../helpers/download';
 
+type CityView = { enabled: boolean; all: boolean; names: boolean };
+
 export type UseCitiesReturn = {
   enabled: boolean;
   settings: boolean;
   cities: City[];
   city: City;
-  viewEnabled: boolean;
-  viewAll: boolean;
+  view: CityView;
   highlightedCity: City;
   start: () => void;
   stop: () => void;
@@ -19,8 +20,7 @@ export type UseCitiesReturn = {
   saveSettings: () => void;
   editCity: (c: Partial<City>) => void;
   getRadius: (zoom: number) => number;
-  toggleView: () => void;
-  toggleViewAll: () => void;
+  toggleView: (key: keyof CityView) => void;
   selectHighlightedCity: (c: City) => void;
   isVisited: (cityId: string) => boolean;
 };
@@ -36,8 +36,11 @@ export const useCities = ({
     defaultCities?.filter((c) => !c?.inactive),
   );
   const [city, setCity] = useState<City>(null);
-  const [viewEnabled, setViewEnabled] = useState(true);
-  const [viewAll, setViewAll] = useState(false);
+  const [view, setView] = useState<CityView>({
+    enabled: true,
+    all: false,
+    names: true,
+  });
   const [highlightedCity, setHighlightedCity] = useState<City>(null);
 
   const start = () => {
@@ -54,12 +57,8 @@ export const useCities = ({
     setSettings(true);
   };
 
-  const toggleView = () => {
-    setViewEnabled(!viewEnabled);
-  };
-
-  const toggleViewAll = () => {
-    setViewAll(!viewAll);
+  const toggleView = (key: keyof CityView) => {
+    setView({ ...view, [key]: !view[key] });
   };
 
   const getRadius = (zoom: number) =>
@@ -119,8 +118,7 @@ export const useCities = ({
     settings,
     cities,
     city,
-    viewEnabled,
-    viewAll,
+    view,
     highlightedCity,
     start,
     stop,
@@ -130,7 +128,6 @@ export const useCities = ({
     editCity,
     getRadius,
     toggleView,
-    toggleViewAll,
     selectHighlightedCity,
     isVisited,
   };

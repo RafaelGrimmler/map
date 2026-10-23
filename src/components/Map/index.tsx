@@ -75,7 +75,7 @@ const Map: React.FC<MapProps> = ({
   const cities = cityController?.cities;
 
   const visibleCities =
-    bounds && cityController?.viewEnabled
+    bounds && cityController?.view?.enabled
       ? cities.filter((city) =>
           bounds.contains([city.latitude, city.longitude]),
         )
@@ -188,7 +188,7 @@ const Map: React.FC<MapProps> = ({
           if (
             !(
               city?.id !== cityController?.city?.id &&
-              (cityController?.viewAll || zoom >= city?.elevation)
+              (cityController?.view?.all || zoom >= city?.elevation)
             )
           ) {
             return null;
@@ -196,16 +196,17 @@ const Map: React.FC<MapProps> = ({
 
           const isVisited = cityController?.isVisited(city?.id);
 
+          let key = city?.id + isVisited;
+
+          if (cityController?.view?.all) key += zoom;
+          if (cityController?.view?.names) key += 'names';
+
           return (
             <CityMaker
               city={city}
-              key={
-                cityController?.viewAll
-                  ? city?.id + zoom + isVisited
-                  : city?.id + isVisited
-              }
+              key={key}
               radius={radius}
-              permanent={zoom >= city?.elevation}
+              permanent={zoom >= city?.elevation && cityController?.view?.names}
               handleSelect={cityController?.selectCity}
               checked={cityController?.isVisited(city?.id)}
             />

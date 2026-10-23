@@ -20,18 +20,26 @@ const View: React.FC<ViewProps> = ({ cityController }) => {
           Cidades
         </Text>
         <Switch
-          checked={cityController?.viewEnabled}
-          onClick={cityController?.toggleView}
+          checked={cityController?.view?.enabled}
+          onClick={() => cityController?.toggleView('enabled')}
         />
-        {cityController?.viewEnabled && (
+        {cityController?.view?.enabled && (
           <Fragment>
             -
             <Text fontSize="12px" lineHeight="16px">
               Todas
             </Text>
             <Switch
-              checked={cityController?.viewAll}
-              onClick={cityController?.toggleViewAll}
+              checked={cityController?.view?.all}
+              onClick={() => cityController?.toggleView('all')}
+            />
+            -
+            <Text fontSize="12px" lineHeight="16px">
+              Nomes
+            </Text>
+            <Switch
+              checked={cityController?.view?.names}
+              onClick={() => cityController?.toggleView('names')}
             />
           </Fragment>
         )}
