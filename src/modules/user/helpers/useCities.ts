@@ -9,7 +9,6 @@ export type UseCitiesReturn = {
   settings: boolean;
   cities: City[];
   city: City;
-  selectingCity: boolean;
   viewEnabled: boolean;
   viewAll: boolean;
   highlightedCity: City;
@@ -40,8 +39,6 @@ export const useCities = ({
   const [viewEnabled, setViewEnabled] = useState(true);
   const [viewAll, setViewAll] = useState(false);
   const [highlightedCity, setHighlightedCity] = useState<City>(null);
-
-  const selectingCity = settings;
 
   const start = () => {
     setEnabled(true);
@@ -81,10 +78,14 @@ export const useCities = ({
     })[zoom] || 1000;
 
   const selectCity = (c: City) => {
-    if (enabled && selectingCity) {
+    if (!enabled) return;
+
+    if (settings) {
       if (city?.id)
         setCities(cities?.map((o) => (o?.id === city?.id ? city : o)));
       setCity(c);
+    } else {
+      userController?.toggleCity(c?.id);
     }
   };
 
@@ -118,7 +119,6 @@ export const useCities = ({
     settings,
     cities,
     city,
-    selectingCity,
     viewEnabled,
     viewAll,
     highlightedCity,

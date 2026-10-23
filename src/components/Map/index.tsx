@@ -103,7 +103,7 @@ const Map: React.FC<MapProps> = ({
       selectingRoutes={routing?.selectingRoute}
       disableRoutes={routing?.disableRoutes}
       deletingRoute={routing?.deletingRoute}
-      selectingCity={cityController?.selectingCity}
+      selectingCity={cityController?.enabled}
     >
       <MapContainer
         center={CENTER}
@@ -184,19 +184,33 @@ const Map: React.FC<MapProps> = ({
             />
           )}
 
-        {visibleCities.map((city) =>
-          city?.id !== cityController?.city?.id &&
-          (cityController?.viewAll || zoom >= city?.elevation) ? (
+        {visibleCities.map((city) => {
+          if (
+            !(
+              city?.id !== cityController?.city?.id &&
+              (cityController?.viewAll || zoom >= city?.elevation)
+            )
+          ) {
+            return null;
+          }
+
+          const isVisited = cityController?.isVisited(city?.id);
+
+          return (
             <CityMaker
               city={city}
-              key={cityController?.viewAll ? city?.id + zoom : city?.id}
+              key={
+                cityController?.viewAll
+                  ? city?.id + zoom + isVisited
+                  : city?.id + isVisited
+              }
               radius={radius}
               permanent={zoom >= city?.elevation}
               handleSelect={cityController?.selectCity}
               checked={cityController?.isVisited(city?.id)}
             />
-          ) : null,
-        )}
+          );
+        })}
 
         {cityController?.city?.id && (
           <CityMaker

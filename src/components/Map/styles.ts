@@ -59,7 +59,7 @@ export const StyledContainer = styled(Box)<{
     }
 
     &.checked {
-      fill: rgb(255, 174, 0) !important;
+      fill: rgb(102, 255, 0) !important;
     }
 
     ${({ selectingCity }) =>
