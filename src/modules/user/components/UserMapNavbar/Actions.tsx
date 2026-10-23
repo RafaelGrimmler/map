@@ -90,7 +90,12 @@ const Actions: React.FC<ActionsType> = ({
     return <ActionLogin handleClose={() => setLoginEnabled(false)} />;
 
   if (cityController?.enabled)
-    return <ActionCities cityController={cityController} />;
+    return (
+      <ActionCities
+        cityController={cityController}
+        userController={userController}
+      />
+    );
 
   if (routing?.enabled) return <ActionRoutes routing={routing} />;
 

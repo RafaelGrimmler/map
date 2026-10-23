@@ -23,6 +23,7 @@ export type UseCitiesReturn = {
   toggleView: () => void;
   toggleViewAll: () => void;
   selectHighlightedCity: (c: City) => void;
+  isVisited: (cityId: string) => boolean;
 };
 
 type UseCitiesArgs = { userController: UseUserContainerReturn };
@@ -109,6 +110,9 @@ export const useCities = ({
     setHighlightedCity(c);
   };
 
+  const isVisited = (cityId: string) =>
+    userController?.user?.map?.cities?.[cityId];
+
   return {
     enabled,
     settings,
@@ -128,5 +132,6 @@ export const useCities = ({
     toggleView,
     toggleViewAll,
     selectHighlightedCity,
+    isVisited,
   };
 };

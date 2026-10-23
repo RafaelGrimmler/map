@@ -11,13 +11,24 @@ import Input from '../../../../foundation/Input';
 import { IoSettings } from 'react-icons/io5';
 import { BiSearch } from 'react-icons/bi';
 import { FaMapMarkerAlt } from 'react-icons/fa';
+import { UseUserContainerReturn } from '../../../../helpers/useUserContainer';
+import Switch from '../../../../components/Switch';
 
-type ActionCitiesProps = { cityController: UseCitiesReturn };
-type ActionCitiesListProps = { cityController: UseCitiesReturn };
+type ActionCitiesProps = {
+  cityController: UseCitiesReturn;
+  userController: UseUserContainerReturn;
+};
+
+type ActionCitiesListProps = {
+  cityController: UseCitiesReturn;
+  userController: UseUserContainerReturn;
+};
+
 type ActionCitiesSettingsProps = { cityController: UseCitiesReturn };
 
 const ActionCitiesList: React.FC<ActionCitiesListProps> = ({
   cityController,
+  userController,
 }) => {
   const [text, setText] = useState('');
   const [query, setQuery] = useState('');
@@ -89,7 +100,7 @@ const ActionCitiesList: React.FC<ActionCitiesListProps> = ({
                 key={city?.id + 'list-option'}
                 display="flex"
                 alignItems="center"
-                gap="4px"
+                gap="8px"
                 p="4px 16px 4px 18px"
                 justifyContent="space-between"
                 borderBottom={isLast ? 'none' : '1px solid rgb(240, 240, 240)'}
@@ -114,16 +125,22 @@ const ActionCitiesList: React.FC<ActionCitiesListProps> = ({
                     - {city?.state?.abbr}
                   </Text>
                 </Box>
-                <Box
-                  width="16px"
-                  height="100%"
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="center"
-                  cursor="pointer"
-                  onClick={() => cityController?.selectHighlightedCity(city)}
-                >
-                  <FaMapMarkerAlt fontSize="12px" color="rgb(255, 174, 0)" />
+                <Box display="flex" gap="4px">
+                  <Switch
+                    checked={cityController?.isVisited(city?.id)}
+                    onClick={() => userController?.toggleCity(city?.id)}
+                  />
+                  <Box
+                    width="16px"
+                    height="100%"
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                    cursor="pointer"
+                    onClick={() => cityController?.selectHighlightedCity(city)}
+                  >
+                    <FaMapMarkerAlt fontSize="12px" color="rgb(255, 174, 0)" />
+                  </Box>
                 </Box>
               </Box>
             );
@@ -247,11 +264,17 @@ const ActionCitiesSettings: React.FC<ActionCitiesSettingsProps> = ({
   );
 };
 
-const ActionCities: React.FC<ActionCitiesProps> = ({ cityController }) => {
+const ActionCities: React.FC<ActionCitiesProps> = ({
+  cityController,
+  userController,
+}) => {
   return cityController?.settings ? (
     <ActionCitiesSettings cityController={cityController} />
   ) : (
-    <ActionCitiesList cityController={cityController} />
+    <ActionCitiesList
+      cityController={cityController}
+      userController={userController}
+    />
   );
 };
 

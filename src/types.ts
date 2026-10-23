@@ -4,7 +4,7 @@ export type Vehicle = { name: string };
 
 export type User = {
   profile: Profile;
-  map: { lines: Line[] };
+  map: { lines: Line[]; cities: Record<string, boolean> };
   vehicles: Vehicle[];
 };
 

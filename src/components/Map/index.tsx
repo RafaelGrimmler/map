@@ -193,6 +193,7 @@ const Map: React.FC<MapProps> = ({
               radius={radius}
               permanent={zoom >= city?.elevation}
               handleSelect={cityController?.selectCity}
+              checked={cityController?.isVisited(city?.id)}
             />
           ) : null,
         )}

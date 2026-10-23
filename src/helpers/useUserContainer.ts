@@ -11,6 +11,7 @@ export type UseUserContainerReturn = {
   deleteRoute: (id: number) => void;
   uploadMap: (map: any) => void;
   downloadMap: () => void;
+  toggleCity: (cityId: string) => void;
 };
 
 export const useUserContainer = (id: string): UseUserContainerReturn => {
@@ -43,6 +44,19 @@ export const useUserContainer = (id: string): UseUserContainerReturn => {
     setPendingDownload(true);
   };
 
+  const toggleCity = (cityId: string) => {
+    const alreadyAdded = user?.map?.cities?.[cityId];
+
+    setUser({
+      ...user,
+      map: {
+        ...user.map,
+        cities: { ...user.map.cities, [cityId]: !alreadyAdded },
+      },
+    });
+    setPendingDownload(true);
+  };
+
   const uploadMap = (map: any) => {
     setUser({ ...user, map });
     setPendingDownload(false);
@@ -61,5 +75,6 @@ export const useUserContainer = (id: string): UseUserContainerReturn => {
     deleteRoute,
     uploadMap,
     downloadMap,
+    toggleCity,
   };
 };
