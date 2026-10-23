@@ -83,6 +83,20 @@ const Map: React.FC<MapProps> = ({
 
   const radius = cityController?.getRadius(zoom);
 
+  useEffect(() => {
+    if (!cityController?.highlightedCity) return;
+
+    mapRef.current.flyTo(
+      [
+        cityController?.highlightedCity?.latitude,
+        cityController?.highlightedCity?.longitude,
+      ],
+      11,
+    );
+
+    cityController?.selectHighlightedCity(null);
+  }, [cityController?.highlightedCity]);
+
   return (
     <StyledContainer
       zoom={zoom}

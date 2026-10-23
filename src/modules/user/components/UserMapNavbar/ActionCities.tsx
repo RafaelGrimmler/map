@@ -10,6 +10,7 @@ import orderBy from 'lodash/orderBy';
 import Input from '../../../../foundation/Input';
 import { IoSettings } from 'react-icons/io5';
 import { BiSearch } from 'react-icons/bi';
+import { FaMapMarkerAlt } from 'react-icons/fa';
 
 type ActionCitiesProps = { cityController: UseCitiesReturn };
 type ActionCitiesListProps = { cityController: UseCitiesReturn };
@@ -48,6 +49,11 @@ const ActionCitiesList: React.FC<ActionCitiesListProps> = ({
             value={text}
             onChange={(e) => setText(e?.target?.value)}
             onBlur={() => setText(text?.trim())}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                setQuery(text?.trim());
+              }
+            }}
             style={{ paddingRight: '32px' }}
           />
           <Box
@@ -73,13 +79,7 @@ const ActionCitiesList: React.FC<ActionCitiesListProps> = ({
           <IoSettings color="rgb(255, 174, 0)" />
         </Box>
       </Box>
-      <Box
-        px="16px"
-        display="flex"
-        flexDir="column"
-        maxHeight="220px"
-        overflow="auto"
-      >
+      <Box display="flex" flexDir="column" maxHeight="220px" overflow="auto">
         {cities?.length > 0 &&
           cities?.map((city, i) => {
             const isLast = i === cities?.length - 1;
@@ -90,26 +90,47 @@ const ActionCitiesList: React.FC<ActionCitiesListProps> = ({
                 display="flex"
                 alignItems="center"
                 gap="4px"
-                py="4px"
+                p="4px 16px 4px 18px"
+                justifyContent="space-between"
                 borderBottom={isLast ? 'none' : '1px solid rgb(240, 240, 240)'}
+                sx={{ '&:hover': { backgroundColor: 'rgb(243, 243, 243)' } }}
               >
-                <Text
-                  fontSize="12px"
+                <Box
+                  display="flex"
+                  flex="1"
+                  alignItems="center"
+                  gap="4px"
                   overflow="hidden"
-                  whiteSpace="nowrap"
-                  textOverflow="ellipsis"
                 >
-                  {city?.name}
-                </Text>
-                <Text flexShrink="0" fontSize="12px">
-                  - {city?.state?.abbr}
-                </Text>
+                  <Text
+                    fontSize="12px"
+                    overflow="hidden"
+                    whiteSpace="nowrap"
+                    textOverflow="ellipsis"
+                  >
+                    {city?.name}
+                  </Text>
+                  <Text flexShrink="0" fontSize="12px">
+                    - {city?.state?.abbr}
+                  </Text>
+                </Box>
+                <Box
+                  width="16px"
+                  height="100%"
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                  cursor="pointer"
+                  onClick={() => cityController?.selectHighlightedCity(city)}
+                >
+                  <FaMapMarkerAlt fontSize="12px" color="rgb(255, 174, 0)" />
+                </Box>
               </Box>
             );
           })}
 
         {cities?.length === 0 && (
-          <Box display="flex" flexDir="column" gap="4px">
+          <Box display="flex" flexDir="column" gap="4px" px="16px" pl="18px">
             <Text fontWeight="700" fontSize="12px">
               Nenhum resultado!
             </Text>

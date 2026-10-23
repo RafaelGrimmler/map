@@ -12,6 +12,7 @@ export type UseCitiesReturn = {
   selectingCity: boolean;
   viewEnabled: boolean;
   viewAll: boolean;
+  highlightedCity: City;
   start: () => void;
   stop: () => void;
   startSettings: () => void;
@@ -21,6 +22,7 @@ export type UseCitiesReturn = {
   getRadius: (zoom: number) => number;
   toggleView: () => void;
   toggleViewAll: () => void;
+  selectHighlightedCity: (c: City) => void;
 };
 
 type UseCitiesArgs = { userController: UseUserContainerReturn };
@@ -36,6 +38,7 @@ export const useCities = ({
   const [city, setCity] = useState<City>(null);
   const [viewEnabled, setViewEnabled] = useState(true);
   const [viewAll, setViewAll] = useState(false);
+  const [highlightedCity, setHighlightedCity] = useState<City>(null);
 
   const selectingCity = settings;
 
@@ -45,6 +48,8 @@ export const useCities = ({
 
   const stop = () => {
     setEnabled(false);
+    setSettings(false);
+    setHighlightedCity(null);
   };
 
   const startSettings = () => {
@@ -100,6 +105,10 @@ export const useCities = ({
 
   const editCity = (c: Partial<City>) => setCity({ ...city, ...c });
 
+  const selectHighlightedCity = (c: City) => {
+    setHighlightedCity(c);
+  };
+
   return {
     enabled,
     settings,
@@ -108,6 +117,7 @@ export const useCities = ({
     selectingCity,
     viewEnabled,
     viewAll,
+    highlightedCity,
     start,
     stop,
     startSettings,
@@ -117,5 +127,6 @@ export const useCities = ({
     getRadius,
     toggleView,
     toggleViewAll,
+    selectHighlightedCity,
   };
 };
