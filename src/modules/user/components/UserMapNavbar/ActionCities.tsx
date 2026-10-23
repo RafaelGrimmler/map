@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Box from '../../../../foundation/Box';
 import Button from '../../../../foundation/Button';
 import Text from '../../../../foundation/Text';
@@ -6,6 +6,10 @@ import { UseCitiesReturn } from '../../helpers/useCities';
 import ActionBreadcrumb from './ActionBreadcrumb';
 import { StyledActionBaseContainer } from './styles';
 import Radio from '../../../../components/Radio';
+import orderBy from 'lodash/orderBy';
+import Input from '../../../../foundation/Input';
+import { IoSettings } from 'react-icons/io5';
+import { BiSearch } from 'react-icons/bi';
 
 type ActionCitiesProps = { cityController: UseCitiesReturn };
 type ActionCitiesListProps = { cityController: UseCitiesReturn };
@@ -14,6 +18,21 @@ type ActionCitiesSettingsProps = { cityController: UseCitiesReturn };
 const ActionCitiesList: React.FC<ActionCitiesListProps> = ({
   cityController,
 }) => {
+  const [text, setText] = useState('');
+  const [query, setQuery] = useState('');
+
+  const cities = useMemo(() => {
+    if (!query) return [];
+
+    const c = cityController?.cities?.filter(
+      (c) =>
+        c?.name?.toLowerCase()?.includes(query?.toLowerCase()) ||
+        c?.state?.abbr?.toLowerCase()?.includes(query?.toLowerCase()),
+    );
+
+    return orderBy(c, ['name'], ['asc']);
+  }, [cityController?.cities, query]);
+
   return (
     <StyledActionBaseContainer>
       <ActionBreadcrumb
@@ -22,7 +41,84 @@ const ActionCitiesList: React.FC<ActionCitiesListProps> = ({
           { label: 'Cidades' },
         ]}
       />
-      <Text onClick={cityController?.startSettings}>Configurar cidades</Text>
+      <Box px="16px" display="flex" alignItems="center" gap="8px">
+        <Box flex={1} pos="relative">
+          <Input
+            placeholder="Buscar"
+            value={text}
+            onChange={(e) => setText(e?.target?.value)}
+            onBlur={() => setText(text?.trim())}
+            style={{ paddingRight: '32px' }}
+          />
+          <Box
+            width="24px"
+            height="24px"
+            bg="rgb(240, 240, 240)"
+            borderRadius="4px"
+            position="absolute"
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            cursor="pointer"
+            top="4px"
+            right="4px"
+            zIndex="99"
+            sx={{ '&:hover': { backgroundColor: 'rgb(255, 174, 0)' } }}
+            onClick={() => setQuery(text?.trim())}
+          >
+            <BiSearch />
+          </Box>
+        </Box>
+        <Box cursor="pointer" onClick={cityController?.startSettings}>
+          <IoSettings color="rgb(255, 174, 0)" />
+        </Box>
+      </Box>
+      <Box
+        px="16px"
+        display="flex"
+        flexDir="column"
+        maxHeight="220px"
+        overflow="auto"
+      >
+        {cities?.length > 0 &&
+          cities?.map((city, i) => {
+            const isLast = i === cities?.length - 1;
+
+            return (
+              <Box
+                key={city?.id + 'list-option'}
+                display="flex"
+                alignItems="center"
+                gap="4px"
+                py="4px"
+                borderBottom={isLast ? 'none' : '1px solid rgb(240, 240, 240)'}
+              >
+                <Text
+                  fontSize="12px"
+                  overflow="hidden"
+                  whiteSpace="nowrap"
+                  textOverflow="ellipsis"
+                >
+                  {city?.name}
+                </Text>
+                <Text flexShrink="0" fontSize="12px">
+                  - {city?.state?.abbr}
+                </Text>
+              </Box>
+            );
+          })}
+
+        {cities?.length === 0 && (
+          <Box display="flex" flexDir="column" gap="4px">
+            <Text fontWeight="700" fontSize="12px">
+              Nenhum resultado!
+            </Text>
+            <Text fontWeight="500" fontSize="10px">
+              Utilize a busca para trazer cidades
+            </Text>
+          </Box>
+        )}
+      </Box>
     </StyledActionBaseContainer>
   );
 };

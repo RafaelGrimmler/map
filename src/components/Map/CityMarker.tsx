@@ -22,7 +22,7 @@ const CityMaker: React.FC<CityMarkerProps> = ({
     <Circle
       key={city?.name}
       center={[city.latitude, city.longitude]}
-      radius={radius}
+      radius={permanent ? radius : radius > 3000 ? 3000 : radius}
       weight={0.5}
       className={`city-circle ${editing ? 'editing' : ''} ${checked ? 'checked' : ''}`}
       eventHandlers={{ click: () => handleSelect?.(city) }}

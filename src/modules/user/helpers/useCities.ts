@@ -88,13 +88,13 @@ export const useCities = ({
       citiesToSave = cities?.map((o) => (o?.id === city?.id ? city : o));
       setCities(citiesToSave);
       setCity(null);
+      downloadJSON(
+        'cities.json',
+        defaultCities?.map(
+          (c) => citiesToSave?.find((o) => o?.id === c?.id) || c,
+        ),
+      );
     }
-    downloadJSON(
-      'cities.json',
-      defaultCities?.map(
-        (c) => citiesToSave?.find((o) => o?.id === c?.id) || c,
-      ),
-    );
     setSettings(false);
   };
 
