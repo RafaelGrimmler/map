@@ -28,7 +28,7 @@ const UserMapNavbar: React.FC<UserMapNavbarProps> = ({
         cityController={cityController}
       />
       <Divider />
-      <View cityController={cityController} />
+      <View cityController={cityController} routing={routing} />
     </StyledContainer>
   );
 };

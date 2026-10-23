@@ -6,6 +6,8 @@ import { LatLng } from 'leaflet';
 import { getTimestamp } from '../../../helpers/useDates';
 import { UseUserContainerReturn } from '../../../helpers/useUserContainer';
 
+type RoutingView = { enabled: boolean };
+
 export enum RouteState {
   LOADING = 'LOADING',
   READY = 'READY',
@@ -35,6 +37,7 @@ export type useRoutingReturn = {
   calculating: boolean;
   calculated: boolean;
   lastRoutePoint: [number, number];
+  view: RoutingView;
   start: () => void;
   reset: () => void;
   stop: () => void;
@@ -48,6 +51,7 @@ export type useRoutingReturn = {
   validate: () => boolean;
   applyChanges: () => void;
   removeLastPointAtRoute: () => void;
+  toggleView: (key: keyof RoutingView) => void;
 };
 
 type UseRoutingArgs = { userController: UseUserContainerReturn };
@@ -62,6 +66,7 @@ export const useRouting = ({
   const [points, setPoints] = useState<LatLng[]>([]);
   const [path, setPath] = useState<Array<[number, number]>>([]);
   const [routingState, setRoutingState] = useState<RouteState>();
+  const [view, setView] = useState<RoutingView>({ enabled: true });
 
   const selectingRoute = enabled && operation === RouteOperation.EDIT && !route;
   const deletingRoute = enabled && action === OperationAction.DELETE;
@@ -172,6 +177,10 @@ export const useRouting = ({
     reset();
   };
 
+  const toggleView = (key: keyof RoutingView) => {
+    setView({ ...view, [key]: !view[key] });
+  };
+
   return {
     route,
     disableRoutes,
@@ -185,6 +194,7 @@ export const useRouting = ({
     calculating,
     calculated,
     lastRoutePoint,
+    view,
     start,
     reset,
     stop,
@@ -198,5 +208,6 @@ export const useRouting = ({
     validate,
     applyChanges,
     removeLastPointAtRoute,
+    toggleView,
   };
 };

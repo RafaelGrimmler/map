@@ -4,12 +4,14 @@ import Box from '../../../../foundation/Box';
 import Text from '../../../../foundation/Text';
 import { UseCitiesReturn } from '../../helpers/useCities';
 import { StyledViewContainer } from './styles';
+import { useRoutingReturn } from '../../helpers/useRouting';
 
 type ViewProps = {
   cityController: UseCitiesReturn;
+  routing: useRoutingReturn;
 };
 
-const View: React.FC<ViewProps> = ({ cityController }) => {
+const View: React.FC<ViewProps> = ({ cityController, routing }) => {
   return (
     <StyledViewContainer>
       <Text fontSize="14px" fontWeight="700">
@@ -43,6 +45,15 @@ const View: React.FC<ViewProps> = ({ cityController }) => {
             />
           </Fragment>
         )}
+      </Box>
+      <Box display="flex" alignItems="center" gap="4px">
+        <Text fontSize="12px" lineHeight="16px">
+          Rotas
+        </Text>
+        <Switch
+          checked={routing?.view?.enabled}
+          onClick={() => routing?.toggleView('enabled')}
+        />
       </Box>
     </StyledViewContainer>
   );

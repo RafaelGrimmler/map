@@ -131,16 +131,19 @@ const Map: React.FC<MapProps> = ({
 
         <MapEvents routing={routing} setBounds={setBounds} setZoom={setZoom} />
 
-        {user?.map?.lines?.map((e) =>
-          e?.id !== routing?.route?.id ? (
-            <Polyline
-              key={e?.id}
-              positions={e?.points}
-              eventHandlers={{ click: () => routing?.selectRoute(e) }}
-              className="polyline"
-            />
-          ) : null,
-        )}
+        {routing?.view?.enabled &&
+          user?.map?.lines?.map((e) => {
+            if (e?.id === routing?.route?.id) return null;
+
+            return (
+              <Polyline
+                key={e?.id}
+                positions={e?.points}
+                eventHandlers={{ click: () => routing?.selectRoute(e) }}
+                className="polyline"
+              />
+            );
+          })}
 
         {routing?.enabled && routing?.route && (
           <Polyline
